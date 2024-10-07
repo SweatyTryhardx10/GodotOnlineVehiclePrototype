@@ -1,0 +1,239 @@
+[gd_resource type="VisualShader" load_steps=26 format=3 uid="uid://bpe8c5uxkqfm5"]
+
+[sub_resource type="VisualShaderNodeTexture" id="VisualShaderNodeTexture_lrtec"]
+source = 5
+
+[sub_resource type="VisualShaderNodeTexture2DParameter" id="VisualShaderNodeTexture2DParameter_564q7"]
+parameter_name = "Terrain03_Albedo"
+
+[sub_resource type="VisualShaderNodeTexture" id="VisualShaderNodeTexture_jt4au"]
+source = 5
+
+[sub_resource type="VisualShaderNodeReroute" id="VisualShaderNodeReroute_600kc"]
+
+[sub_resource type="VisualShaderNodeMix" id="VisualShaderNodeMix_wd0dj"]
+default_input_values = [0, Quaternion(0, 0, 0, 0), 1, Quaternion(1, 1, 1, 1), 2, Quaternion(0.5, 0.5, 0.5, 0.5)]
+op_type = 5
+
+[sub_resource type="VisualShaderNodeVec3Parameter" id="VisualShaderNodeVec3Parameter_f7gif"]
+expanded_output_ports = [0]
+parameter_name = "TerrainBoundaries"
+default_value_enabled = true
+default_value = Vector3(0.75, 0.5, 0.25)
+
+[sub_resource type="VisualShaderNodeStep" id="VisualShaderNodeStep_osj4u"]
+
+[sub_resource type="VisualShaderNodeStep" id="VisualShaderNodeStep_hya0a"]
+default_input_values = [0, 0.55, 1, 0.0]
+
+[sub_resource type="VisualShaderNodeStep" id="VisualShaderNodeStep_qnuni"]
+
+[sub_resource type="VisualShaderNodeReroute" id="VisualShaderNodeReroute_16ck3"]
+
+[sub_resource type="VisualShaderNodeFloatFunc" id="VisualShaderNodeFloatFunc_i62g1"]
+function = 31
+
+[sub_resource type="VisualShaderNodeFloatFunc" id="VisualShaderNodeFloatFunc_olheh"]
+function = 31
+
+[sub_resource type="VisualShaderNodeFloatFunc" id="VisualShaderNodeFloatFunc_rtfgb"]
+function = 31
+
+[sub_resource type="VisualShaderNodeMix" id="VisualShaderNodeMix_npymk"]
+default_input_values = [0, Quaternion(0, 0, 0, 0), 1, Quaternion(1, 1, 1, 1), 2, Quaternion(0.5, 0.5, 0.5, 0.5)]
+op_type = 5
+
+[sub_resource type="VisualShaderNodeReroute" id="VisualShaderNodeReroute_kg5mg"]
+
+[sub_resource type="VisualShaderNodeTexture" id="VisualShaderNodeTexture_0r2wo"]
+source = 5
+
+[sub_resource type="VisualShaderNodeTexture2DParameter" id="VisualShaderNodeTexture2DParameter_i7ftj"]
+parameter_name = "Terrain04_Albedo"
+
+[sub_resource type="VisualShaderNodeTexture2DParameter" id="VisualShaderNodeTexture2DParameter_bdsjc"]
+linked_parent_graph_frame = 5
+parameter_name = "TerrainID"
+
+[sub_resource type="VisualShaderNodeMix" id="VisualShaderNodeMix_hto14"]
+default_input_values = [0, Quaternion(0, 0, 0, 0), 1, Quaternion(1, 1, 1, 1), 2, Quaternion(0.5, 0.5, 0.5, 0.5)]
+op_type = 5
+
+[sub_resource type="VisualShaderNodeReroute" id="VisualShaderNodeReroute_f33l1"]
+
+[sub_resource type="VisualShaderNodeTexture" id="VisualShaderNodeTexture_rd2m1"]
+expanded_output_ports = [0]
+linked_parent_graph_frame = 5
+source = 5
+
+[sub_resource type="VisualShaderNodeFrame" id="VisualShaderNodeFrame_25c5c"]
+size = Vector2(624, 176)
+title = "ID Mask"
+attached_nodes = PackedInt32Array(3, 4)
+
+[sub_resource type="VisualShaderNodeTexture2DParameter" id="VisualShaderNodeTexture2DParameter_epj85"]
+parameter_name = "Terrain01_Albedo"
+
+[sub_resource type="VisualShaderNodeTexture" id="VisualShaderNodeTexture_qk4qh"]
+source = 5
+
+[sub_resource type="VisualShaderNodeTexture2DParameter" id="VisualShaderNodeTexture2DParameter_uukxi"]
+parameter_name = "Terrain02_Albedo"
+
+[resource]
+code = "shader_type spatial;
+render_mode blend_mix, depth_draw_opaque, cull_back, diffuse_lambert, specular_schlick_ggx;
+
+uniform sampler2D Terrain01_Albedo;
+uniform sampler2D Terrain02_Albedo;
+uniform vec3 TerrainBoundaries = vec3(0.750000, 0.500000, 0.250000);
+uniform sampler2D TerrainID;
+uniform sampler2D Terrain03_Albedo;
+uniform sampler2D Terrain04_Albedo;
+
+
+
+void fragment() {
+	vec4 n_out7p0;
+// Texture2D:7
+	n_out7p0 = texture(Terrain01_Albedo, UV);
+
+
+	vec4 n_out10p0;
+// Texture2D:10
+	n_out10p0 = texture(Terrain02_Albedo, UV);
+
+
+// Vector3Parameter:18
+	vec3 n_out18p0 = TerrainBoundaries;
+	float n_out18p1 = n_out18p0.r;
+	float n_out18p2 = n_out18p0.g;
+	float n_out18p3 = n_out18p0.b;
+
+
+	vec4 n_out4p0;
+// Texture2D:4
+	n_out4p0 = texture(TerrainID, UV);
+	float n_out4p1 = n_out4p0.r;
+
+
+// Reroute:14
+	float n_out14p0 = n_out4p1;
+
+
+// Reroute:22
+	float n_out22p0 = n_out14p0;
+
+
+// Step:19
+	float n_out19p0 = step(n_out18p1, n_out22p0);
+
+
+// FloatFunc:23
+	float n_out23p0 = 1.0 - n_out19p0;
+
+
+// Mix:17
+	vec4 n_out17p0 = mix(n_out7p0, n_out10p0, vec4(n_out23p0));
+
+
+	vec4 n_out12p0;
+// Texture2D:12
+	n_out12p0 = texture(Terrain03_Albedo, UV);
+
+
+// Step:20
+	float n_out20p0 = step(n_out18p2, n_out22p0);
+
+
+// FloatFunc:24
+	float n_out24p0 = 1.0 - n_out20p0;
+
+
+// Reroute:27
+	float n_out27p0 = n_out24p0;
+
+
+// Mix:26
+	vec4 n_out26p0 = mix(n_out17p0, n_out12p0, vec4(n_out27p0));
+
+
+	vec4 n_out28p0;
+// Texture2D:28
+	n_out28p0 = texture(Terrain04_Albedo, UV);
+
+
+// Step:21
+	float n_out21p0 = step(n_out18p3, n_out22p0);
+
+
+// FloatFunc:25
+	float n_out25p0 = 1.0 - n_out21p0;
+
+
+// Reroute:31
+	float n_out31p0 = n_out25p0;
+
+
+// Mix:30
+	vec4 n_out30p0 = mix(n_out26p0, n_out28p0, vec4(n_out31p0));
+
+
+// Output:0
+	ALBEDO = vec3(n_out30p0.xyz);
+
+
+}
+"
+nodes/fragment/0/position = Vector2(840, 120)
+nodes/fragment/3/node = SubResource("VisualShaderNodeTexture2DParameter_bdsjc")
+nodes/fragment/3/position = Vector2(-1520, -340)
+nodes/fragment/4/node = SubResource("VisualShaderNodeTexture_rd2m1")
+nodes/fragment/4/position = Vector2(-1140, -280)
+nodes/fragment/5/node = SubResource("VisualShaderNodeFrame_25c5c")
+nodes/fragment/5/position = Vector2(-1480, -380)
+nodes/fragment/6/node = SubResource("VisualShaderNodeTexture2DParameter_epj85")
+nodes/fragment/6/position = Vector2(-1580, 220)
+nodes/fragment/7/node = SubResource("VisualShaderNodeTexture_qk4qh")
+nodes/fragment/7/position = Vector2(-1280, 340)
+nodes/fragment/9/node = SubResource("VisualShaderNodeTexture2DParameter_uukxi")
+nodes/fragment/9/position = Vector2(-1580, 560)
+nodes/fragment/10/node = SubResource("VisualShaderNodeTexture_lrtec")
+nodes/fragment/10/position = Vector2(-1280, 680)
+nodes/fragment/11/node = SubResource("VisualShaderNodeTexture2DParameter_564q7")
+nodes/fragment/11/position = Vector2(-1580, 900)
+nodes/fragment/12/node = SubResource("VisualShaderNodeTexture_jt4au")
+nodes/fragment/12/position = Vector2(-1280, 1020)
+nodes/fragment/14/node = SubResource("VisualShaderNodeReroute_600kc")
+nodes/fragment/14/position = Vector2(-780, -220)
+nodes/fragment/17/node = SubResource("VisualShaderNodeMix_wd0dj")
+nodes/fragment/17/position = Vector2(-220, 340)
+nodes/fragment/18/node = SubResource("VisualShaderNodeVec3Parameter_f7gif")
+nodes/fragment/18/position = Vector2(-1260, 20)
+nodes/fragment/19/node = SubResource("VisualShaderNodeStep_osj4u")
+nodes/fragment/19/position = Vector2(-640, -60)
+nodes/fragment/20/node = SubResource("VisualShaderNodeStep_hya0a")
+nodes/fragment/20/position = Vector2(-640, 100)
+nodes/fragment/21/node = SubResource("VisualShaderNodeStep_qnuni")
+nodes/fragment/21/position = Vector2(-640, 260)
+nodes/fragment/22/node = SubResource("VisualShaderNodeReroute_16ck3")
+nodes/fragment/22/position = Vector2(-740, 180)
+nodes/fragment/23/node = SubResource("VisualShaderNodeFloatFunc_i62g1")
+nodes/fragment/23/position = Vector2(-460, -40)
+nodes/fragment/24/node = SubResource("VisualShaderNodeFloatFunc_olheh")
+nodes/fragment/24/position = Vector2(-460, 120)
+nodes/fragment/25/node = SubResource("VisualShaderNodeFloatFunc_rtfgb")
+nodes/fragment/25/position = Vector2(-460, 280)
+nodes/fragment/26/node = SubResource("VisualShaderNodeMix_npymk")
+nodes/fragment/26/position = Vector2(-20, 520)
+nodes/fragment/27/node = SubResource("VisualShaderNodeReroute_kg5mg")
+nodes/fragment/27/position = Vector2(-240, 640)
+nodes/fragment/28/node = SubResource("VisualShaderNodeTexture_0r2wo")
+nodes/fragment/28/position = Vector2(-1280, 1360)
+nodes/fragment/29/node = SubResource("VisualShaderNodeTexture2DParameter_i7ftj")
+nodes/fragment/29/position = Vector2(-1580, 1240)
+nodes/fragment/30/node = SubResource("VisualShaderNodeMix_hto14")
+nodes/fragment/30/position = Vector2(180, 720)
+nodes/fragment/31/node = SubResource("VisualShaderNodeReroute_f33l1")
+nodes/fragment/31/position = Vector2(-268.76, 809.434)
+nodes/fragment/connections = PackedInt32Array(3, 0, 4, 2, 9, 0, 10, 2, 11, 0, 12, 2, 6, 0, 7, 2, 7, 0, 17, 0, 10, 0, 17, 1, 18, 1, 19, 0, 18, 3, 21, 0, 14, 0, 22, 0, 22, 0, 19, 1, 22, 0, 20, 1, 22, 0, 21, 1, 19, 0, 23, 0, 20, 0, 24, 0, 21, 0, 25, 0, 23, 0, 17, 2, 17, 0, 26, 0, 12, 0, 26, 1, 24, 0, 27, 0, 27, 0, 26, 2, 29, 0, 28, 2, 26, 0, 30, 0, 25, 0, 31, 0, 31, 0, 30, 2, 28, 0, 30, 1, 30, 0, 0, 0, 4, 1, 14, 0, 18, 2, 20, 0)

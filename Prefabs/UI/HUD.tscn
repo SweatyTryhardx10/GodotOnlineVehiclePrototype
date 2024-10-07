@@ -1,0 +1,214 @@
+[gd_scene load_steps=5 format=3 uid="uid://dcwujrpgrgcsb"]
+
+[ext_resource type="Script" path="res://Scripts/HUD.cs" id="1_dxtb4"]
+[ext_resource type="Theme" uid="uid://dwj4prd2tyq2w" path="res://Data/UI/theme_main.tres" id="1_gu2sj"]
+[ext_resource type="LabelSettings" uid="uid://b22ae57tkkrw4" path="res://Data/UI/label_title.tres" id="3_h67ck"]
+[ext_resource type="Texture2D" uid="uid://ccobljke5ujan" path="res://icon.svg" id="3_vw06a"]
+
+[node name="HUD" type="Control" node_paths=PackedStringArray("panelValues")]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_gu2sj")
+script = ExtResource("1_dxtb4")
+panelValues = [NodePath("Default"), NodePath("Pause"), NodePath("Scoreboard"), NodePath("End"), NodePath("End_Server"), NodePath("Options")]
+
+[node name="Default" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TextureRect" type="TextureRect" parent="Default"]
+modulate = Color(1, 1, 1, 0.27451)
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -76.0
+offset_top = 10.0
+offset_right = -12.0
+offset_bottom = 74.0
+grow_horizontal = 0
+texture = ExtResource("3_vw06a")
+expand_mode = 1
+stretch_mode = 4
+
+[node name="Pause" type="Control" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="CenterContainer" type="CenterContainer" parent="Pause"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Panel" type="Panel" parent="Pause/CenterContainer"]
+custom_minimum_size = Vector2(300, 200)
+layout_mode = 2
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="Pause/CenterContainer/Panel"]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 20.0
+offset_top = 10.0
+offset_right = -20.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Title" type="Label" parent="Pause/CenterContainer/Panel/VBoxContainer2"]
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+text = "PAUSE MENU"
+label_settings = ExtResource("3_h67ck")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Divider" type="Control" parent="Pause/CenterContainer/Panel/VBoxContainer2"]
+custom_minimum_size = Vector2(0, 20.58)
+layout_mode = 2
+
+[node name="ColorRect" type="ColorRect" parent="Pause/CenterContainer/Panel/VBoxContainer2/Divider"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -133.5
+offset_right = 133.5
+offset_bottom = 2.0
+grow_horizontal = 2
+color = Color(0, 0, 0, 0.313726)
+
+[node name="btn_container" type="VBoxContainer" parent="Pause/CenterContainer/Panel/VBoxContainer2"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 10
+
+[node name="btn_resume" type="Button" parent="Pause/CenterContainer/Panel/VBoxContainer2/btn_container"]
+layout_mode = 2
+text = "resume"
+
+[node name="btn_options" type="Button" parent="Pause/CenterContainer/Panel/VBoxContainer2/btn_container"]
+layout_mode = 2
+text = "options"
+
+[node name="btn_disconnect" type="Button" parent="Pause/CenterContainer/Panel/VBoxContainer2/btn_container"]
+layout_mode = 2
+text = "disconnect"
+
+[node name="Scoreboard" type="Control" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="End" type="Control" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="End"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -227.0
+offset_top = -24.0
+offset_right = 227.0
+offset_bottom = 25.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "The winner is"
+horizontal_alignment = 1
+
+[node name="End_Server" type="Control" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="CenterContainer" type="CenterContainer" parent="End_Server"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="End_Server/CenterContainer"]
+custom_minimum_size = Vector2(300, 200)
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="Label" type="Label" parent="End_Server/CenterContainer/VBoxContainer"]
+layout_mode = 2
+text = "The winner is"
+horizontal_alignment = 1
+
+[node name="Panel" type="Panel" parent="End_Server/CenterContainer/VBoxContainer"]
+self_modulate = Color(1, 1, 1, 0.517647)
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="btn_container" type="VBoxContainer" parent="End_Server/CenterContainer/VBoxContainer/Panel"]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 20.0
+offset_top = 10.0
+offset_right = -20.0
+offset_bottom = -10.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 10
+
+[node name="Button" type="Button" parent="End_Server/CenterContainer/VBoxContainer/Panel/btn_container"]
+layout_mode = 2
+text = "Rematch"
+
+[node name="Button2" type="Button" parent="End_Server/CenterContainer/VBoxContainer/Panel/btn_container"]
+layout_mode = 2
+text = "Shut down server"
+
+[node name="Options" type="Control" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[connection signal="pressed" from="Pause/CenterContainer/Panel/VBoxContainer2/btn_container/btn_resume" to="." method="OnPauseButtonResumePressed"]
+[connection signal="pressed" from="Pause/CenterContainer/Panel/VBoxContainer2/btn_container/btn_options" to="." method="OnPauseButtonOptionsPressed"]
+[connection signal="pressed" from="Pause/CenterContainer/Panel/VBoxContainer2/btn_container/btn_disconnect" to="." method="OnPauseButtonDisconnectPressed"]
+[connection signal="pressed" from="End_Server/CenterContainer/VBoxContainer/Panel/btn_container/Button" to="." method="OnEndButtonRematchPressed"]
+[connection signal="pressed" from="End_Server/CenterContainer/VBoxContainer/Panel/btn_container/Button2" to="." method="OnEndButtonShutDownPressed"]

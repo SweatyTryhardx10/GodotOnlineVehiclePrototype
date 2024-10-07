@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://cnkfu25wasedt"
+path="res://.godot/imported/Car, Wheel On Gravel, Tire Grit.mp3-3458f29fc5bb62ab428a666851f87081.mp3str"
+
+[deps]
+
+source_file="res://Audio/Car, Wheel On Gravel, Tire Grit.mp3"
+dest_files=["res://.godot/imported/Car, Wheel On Gravel, Tire Grit.mp3-3458f29fc5bb62ab428a666851f87081.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

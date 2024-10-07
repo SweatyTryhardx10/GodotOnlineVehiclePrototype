@@ -1,0 +1,592 @@
+[gd_scene load_steps=31 format=3 uid="uid://cq4a6lilby0bp"]
+
+[ext_resource type="PhysicsMaterial" uid="uid://d0tyduv0wwgse" path="res://Data/physMat_Slippery.tres" id="1_su6v1"]
+[ext_resource type="Script" path="res://Scripts/VehicleController.cs" id="2_rmoyc"]
+[ext_resource type="Script" path="res://Scripts/Engine.cs" id="3_uqbac"]
+[ext_resource type="Material" uid="uid://ccw2tuc2fex2k" path="res://Materials/pbr_tri_proto_green.tres" id="4_up0al"]
+[ext_resource type="Script" path="res://Scripts/RigidBodyInterpolater.cs" id="5_l8mnx"]
+[ext_resource type="Material" uid="uid://ce1thvhy54x5e" path="res://Materials/pbr_tri_reflective.tres" id="5_oi70n"]
+[ext_resource type="Script" path="res://Scripts/Joints/WheelJoint.cs" id="7_hjwp7"]
+[ext_resource type="Material" uid="uid://pmhdpge6h15x" path="res://Materials/pbr_tri_proto_red.tres" id="9_aow0s"]
+[ext_resource type="Material" uid="uid://x7lr4w6y8u8u" path="res://Materials/Particles/particle_smoke.tres" id="10_bkd4d"]
+[ext_resource type="QuadMesh" uid="uid://bmnrppdkqax0u" path="res://Meshes/particle_quad_circle.tres" id="11_uagua"]
+[ext_resource type="Script" path="res://Scripts/SpringEffect.cs" id="12_bwps6"]
+[ext_resource type="Material" uid="uid://dfdtgak0nl5t5" path="res://Materials/Particles/particle_circle.tres" id="13_t3kam"]
+[ext_resource type="PackedScene" uid="uid://c86ohjp3qjkra" path="res://Data/Terrain Profiles/terrain_profile_default.tscn" id="13_xwgeu"]
+[ext_resource type="PackedScene" uid="uid://mlllksmjlv7t" path="res://Data/Terrain Profiles/terrain_profile_dirt.tscn" id="14_d0c14"]
+[ext_resource type="PackedScene" uid="uid://dkg7c3xkokyqy" path="res://Data/Terrain Profiles/terrain_profile_ice.tscn" id="15_5sx3u"]
+[ext_resource type="AudioStream" uid="uid://bwqyhn635c2ky" path="res://Audio/Truck Engine, Airy, Medium RPM.mp3" id="15_i0r0q"]
+[ext_resource type="Script" path="res://Scripts/Audio/VehicleEngineSound.cs" id="15_lpww2"]
+
+[sub_resource type="Curve" id="Curve_kfo5q"]
+min_value = 50.0
+max_value = 300.0
+_data = [Vector2(0, 50), 0.0, 0.0, 0, 0, Vector2(0.667575, 300), 0.0, 0.0, 0, 0, Vector2(1, 215.453), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_djj7r"]
+size = Vector3(4, 3.4673, 4)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_n1kwo"]
+size = Vector3(4, 1.31387, 6.2283)
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_23ge7"]
+height = 3.8781
+radius = 0.166251
+
+[sub_resource type="BoxMesh" id="BoxMesh_ht7pv"]
+size = Vector3(4, 1.314, 6.22)
+
+[sub_resource type="BoxMesh" id="BoxMesh_s3a1c"]
+size = Vector3(3.46, 1.435, 0.33)
+
+[sub_resource type="BoxMesh" id="BoxMesh_sskpb"]
+size = Vector3(4, 3.5, 4)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_x5cis"]
+top_radius = 1.0
+bottom_radius = 1.0
+height = 0.5
+
+[sub_resource type="Curve" id="Curve_5qcto"]
+_data = [Vector2(0, 0), 0.0, 13.4329, 0, 0, Vector2(0.0803213, 1), -0.145614, -0.145614, 0, 0, Vector2(1, 0.905263), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="Gradient" id="Gradient_v248l"]
+offsets = PackedFloat32Array(0, 0.83871, 1)
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0.133333, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_ual06"]
+gradient = SubResource("Gradient_v248l")
+
+[sub_resource type="CurveTexture" id="CurveTexture_1tqkx"]
+curve = SubResource("Curve_5qcto")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_vfvyf"]
+particle_flag_rotate_y = true
+angle_min = -720.0
+angle_max = 720.0
+direction = Vector3(0, 0, -1)
+spread = 30.0
+flatness = 0.5
+initial_velocity_min = 1.0
+initial_velocity_max = 6.32
+angular_velocity_min = 10.0
+angular_velocity_max = 81.66
+gravity = Vector3(0, -9.82, 0)
+damping_min = 1.885
+damping_max = 2.35
+scale_min = 0.1
+scale_max = 0.2
+scale_curve = SubResource("CurveTexture_1tqkx")
+color = Color(0.878578, 0.77513, 0.693824, 1)
+color_ramp = SubResource("GradientTexture1D_ual06")
+collision_mode = 1
+collision_friction = 0.05
+collision_bounce = 0.47
+collision_use_scale = true
+
+[node name="Truck" type="RigidBody3D" node_paths=PackedStringArray("engine")]
+mass = 1000.0
+physics_material_override = ExtResource("1_su6v1")
+gravity_scale = 2.0
+script = ExtResource("2_rmoyc")
+engine = NodePath("Engine")
+
+[node name="Engine" type="Node" parent="."]
+script = ExtResource("3_uqbac")
+displacementSpeed = 3000.0
+torqueCurve = SubResource("Curve_kfo5q")
+brakeStrength = 4.0
+engineBrakeStrength = 0.196
+gearRatios = PackedFloat32Array(1, 5, 6)
+gearChangeTime = 1.0
+rpmRange = Vector2(500, 3000)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, -2.38419e-07, 1.52696, -2.39913)
+shape = SubResource("BoxShape3D_djj7r")
+
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="."]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 2.38419e-07, 0.464615, 2.58111)
+shape = SubResource("BoxShape3D_n1kwo")
+
+[node name="CollisionShape3D3" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.12721, 2.46939, -0.882756)
+shape = SubResource("CylinderShape3D_23ge7")
+
+[node name="CollisionShape3D4" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.127, 2.469, -0.883)
+shape = SubResource("CylinderShape3D_23ge7")
+
+[node name="MeshObject" type="Node3D" parent="." node_paths=PackedStringArray("body")]
+process_priority = -10
+process_physics_priority = -10
+script = ExtResource("5_l8mnx")
+body = NodePath("..")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="MeshObject"]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 2.38419e-07, 0.45177, 2.5971)
+material_override = ExtResource("4_up0al")
+mesh = SubResource("BoxMesh_ht7pv")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D3" type="MeshInstance3D" parent="MeshObject"]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, -2.98023e-07, 2.29078, -4.31136)
+material_override = ExtResource("5_oi70n")
+mesh = SubResource("BoxMesh_s3a1c")
+skeleton = NodePath("../MeshInstance3D")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="MeshObject"]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, -2.38419e-07, 1.53339, -2.39913)
+material_override = ExtResource("4_up0al")
+mesh = SubResource("BoxMesh_sskpb")
+skeleton = NodePath("../..")
+
+[node name="CSGCylinder3D" type="CSGCylinder3D" parent="MeshObject"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.12556, 2.08746, -0.883236)
+radius = 0.169138
+height = 3.12711
+sides = 12
+material = ExtResource("5_oi70n")
+
+[node name="CSGCylinder3D2" type="CSGCylinder3D" parent="MeshObject/CSGCylinder3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.68063, 0)
+radius = 0.0910463
+height = 1.31156
+sides = 12
+material = ExtResource("5_oi70n")
+
+[node name="CSGCylinder3D2" type="CSGCylinder3D" parent="MeshObject"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.126, 2.087, -0.883)
+radius = 0.169138
+height = 3.12711
+sides = 12
+material = ExtResource("5_oi70n")
+
+[node name="CSGCylinder3D2" type="CSGCylinder3D" parent="MeshObject/CSGCylinder3D2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.68063, 0)
+radius = 0.0910463
+height = 1.31156
+sides = 12
+material = ExtResource("5_oi70n")
+
+[node name="Spring (FR)" type="Node3D" parent="." node_paths=PackedStringArray("wheelMesh")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.29333, 0.0631142, -2.72199)
+script = ExtResource("7_hjwp7")
+length = 1.0
+stiffness = 35000.0
+damping = 550.0
+radius = 1.0
+lateralSlipScaling = 0.8
+SteeringInterval = Vector2(-20, 20)
+steeringTime = 3.0
+PoweredByEngine = false
+wheelMesh = NodePath("Mesh Container")
+
+[node name="Mesh Container" type="Node3D" parent="Spring (FR)"]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Spring (FR)/Mesh Container"]
+transform = Transform3D(-4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, 0, 0, 0)
+material_override = ExtResource("9_aow0s")
+mesh = SubResource("CylinderMesh_x5cis")
+skeleton = NodePath("../..")
+
+[node name="CPUParticles3D" type="CPUParticles3D" parent="Spring (FR)/Mesh Container"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.374987, 0)
+material_override = ExtResource("10_bkd4d")
+emitting = false
+amount = 100
+lifetime = 2.0
+mesh = ExtResource("11_uagua")
+direction = Vector3(0, 0, -1)
+spread = 30.0
+flatness = 0.5
+gravity = Vector3(0, 1, 0)
+initial_velocity_min = 1.0
+initial_velocity_max = 6.32
+angular_velocity_min = 10.0
+angular_velocity_max = 81.66
+damping_min = 1.885
+damping_max = 2.35
+angle_min = -720.0
+angle_max = 720.0
+scale_amount_min = 0.5
+scale_amount_max = 2.4
+scale_amount_curve = SubResource("Curve_5qcto")
+color = Color(0.42, 0.31374, 0.2268, 1)
+color_ramp = SubResource("Gradient_v248l")
+script = ExtResource("12_bwps6")
+slipActivationThreshold = 0.35
+
+[node name="GPU Particles (Earth)" type="GPUParticles3D" parent="Spring (FR)/Mesh Container"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.396837, 0)
+material_override = ExtResource("13_t3kam")
+emitting = false
+amount = 100
+lifetime = 2.0
+fixed_fps = 0
+collision_base_size = 1.0
+process_material = SubResource("ParticleProcessMaterial_vfvyf")
+draw_pass_1 = ExtResource("11_uagua")
+script = ExtResource("12_bwps6")
+slipActivationThreshold = 0.35
+
+[node name="Terrain Profile (Default)" parent="Spring (FR)" node_paths=PackedStringArray("particles") instance=ExtResource("13_xwgeu")]
+particles = [NodePath(""), NodePath("")]
+
+[node name="Terrain Profile (Dirt)" parent="Spring (FR)" node_paths=PackedStringArray("particles") instance=ExtResource("14_d0c14")]
+particles = [NodePath(""), NodePath("")]
+
+[node name="Terrain Profile (Ice)" parent="Spring (FR)" node_paths=PackedStringArray("particles") instance=ExtResource("15_5sx3u")]
+particles = [NodePath(""), NodePath("")]
+
+[node name="Spring (FL)" type="Node3D" parent="." node_paths=PackedStringArray("wheelMesh")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.293, 0.0631142, -2.72243)
+script = ExtResource("7_hjwp7")
+length = 1.0
+stiffness = 35000.0
+damping = 550.0
+radius = 1.0
+lateralSlipScaling = 0.8
+SteeringInterval = Vector2(-20, 20)
+steeringTime = 3.0
+PoweredByEngine = false
+wheelMesh = NodePath("Mesh Container")
+
+[node name="Mesh Container" type="Node3D" parent="Spring (FL)"]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Spring (FL)/Mesh Container"]
+transform = Transform3D(-4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, 0, 0, 0)
+material_override = ExtResource("9_aow0s")
+mesh = SubResource("CylinderMesh_x5cis")
+skeleton = NodePath("../..")
+
+[node name="CPUParticles3D" type="CPUParticles3D" parent="Spring (FL)/Mesh Container"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.374987, 0)
+material_override = ExtResource("10_bkd4d")
+emitting = false
+amount = 100
+lifetime = 2.0
+mesh = ExtResource("11_uagua")
+direction = Vector3(0, 0, -1)
+spread = 30.0
+flatness = 0.5
+gravity = Vector3(0, 1, 0)
+initial_velocity_min = 1.0
+initial_velocity_max = 6.32
+angular_velocity_min = 10.0
+angular_velocity_max = 81.66
+damping_min = 1.885
+damping_max = 2.35
+angle_min = -720.0
+angle_max = 720.0
+scale_amount_min = 0.5
+scale_amount_max = 2.4
+scale_amount_curve = SubResource("Curve_5qcto")
+color = Color(0.42, 0.31374, 0.2268, 1)
+color_ramp = SubResource("Gradient_v248l")
+script = ExtResource("12_bwps6")
+slipActivationThreshold = 0.35
+
+[node name="GPU Particles (Earth)" type="GPUParticles3D" parent="Spring (FL)/Mesh Container"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.396837, 0)
+material_override = ExtResource("13_t3kam")
+emitting = false
+amount = 100
+lifetime = 2.0
+fixed_fps = 0
+collision_base_size = 1.0
+process_material = SubResource("ParticleProcessMaterial_vfvyf")
+draw_pass_1 = ExtResource("11_uagua")
+script = ExtResource("12_bwps6")
+slipActivationThreshold = 0.35
+
+[node name="Terrain Profile (Default)" parent="Spring (FL)" node_paths=PackedStringArray("particles") instance=ExtResource("13_xwgeu")]
+particles = [NodePath(""), NodePath("")]
+
+[node name="Terrain Profile (Dirt)" parent="Spring (FL)" node_paths=PackedStringArray("particles") instance=ExtResource("14_d0c14")]
+particles = [NodePath(""), NodePath("")]
+
+[node name="Terrain Profile (Ice)" parent="Spring (FL)" node_paths=PackedStringArray("particles") instance=ExtResource("15_5sx3u")]
+particles = [NodePath(""), NodePath("")]
+
+[node name="Spring (BR)3" type="Node3D" parent="." node_paths=PackedStringArray("wheelMesh")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.29333, 0.0631142, 2.10297)
+script = ExtResource("7_hjwp7")
+length = 1.0
+stiffness = 12000.0
+damping = 550.0
+radius = 1.0
+lateralSlipScaling = 0.8
+SteeringInterval = Vector2(0, 0)
+wheelMesh = NodePath("Mesh Container")
+
+[node name="Mesh Container" type="Node3D" parent="Spring (BR)3"]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Spring (BR)3/Mesh Container"]
+transform = Transform3D(-4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, 0, 0, 0)
+material_override = ExtResource("9_aow0s")
+mesh = SubResource("CylinderMesh_x5cis")
+skeleton = NodePath("../..")
+
+[node name="CPUParticles3D" type="CPUParticles3D" parent="Spring (BR)3/Mesh Container"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.374987, 0)
+material_override = ExtResource("10_bkd4d")
+emitting = false
+amount = 100
+lifetime = 2.0
+mesh = ExtResource("11_uagua")
+direction = Vector3(0, 0, -1)
+spread = 30.0
+flatness = 0.5
+gravity = Vector3(0, 1, 0)
+initial_velocity_min = 1.0
+initial_velocity_max = 6.32
+angular_velocity_min = 10.0
+angular_velocity_max = 81.66
+damping_min = 1.885
+damping_max = 2.35
+angle_min = -720.0
+angle_max = 720.0
+scale_amount_min = 0.5
+scale_amount_max = 2.4
+scale_amount_curve = SubResource("Curve_5qcto")
+color = Color(0.42, 0.31374, 0.2268, 1)
+color_ramp = SubResource("Gradient_v248l")
+script = ExtResource("12_bwps6")
+slipActivationThreshold = 0.35
+
+[node name="GPU Particles (Earth)" type="GPUParticles3D" parent="Spring (BR)3/Mesh Container"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.396837, 0)
+material_override = ExtResource("13_t3kam")
+emitting = false
+amount = 100
+lifetime = 2.0
+fixed_fps = 0
+collision_base_size = 1.0
+process_material = SubResource("ParticleProcessMaterial_vfvyf")
+draw_pass_1 = ExtResource("11_uagua")
+script = ExtResource("12_bwps6")
+slipActivationThreshold = 0.35
+
+[node name="Terrain Profile (Default)" parent="Spring (BR)3" node_paths=PackedStringArray("particles") instance=ExtResource("13_xwgeu")]
+particles = [NodePath(""), NodePath("")]
+
+[node name="Terrain Profile (Dirt)" parent="Spring (BR)3" node_paths=PackedStringArray("particles") instance=ExtResource("14_d0c14")]
+particles = [NodePath(""), NodePath("")]
+
+[node name="Terrain Profile (Ice)" parent="Spring (BR)3" node_paths=PackedStringArray("particles") instance=ExtResource("15_5sx3u")]
+particles = [NodePath(""), NodePath("")]
+
+[node name="Spring (BR)4" type="Node3D" parent="." node_paths=PackedStringArray("wheelMesh")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.293, 0.0631142, 2.10254)
+script = ExtResource("7_hjwp7")
+length = 1.0
+stiffness = 12000.0
+damping = 550.0
+radius = 1.0
+lateralSlipScaling = 0.8
+SteeringInterval = Vector2(0, 0)
+wheelMesh = NodePath("Mesh Container")
+
+[node name="Mesh Container" type="Node3D" parent="Spring (BR)4"]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Spring (BR)4/Mesh Container"]
+transform = Transform3D(-4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, 0, 0, 0)
+material_override = ExtResource("9_aow0s")
+mesh = SubResource("CylinderMesh_x5cis")
+skeleton = NodePath("../..")
+
+[node name="CPUParticles3D" type="CPUParticles3D" parent="Spring (BR)4/Mesh Container"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.374987, 0)
+material_override = ExtResource("10_bkd4d")
+emitting = false
+amount = 100
+lifetime = 2.0
+mesh = ExtResource("11_uagua")
+direction = Vector3(0, 0, -1)
+spread = 30.0
+flatness = 0.5
+gravity = Vector3(0, 1, 0)
+initial_velocity_min = 1.0
+initial_velocity_max = 6.32
+angular_velocity_min = 10.0
+angular_velocity_max = 81.66
+damping_min = 1.885
+damping_max = 2.35
+angle_min = -720.0
+angle_max = 720.0
+scale_amount_min = 0.5
+scale_amount_max = 2.4
+scale_amount_curve = SubResource("Curve_5qcto")
+color = Color(0.42, 0.31374, 0.2268, 1)
+color_ramp = SubResource("Gradient_v248l")
+script = ExtResource("12_bwps6")
+slipActivationThreshold = 0.35
+
+[node name="GPU Particles (Earth)" type="GPUParticles3D" parent="Spring (BR)4/Mesh Container"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.396837, 0)
+material_override = ExtResource("13_t3kam")
+emitting = false
+amount = 100
+lifetime = 2.0
+fixed_fps = 0
+collision_base_size = 1.0
+process_material = SubResource("ParticleProcessMaterial_vfvyf")
+draw_pass_1 = ExtResource("11_uagua")
+script = ExtResource("12_bwps6")
+slipActivationThreshold = 0.35
+
+[node name="Terrain Profile (Default)" parent="Spring (BR)4" node_paths=PackedStringArray("particles") instance=ExtResource("13_xwgeu")]
+particles = [NodePath(""), NodePath("")]
+
+[node name="Terrain Profile (Dirt)" parent="Spring (BR)4" node_paths=PackedStringArray("particles") instance=ExtResource("14_d0c14")]
+particles = [NodePath(""), NodePath("")]
+
+[node name="Terrain Profile (Ice)" parent="Spring (BR)4" node_paths=PackedStringArray("particles") instance=ExtResource("15_5sx3u")]
+particles = [NodePath(""), NodePath("")]
+
+[node name="Spring (BR)5" type="Node3D" parent="." node_paths=PackedStringArray("wheelMesh")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.29333, 0.0631142, 4.26383)
+script = ExtResource("7_hjwp7")
+length = 1.0
+stiffness = 12000.0
+damping = 550.0
+radius = 1.0
+lateralSlipScaling = 0.8
+SteeringInterval = Vector2(0, 0)
+wheelMesh = NodePath("Mesh Container")
+
+[node name="Mesh Container" type="Node3D" parent="Spring (BR)5"]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Spring (BR)5/Mesh Container"]
+transform = Transform3D(-4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, 0, 0, 0)
+material_override = ExtResource("9_aow0s")
+mesh = SubResource("CylinderMesh_x5cis")
+skeleton = NodePath("../..")
+
+[node name="CPUParticles3D" type="CPUParticles3D" parent="Spring (BR)5/Mesh Container"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.374987, 0)
+material_override = ExtResource("10_bkd4d")
+emitting = false
+amount = 100
+lifetime = 2.0
+mesh = ExtResource("11_uagua")
+direction = Vector3(0, 0, -1)
+spread = 30.0
+flatness = 0.5
+gravity = Vector3(0, 1, 0)
+initial_velocity_min = 1.0
+initial_velocity_max = 6.32
+angular_velocity_min = 10.0
+angular_velocity_max = 81.66
+damping_min = 1.885
+damping_max = 2.35
+angle_min = -720.0
+angle_max = 720.0
+scale_amount_min = 0.5
+scale_amount_max = 2.4
+scale_amount_curve = SubResource("Curve_5qcto")
+color = Color(0.42, 0.31374, 0.2268, 1)
+color_ramp = SubResource("Gradient_v248l")
+script = ExtResource("12_bwps6")
+slipActivationThreshold = 0.35
+
+[node name="GPU Particles (Earth)" type="GPUParticles3D" parent="Spring (BR)5/Mesh Container"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.396837, 0)
+material_override = ExtResource("13_t3kam")
+emitting = false
+amount = 100
+lifetime = 2.0
+fixed_fps = 0
+collision_base_size = 1.0
+process_material = SubResource("ParticleProcessMaterial_vfvyf")
+draw_pass_1 = ExtResource("11_uagua")
+script = ExtResource("12_bwps6")
+slipActivationThreshold = 0.35
+
+[node name="Terrain Profile (Default)" parent="Spring (BR)5" node_paths=PackedStringArray("particles") instance=ExtResource("13_xwgeu")]
+particles = [NodePath(""), NodePath("")]
+
+[node name="Terrain Profile (Dirt)" parent="Spring (BR)5" node_paths=PackedStringArray("particles") instance=ExtResource("14_d0c14")]
+particles = [NodePath(""), NodePath("")]
+
+[node name="Terrain Profile (Ice)" parent="Spring (BR)5" node_paths=PackedStringArray("particles") instance=ExtResource("15_5sx3u")]
+particles = [NodePath(""), NodePath("")]
+
+[node name="Spring (BR)6" type="Node3D" parent="." node_paths=PackedStringArray("wheelMesh")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.293, 0.0631142, 4.2634)
+script = ExtResource("7_hjwp7")
+length = 1.0
+stiffness = 12000.0
+damping = 550.0
+radius = 1.0
+lateralSlipScaling = 0.8
+SteeringInterval = Vector2(0, 0)
+wheelMesh = NodePath("Mesh Container")
+
+[node name="Mesh Container" type="Node3D" parent="Spring (BR)6"]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Spring (BR)6/Mesh Container"]
+transform = Transform3D(-4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, 0, 0, 0)
+material_override = ExtResource("9_aow0s")
+mesh = SubResource("CylinderMesh_x5cis")
+skeleton = NodePath("../..")
+
+[node name="CPUParticles3D" type="CPUParticles3D" parent="Spring (BR)6/Mesh Container"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.374987, 0)
+material_override = ExtResource("10_bkd4d")
+emitting = false
+amount = 100
+lifetime = 2.0
+mesh = ExtResource("11_uagua")
+direction = Vector3(0, 0, -1)
+spread = 30.0
+flatness = 0.5
+gravity = Vector3(0, 1, 0)
+initial_velocity_min = 1.0
+initial_velocity_max = 6.32
+angular_velocity_min = 10.0
+angular_velocity_max = 81.66
+damping_min = 1.885
+damping_max = 2.35
+angle_min = -720.0
+angle_max = 720.0
+scale_amount_min = 0.5
+scale_amount_max = 2.4
+scale_amount_curve = SubResource("Curve_5qcto")
+color = Color(0.42, 0.31374, 0.2268, 1)
+color_ramp = SubResource("Gradient_v248l")
+script = ExtResource("12_bwps6")
+slipActivationThreshold = 0.35
+
+[node name="GPU Particles (Earth)" type="GPUParticles3D" parent="Spring (BR)6/Mesh Container"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.396837, 0)
+material_override = ExtResource("13_t3kam")
+emitting = false
+amount = 100
+lifetime = 2.0
+fixed_fps = 0
+collision_base_size = 1.0
+process_material = SubResource("ParticleProcessMaterial_vfvyf")
+draw_pass_1 = ExtResource("11_uagua")
+script = ExtResource("12_bwps6")
+slipActivationThreshold = 0.35
+
+[node name="Terrain Profile (Default)" parent="Spring (BR)6" node_paths=PackedStringArray("particles") instance=ExtResource("13_xwgeu")]
+particles = [NodePath(""), NodePath("")]
+
+[node name="Terrain Profile (Dirt)" parent="Spring (BR)6" node_paths=PackedStringArray("particles") instance=ExtResource("14_d0c14")]
+particles = [NodePath(""), NodePath("")]
+
+[node name="Terrain Profile (Ice)" parent="Spring (BR)6" node_paths=PackedStringArray("particles") instance=ExtResource("15_5sx3u")]
+particles = [NodePath(""), NodePath("")]
+
+[node name="Engine Sound" type="AudioStreamPlayer3D" parent="." node_paths=PackedStringArray("engine")]
+stream = ExtResource("15_i0r0q")
+volume_db = -4.0
+unit_size = 18.0
+autoplay = true
+script = ExtResource("15_lpww2")
+engine = NodePath("../Engine")

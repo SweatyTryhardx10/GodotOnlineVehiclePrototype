@@ -1,0 +1,18 @@
+[gd_resource type="ShaderMaterial" load_steps=7 format=3 uid="uid://cxwbyfy7vrd0c"]
+
+[ext_resource type="Shader" uid="uid://bpe8c5uxkqfm5" path="res://Shaders/terrain_shader.tres" id="1_1vtna"]
+[ext_resource type="Texture2D" uid="uid://djwissmxrnljf" path="res://addons/kenney_prototype_textures/dark/texture_02.png" id="2_7604a"]
+[ext_resource type="Texture2D" uid="uid://c00rqsynvxe6g" path="res://addons/kenney_prototype_textures/orange/texture_02.png" id="3_63sk8"]
+[ext_resource type="Texture2D" uid="uid://cxj8q2uxfan7" path="res://addons/kenney_prototype_textures/purple/texture_02.png" id="4_qpgn3"]
+[ext_resource type="Texture2D" uid="uid://djpl5fu21dcse" path="res://addons/kenney_prototype_textures/light/texture_02.png" id="5_pli1d"]
+[ext_resource type="Texture2D" uid="uid://b0e1tntwfbgfd" path="res://Textures/Terrain Maps/TerrainID_Square.png" id="6_dkuvh"]
+
+[resource]
+render_priority = 0
+shader = ExtResource("1_1vtna")
+shader_parameter/TerrainBoundaries = Vector3(0.75, 0.6, 0.25)
+shader_parameter/Terrain01_Albedo = ExtResource("2_7604a")
+shader_parameter/Terrain02_Albedo = ExtResource("3_63sk8")
+shader_parameter/TerrainID = ExtResource("6_dkuvh")
+shader_parameter/Terrain03_Albedo = ExtResource("4_qpgn3")
+shader_parameter/Terrain04_Albedo = ExtResource("5_pli1d")

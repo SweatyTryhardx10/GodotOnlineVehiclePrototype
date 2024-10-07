@@ -1,0 +1,95 @@
+[gd_scene load_steps=12 format=3 uid="uid://mlllksmjlv7t"]
+
+[ext_resource type="Script" path="res://Scripts/TerrainProfile.cs" id="1_6svxe"]
+[ext_resource type="Curve" uid="uid://c25vbf2nnw27i" path="res://Data/Slip Curves/lateralSlipCurve_Dirt.tres" id="2_qptkm"]
+[ext_resource type="Curve" uid="uid://ohewdlexmlnb" path="res://Data/Slip Curves/longitudinalSlipCurve_Dirt.tres" id="3_l27ub"]
+[ext_resource type="Material" uid="uid://x7lr4w6y8u8u" path="res://Materials/Particles/particle_smoke.tres" id="4_qvs4m"]
+[ext_resource type="QuadMesh" uid="uid://bmnrppdkqax0u" path="res://Meshes/particle_quad_circle.tres" id="5_5nwya"]
+[ext_resource type="Material" uid="uid://dfdtgak0nl5t5" path="res://Materials/Particles/particle_circle.tres" id="6_s8qu1"]
+
+[sub_resource type="Curve" id="Curve_5qcto"]
+_data = [Vector2(0, 0), 0.0, 13.4329, 0, 0, Vector2(0.0803213, 1), -0.145614, -0.145614, 0, 0, Vector2(1, 0.905263), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="Gradient" id="Gradient_v248l"]
+offsets = PackedFloat32Array(0, 0.83871, 1)
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0.133333, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_ual06"]
+gradient = SubResource("Gradient_v248l")
+
+[sub_resource type="CurveTexture" id="CurveTexture_1tqkx"]
+curve = SubResource("Curve_5qcto")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_vfvyf"]
+particle_flag_rotate_y = true
+angle_min = -720.0
+angle_max = 720.0
+direction = Vector3(0, 0, -1)
+spread = 30.0
+flatness = 0.5
+initial_velocity_min = 1.0
+initial_velocity_max = 6.32
+angular_velocity_min = 10.0
+angular_velocity_max = 81.66
+gravity = Vector3(0, -9.82, 0)
+damping_min = 1.885
+damping_max = 2.35
+scale_min = 0.1
+scale_max = 0.2
+scale_curve = SubResource("CurveTexture_1tqkx")
+color = Color(0.878578, 0.77513, 0.693824, 1)
+color_ramp = SubResource("GradientTexture1D_ual06")
+collision_mode = 1
+collision_friction = 0.05
+collision_bounce = 0.47
+collision_use_scale = true
+
+[node name="Terrain Profile (Dirt)" type="Node" node_paths=PackedStringArray("particles", "audioPlayerContinuous", "audioPlayerImpact")]
+script = ExtResource("1_6svxe")
+associatedValue = 0.55
+lateralSlipCurve = ExtResource("2_qptkm")
+longitudinalSlipCurve = ExtResource("3_l27ub")
+particles = [NodePath("CPUParticles3D"), NodePath("GPU Particles (Earth)")]
+audioPlayerContinuous = NodePath("Continuous")
+audioPlayerImpact = NodePath("Impact")
+
+[node name="Continuous" type="AudioStreamPlayer3D" parent="."]
+
+[node name="Impact" type="AudioStreamPlayer3D" parent="."]
+
+[node name="CPUParticles3D" type="CPUParticles3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.374987, 0)
+material_override = ExtResource("4_qvs4m")
+emitting = false
+amount = 100
+lifetime = 2.0
+mesh = ExtResource("5_5nwya")
+direction = Vector3(0, 0, -1)
+spread = 30.0
+flatness = 0.5
+gravity = Vector3(0, 1, 0)
+initial_velocity_min = 1.0
+initial_velocity_max = 6.32
+angular_velocity_min = 10.0
+angular_velocity_max = 81.66
+damping_min = 1.885
+damping_max = 2.35
+angle_min = -720.0
+angle_max = 720.0
+scale_amount_min = 0.5
+scale_amount_max = 2.4
+scale_amount_curve = SubResource("Curve_5qcto")
+color = Color(0.42, 0.31374, 0.2268, 1)
+color_ramp = SubResource("Gradient_v248l")
+
+[node name="GPU Particles (Earth)" type="GPUParticles3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.396837, 0)
+material_override = ExtResource("6_s8qu1")
+emitting = false
+amount = 100
+lifetime = 2.0
+fixed_fps = 0
+collision_base_size = 1.0
+process_material = SubResource("ParticleProcessMaterial_vfvyf")
+draw_pass_1 = ExtResource("5_5nwya")

@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://cy2gnctqem85h"
+path="res://.godot/imported/Car, Interior, Gear Stick, Shift, Hand Break, Handling.mp3-2ac4e877de63ce701fa39c6fd6d09e05.mp3str"
+
+[deps]
+
+source_file="res://Audio/Gear Change/Car, Interior, Gear Stick, Shift, Hand Break, Handling.mp3"
+dest_files=["res://.godot/imported/Car, Interior, Gear Stick, Shift, Hand Break, Handling.mp3-2ac4e877de63ce701fa39c6fd6d09e05.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

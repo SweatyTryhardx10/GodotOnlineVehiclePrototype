@@ -1,0 +1,14 @@
+[gd_resource type="AudioStreamRandomizer" load_steps=5 format=3 uid="uid://cdb5nsfhw84hf"]
+
+[ext_resource type="AudioStream" uid="uid://dti4ggefvlrte" path="res://Audio/ES_Drum_Thud/ES_Drum_Thud-01.wav" id="1_ojs74"]
+[ext_resource type="AudioStream" uid="uid://bimpd3tc72mr3" path="res://Audio/ES_Drum_Thud/ES_Drum_Thud-02.wav" id="2_0ay1v"]
+[ext_resource type="AudioStream" uid="uid://cjqdgmi817kvq" path="res://Audio/ES_Drum_Thud/ES_Drum_Thud-03.wav" id="3_4rlye"]
+[ext_resource type="AudioStream" uid="uid://c184ueh1dfg6k" path="res://Audio/ES_Drum_Thud/ES_Drum_Thud-04.wav" id="4_jk5bj"]
+
+[resource]
+random_pitch = 1.1
+streams_count = 4
+stream_0/stream = ExtResource("1_ojs74")
+stream_1/stream = ExtResource("2_0ay1v")
+stream_2/stream = ExtResource("3_4rlye")
+stream_3/stream = ExtResource("4_jk5bj")

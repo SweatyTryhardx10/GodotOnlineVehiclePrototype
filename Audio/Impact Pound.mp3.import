@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://clxb748ctqmwa"
+path="res://.godot/imported/Impact Pound.mp3-84690bcd326f1486552fba29ac44d3fa.mp3str"
+
+[deps]
+
+source_file="res://Audio/Impact Pound.mp3"
+dest_files=["res://.godot/imported/Impact Pound.mp3-84690bcd326f1486552fba29ac44d3fa.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0.0
+bpm=0.0
+beat_count=0
+bar_beats=4

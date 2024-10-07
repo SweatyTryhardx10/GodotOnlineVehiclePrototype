@@ -1,0 +1,660 @@
+[gd_scene load_steps=17 format=3 uid="uid://bo4schpd5dvpd"]
+
+[ext_resource type="Script" path="res://Scripts/Networking/NetGame.cs" id="1_abgg2"]
+[ext_resource type="Material" uid="uid://bi5ebb17naq7o" path="res://Materials/pbr_triG_proto_purple.tres" id="3_2kg8b"]
+[ext_resource type="Material" uid="uid://7wc4p0xj4re0" path="res://Materials/pbr_triG_proto_dark.tres" id="3_3ig03"]
+[ext_resource type="Material" uid="uid://b0sbf7kom0a3" path="res://Materials/pbr_triG_proto_orange.tres" id="4_vfd4i"]
+[ext_resource type="Environment" uid="uid://bbn65qd1khvqw" path="res://Data/Environment_Default.tres" id="5_ex3be"]
+[ext_resource type="Script" path="res://Scripts/Camera/CameraController.cs" id="6_nh120"]
+[ext_resource type="QuadMesh" uid="uid://bmnrppdkqax0u" path="res://Meshes/particle_quad_circle.tres" id="7_u2n52"]
+[ext_resource type="AudioStream" uid="uid://bmv10tuu53cno" path="res://Audio/Phoebe Wind, Loop 02.mp3" id="8_wslpp"]
+[ext_resource type="PackedScene" uid="uid://dbueo254hqphc" path="res://Prefabs/tall_grass_hunt.tscn" id="10_bpmkq"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_vsu53"]
+size = Vector3(80, 6, 80)
+
+[sub_resource type="BoxMesh" id="BoxMesh_pyvrs"]
+material = ExtResource("3_3ig03")
+size = Vector3(80, 6, 80)
+
+[sub_resource type="PrismMesh" id="PrismMesh_e0uc7"]
+left_to_right = 1.0
+size = Vector3(10, 4, 6)
+
+[sub_resource type="PrismMesh" id="PrismMesh_ayg1o"]
+left_to_right = 1.0
+size = Vector3(4, 3, 15)
+
+[sub_resource type="Curve" id="Curve_8c10a"]
+_data = [Vector2(0, 0), 0.0, 13.4329, 0, 0, Vector2(0.0361446, 0.694737), 0.445085, 0.445085, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="Gradient" id="Gradient_1s787"]
+offsets = PackedFloat32Array(0, 0.83871, 1)
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0.133333, 1, 1, 1, 0)
+
+[sub_resource type="Curve3D" id="Curve3D_rcufb"]
+_data = {
+"points": PackedVector3Array(0, 0, 0, 0, 0, 0, 0.0392742, -0.040451, -0.00628662, -0.423139, -0.0396013, -11.2617, 0.423139, 0.0396013, 11.2617, 0.0271785, -0.0404053, 31.8748, -31.3062, 0, 0.18026, 31.3062, 0, -0.18026, 46.513, -0.0404053, 65.7864, -0.374222, 0, 17.6728, 0.374222, 0, -17.6728, 86.1912, -3.79807, 36.9877, -0.0196381, 0, 7.96907, 0.0196381, 0, -7.96907, 86.3314, -3.74845, 8.71199, 0.284904, -2.25173, 11.1388, -0.284904, 2.25173, -11.1388, 86.4314, -0.0404053, -11.4503, 11.545, 0, -0.0195847, -11.545, 0, 0.0195847, 68.7255, -0.0404053, -31.7161, 0, 0, 0, 0, 0, 0, 39.5257, -0.0404053, -31.5223),
+"tilts": PackedFloat32Array(0, -0.281261, -0.440224, -0.220627, -0.257621, -0.391811, -0.325766, -0.133656)
+}
+point_count = 8
+
+[node name="Game" type="Node3D" node_paths=PackedStringArray("spawns")]
+script = ExtResource("1_abgg2")
+spawns = [NodePath("Spawns/Spawn"), NodePath("Spawns/Spawn2"), NodePath("Spawns/Spawn3"), NodePath("Spawns/Spawn4"), NodePath("Spawns/Spawn5")]
+
+[node name="Environment" type="Node" parent="."]
+
+[node name="StaticBody3D (Floor)" type="StaticBody3D" parent="Environment"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -3, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Environment/StaticBody3D (Floor)"]
+shape = SubResource("BoxShape3D_vsu53")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Environment/StaticBody3D (Floor)"]
+mesh = SubResource("BoxMesh_pyvrs")
+
+[node name="GPUParticlesCollisionBox3D" type="GPUParticlesCollisionBox3D" parent="Environment/StaticBody3D (Floor)"]
+size = Vector3(80, 6, 80)
+
+[node name="CSGCylinder3D (Center Piece)" type="CSGCylinder3D" parent="Environment"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.75742, 0)
+use_collision = true
+radius = 20.0
+height = 10.0
+sides = 24
+material = ExtResource("3_3ig03")
+
+[node name="CSGTorus3D" type="CSGTorus3D" parent="Environment/CSGCylinder3D (Center Piece)"]
+transform = Transform3D(1, 0, 0, 0, 1.31599, 0, 0, 0, 1, 0, 4.61817, 0)
+operation = 2
+inner_radius = 12.954
+outer_radius = 26.67
+sides = 24
+ring_sides = 32
+material = ExtResource("4_vfd4i")
+
+[node name="CSGTorus3D2" type="CSGTorus3D" parent="Environment/CSGCylinder3D (Center Piece)"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 8.97197, 0)
+operation = 2
+inner_radius = 9.944
+outer_radius = 19.706
+sides = 24
+ring_sides = 7
+material = ExtResource("3_2kg8b")
+
+[node name="CSGBox3D" type="CSGBox3D" parent="Environment/CSGCylinder3D (Center Piece)"]
+transform = Transform3D(0.965926, -0.258819, 0, 0.258819, 0.965926, 0, 0, 0, 1, -11, 5.65211, 0)
+operation = 2
+size = Vector3(7, 2, 6)
+material = ExtResource("4_vfd4i")
+
+[node name="Raised Platform Area" type="Node" parent="Environment"]
+
+[node name="CSGMesh3D (Ramp)" type="CSGMesh3D" parent="Environment/Raised Platform Area"]
+transform = Transform3D(-1, 0, 8.74228e-08, 0, 1, 0, -8.74228e-08, 0, -1, -15, 2, -29)
+use_collision = true
+mesh = SubResource("PrismMesh_e0uc7")
+material = ExtResource("4_vfd4i")
+
+[node name="CSGBox3D" type="CSGBox3D" parent="Environment/Raised Platform Area"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -24, 3.7, -29)
+use_collision = true
+size = Vector3(8, 0.6, 6)
+material = ExtResource("4_vfd4i")
+
+[node name="CSGBox3D2" type="CSGBox3D" parent="Environment/Raised Platform Area"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -32, 3.7, -29)
+use_collision = true
+size = Vector3(8, 0.6, 6)
+material = ExtResource("4_vfd4i")
+
+[node name="CSGBox3D3" type="CSGBox3D" parent="Environment/Raised Platform Area"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -16, 8.7, 0)
+use_collision = true
+size = Vector3(8, 0.6, 6)
+material = ExtResource("4_vfd4i")
+
+[node name="CSGBox3D5" type="CSGBox3D" parent="Environment/Raised Platform Area"]
+transform = Transform3D(0.866025, 0.12941, -0.482963, 0, 0.965926, 0.258819, 0.5, -0.224144, 0.836516, -34.0636, 5.48251, -14.0903)
+use_collision = true
+size = Vector3(8, 0.6, 6)
+material = ExtResource("4_vfd4i")
+
+[node name="Spiral" type="Node" parent="Environment/Raised Platform Area"]
+
+[node name="CSGCylinder3D" type="CSGCylinder3D" parent="Environment/Raised Platform Area/Spiral"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -33, 5, -22)
+use_collision = true
+radius = 5.0
+height = 10.0
+sides = 24
+material = ExtResource("4_vfd4i")
+
+[node name="CSGCylinder3D2" type="CSGCylinder3D" parent="Environment/Raised Platform Area/Spiral"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -33, 5, -22)
+use_collision = true
+radius = 10.527
+height = 10.0
+sides = 24
+material = ExtResource("4_vfd4i")
+
+[node name="CSGCylinder3D3" type="CSGCylinder3D" parent="Environment/Raised Platform Area/Spiral/CSGCylinder3D2"]
+operation = 2
+use_collision = true
+radius = 9.5
+height = 11.0
+sides = 24
+material = ExtResource("4_vfd4i")
+
+[node name="CSGBox3D" type="CSGBox3D" parent="Environment/Raised Platform Area/Spiral/CSGCylinder3D2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.98377, 9.53674e-07, -0.391737)
+operation = 2
+size = Vector3(12, 11, 30)
+
+[node name="CSGBox3D3" type="CSGBox3D" parent="Environment/Raised Platform Area/Spiral/CSGCylinder3D2"]
+transform = Transform3D(0.866025, 0, -0.5, 0, 1, 0, 0.5, 0, 0.866025, 1.98377, 9.53674e-07, 6.60826)
+operation = 2
+size = Vector3(12, 11, 30)
+
+[node name="CSGBox3D2" type="CSGBox3D" parent="Environment/Raised Platform Area/Spiral/CSGCylinder3D2"]
+transform = Transform3D(1, 0, 0, 0, 0.984808, 0.173648, 0, -0.173648, 0.984808, -5.01623, 7, -0.391737)
+operation = 2
+size = Vector3(12, 11, 30)
+
+[node name="CSGCylinder3D3" type="CSGCylinder3D" parent="Environment/Raised Platform Area/Spiral"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -33, 5, -22)
+use_collision = true
+radius = 9.5
+height = 10.0
+sides = 24
+material = ExtResource("4_vfd4i")
+
+[node name="CSGBox3D" type="CSGBox3D" parent="Environment/Raised Platform Area/Spiral/CSGCylinder3D3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.98377, 9.53674e-07, -0.391737)
+operation = 2
+size = Vector3(12, 11, 30)
+
+[node name="CSGBox3D2" type="CSGBox3D" parent="Environment/Raised Platform Area/Spiral/CSGCylinder3D3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.01623, 8, -0.391737)
+operation = 2
+size = Vector3(12, 11, 30)
+
+[node name="CSGBox3D3" type="CSGBox3D" parent="Environment/Raised Platform Area/Spiral/CSGCylinder3D3"]
+transform = Transform3D(0.866025, 0, -0.5, 0, 1, 0, 0.5, 0, 0.866025, 1.98377, 9.53674e-07, 6.60826)
+operation = 2
+size = Vector3(12, 11, 30)
+
+[node name="CSGCylinder3D" type="CSGCylinder3D" parent="Environment/Raised Platform Area/Spiral/CSGCylinder3D3"]
+transform = Transform3D(-1, -1.50996e-07, -1.77636e-15, 1.48702e-07, -0.984808, 0.173648, -2.62201e-08, 0.173648, 0.984808, 0, 1.82739, 0)
+operation = 2
+radius = 29.639
+height = 6.826
+sides = 24
+cone = true
+smooth_faces = false
+material = ExtResource("4_vfd4i")
+
+[node name="Bridge" type="Node" parent="Environment/Raised Platform Area"]
+
+[node name="CSGBox3D6" type="CSGBox3D" parent="Environment/Raised Platform Area/Bridge"]
+transform = Transform3D(0.866025, 0.0868241, -0.492404, 0, 0.984808, 0.173648, 0.5, -0.150384, 0.852869, -29.9296, 5.48251, -11.5903)
+use_collision = true
+size = Vector3(1, 0.6, 6)
+material = ExtResource("4_vfd4i")
+
+[node name="CSGBox3D7" type="CSGBox3D" parent="Environment/Raised Platform Area/Bridge"]
+transform = Transform3D(0.866528, -0.032067, -0.498097, 0.0868241, 0.992404, 0.0871558, 0.491519, -0.11877, 0.86273, -28.8038, 5.48251, -10.9403)
+use_collision = true
+size = Vector3(1, 0.6, 6)
+material = ExtResource("4_vfd4i")
+
+[node name="CSGBox3D8" type="CSGBox3D" parent="Environment/Raised Platform Area/Bridge"]
+transform = Transform3D(0.86273, -0.0754791, -0.5, 0.0871557, 0.996195, 1.86265e-08, 0.498097, -0.0435779, 0.866026, -27.6779, 5.58251, -10.2903)
+use_collision = true
+size = Vector3(1, 0.6, 6)
+material = ExtResource("4_vfd4i")
+
+[node name="CSGBox3D9" type="CSGBox3D" parent="Environment/Raised Platform Area/Bridge"]
+transform = Transform3D(0.845301, -0.1933, -0.498097, 0.172987, 0.98106, -0.0871557, 0.505511, -0.0124917, 0.86273, -26.5521, 5.68251, -9.64026)
+use_collision = true
+size = Vector3(1, 0.6, 6)
+material = ExtResource("4_vfd4i")
+
+[node name="CSGBox3D10" type="CSGBox3D" parent="Environment/Raised Platform Area/Bridge"]
+transform = Transform3D(0.82707, -0.220313, -0.517124, 0.166522, 0.974725, -0.148938, 0.536866, 0.0370695, 0.842853, -25.5049, 5.8925, -8.89881)
+use_collision = true
+size = Vector3(1, 0.6, 6)
+material = ExtResource("4_vfd4i")
+
+[node name="CSGBox3D11" type="CSGBox3D" parent="Environment/Raised Platform Area/Bridge"]
+transform = Transform3D(0.772764, -0.307162, -0.555417, 0.239748, 0.951527, -0.192657, 0.587671, 0.0157179, 0.808948, -24.4891, 6.18534, -8.12338)
+use_collision = true
+size = Vector3(1, 0.6, 6)
+material = ExtResource("4_vfd4i")
+
+[node name="CSGBox3D12" type="CSGBox3D" parent="Environment/Raised Platform Area/Bridge"]
+transform = Transform3D(0.7312, -0.372015, -0.571797, 0.31766, 0.927471, -0.197204, 0.603688, -0.0374419, 0.796341, -23.5834, 6.56858, -7.2871)
+use_collision = true
+size = Vector3(1, 0.6, 6)
+material = ExtResource("4_vfd4i")
+
+[node name="CSGBox3D13" type="CSGBox3D" parent="Environment/Raised Platform Area/Bridge"]
+transform = Transform3D(0.695994, -0.434328, -0.571797, 0.397286, 0.896256, -0.197204, 0.598127, -0.0899143, 0.796341, -22.706, 7.04977, -6.56267)
+use_collision = true
+size = Vector3(1, 0.6, 6)
+material = ExtResource("4_vfd4i")
+
+[node name="CSGBox3D14" type="CSGBox3D" parent="Environment/Raised Platform Area/Bridge"]
+transform = Transform3D(0.695994, -0.434328, -0.571797, 0.397286, 0.896256, -0.197204, 0.598127, -0.0899143, 0.796341, -21.8708, 7.52652, -5.84492)
+use_collision = true
+size = Vector3(1, 0.6, 6)
+material = ExtResource("4_vfd4i")
+
+[node name="CSGBox3D15" type="CSGBox3D" parent="Environment/Raised Platform Area/Bridge"]
+transform = Transform3D(0.695994, -0.434328, -0.571797, 0.397286, 0.896256, -0.197204, 0.598127, -0.0899143, 0.796341, -21.0356, 8.00326, -5.12717)
+use_collision = true
+size = Vector3(1, 0.6, 6)
+material = ExtResource("4_vfd4i")
+
+[node name="CSGBox3D16" type="CSGBox3D" parent="Environment/Raised Platform Area/Bridge"]
+transform = Transform3D(0.728979, -0.346634, -0.590284, 0.316982, 0.935224, -0.157732, 0.606722, -0.0721255, 0.791635, -20.1814, 8.43788, -4.4036)
+use_collision = true
+size = Vector3(1, 0.6, 6)
+material = ExtResource("4_vfd4i")
+
+[node name="CSGBox3D17" type="CSGBox3D" parent="Environment/Raised Platform Area/Bridge"]
+transform = Transform3D(0.7519, -0.256165, -0.607475, 0.233225, 0.965196, -0.118339, 0.616647, -0.0526988, 0.785474, -19.3362, 8.84726, -3.68568)
+use_collision = true
+size = Vector3(1, 0.6, 6)
+material = ExtResource("4_vfd4i")
+
+[node name="CSGBox3D18" type="CSGBox3D" parent="Environment/Raised Platform Area/Bridge"]
+transform = Transform3D(0.778452, -0.132731, -0.61351, 0.0984852, 0.991109, -0.0894614, 0.61993, 0.00921973, 0.784603, -18.4282, 9.09197, -2.94442)
+use_collision = true
+size = Vector3(1, 0.6, 6)
+material = ExtResource("4_vfd4i")
+
+[node name="CSGBox3D19" type="CSGBox3D" parent="Environment/Raised Platform Area/Bridge"]
+transform = Transform3D(0.787524, 0.0130405, -0.616146, -0.0590616, 0.996772, -0.0543932, 0.613448, 0.0792266, 0.785752, -17.4931, 9.10584, -2.20825)
+use_collision = true
+size = Vector3(1, 0.6, 6)
+material = ExtResource("4_vfd4i")
+
+[node name="CSGBox3D20" type="CSGBox3D" parent="Environment/Raised Platform Area/Bridge"]
+transform = Transform3D(0.787524, 0.0130405, -0.616146, -0.0590616, 0.996772, -0.0543932, 0.613448, 0.0792266, 0.785752, -16.5501, 8.88195, -1.48428)
+use_collision = true
+size = Vector3(1, 0.6, 6)
+material = ExtResource("4_vfd4i")
+
+[node name="Corner Pillars" type="Node" parent="Environment"]
+
+[node name="CSGCylinder3D" type="CSGCylinder3D" parent="Environment/Corner Pillars"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -40, -20, -40)
+use_collision = true
+radius = 6.0
+height = 200.0
+sides = 24
+material = ExtResource("3_2kg8b")
+
+[node name="CSGCylinder3D2" type="CSGCylinder3D" parent="Environment/Corner Pillars"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 40, -20, -40)
+use_collision = true
+radius = 6.0
+height = 200.0
+sides = 24
+material = ExtResource("3_2kg8b")
+
+[node name="CSGCylinder3D3" type="CSGCylinder3D" parent="Environment/Corner Pillars"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -40, -20, 40)
+use_collision = true
+radius = 6.0
+height = 200.0
+sides = 24
+material = ExtResource("3_2kg8b")
+
+[node name="CSGCylinder3D4" type="CSGCylinder3D" parent="Environment/Corner Pillars"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 40, -20, 40)
+use_collision = true
+radius = 6.0
+height = 200.0
+sides = 24
+material = ExtResource("3_2kg8b")
+
+[node name="Raised Slanted Park" type="Node" parent="Environment"]
+
+[node name="CSGBox3D2" type="CSGBox3D" parent="Environment/Raised Slanted Park"]
+transform = Transform3D(0.940656, 0, -0.339362, 0, 1, 0, 0.339362, 0, 0.940656, 6.42535, 4, -38.2844)
+use_collision = true
+size = Vector3(4, 8, 4)
+material = ExtResource("4_vfd4i")
+
+[node name="CSGBox3D3" type="CSGBox3D" parent="Environment/Raised Slanted Park"]
+transform = Transform3D(0.940656, 0, -0.339362, 0, 1, 0, 0.339362, 0, 0.940656, 24.2978, 4, -31.8366)
+use_collision = true
+size = Vector3(4, 8, 4)
+material = ExtResource("4_vfd4i")
+
+[node name="CSGBox3D" type="CSGBox3D" parent="Environment/Raised Slanted Park"]
+transform = Transform3D(0.940656, 0, -0.339362, 0, 1, 0, 0.339362, 0, 0.940656, 12.986, 0, -28.4759)
+use_collision = true
+size = Vector3(15, 2, 18)
+material = ExtResource("4_vfd4i")
+
+[node name="CSGMesh3D" type="CSGMesh3D" parent="Environment/Raised Slanted Park/CSGBox3D"]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -3.0598e-07, 2.5, -7)
+mesh = SubResource("PrismMesh_ayg1o")
+material = ExtResource("4_vfd4i")
+
+[node name="CSGMesh3D2" type="CSGMesh3D" parent="Environment/Raised Slanted Park/CSGBox3D"]
+transform = Transform3D(1, 0, 0, 0, 0.5, 0, 0, 0, 0.9, -9.5, 0.24489, 1.77)
+mesh = SubResource("PrismMesh_ayg1o")
+material = ExtResource("4_vfd4i")
+
+[node name="CSGMesh3D3" type="CSGMesh3D" parent="Environment/Raised Slanted Park/CSGBox3D"]
+transform = Transform3D(-1, 0, 7.86805e-08, 0, 0.5, 0, -8.74228e-08, 0, -0.9, 9.5, 0.245, 1.77)
+mesh = SubResource("PrismMesh_ayg1o")
+material = ExtResource("4_vfd4i")
+
+[node name="CSGPolygon3D" type="CSGPolygon3D" parent="Environment"]
+transform = Transform3D(0.74437, -0.667768, 0, -2.9189e-08, -3.25374e-08, -1, 0.667768, 0.74437, -4.37114e-08, 26.771, -1.90735e-06, 23.7181)
+use_collision = true
+polygon = PackedVector2Array(-3.1829, -6.98022, -6.04466, -5.77788, -7.30058, -1.07432, -6.39641, 2.04099, -4.47939, 3.72244, -0.594933, 4.92762, 4.32457, 3.99808, 6.8414, 1.61567, 7.42526, -1.72254, 6.94946, -4.50392, 5.65314, -6.33701, 3.76543, -7.12751, 2.17595, -6.16518, 3.2639, -5.16361, 4.32428, -4.56673, 5.33125, -2.9933, 5.21013, -1.4066, 4.27037, 0.594954, 3.01535, 1.84002, -0.07481, 2.58633, -2.67912, 2.25723, -4.17717, 0.43157, -4.69943, -2.57307, -4.08887, -4.85476, -2.22695, -5.1058, -1.49937, -6.30637)
+depth = 5.0
+material = ExtResource("4_vfd4i")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.702389, 0.668709, 0.24388, 0, -0.342627, 0.939472, 0.711793, -0.659875, -0.240657, 0, 17.7868, -24.1298)
+light_color = Color(0.91, 0.9715, 1, 1)
+shadow_enabled = true
+directional_shadow_split_1 = 0.183
+directional_shadow_split_2 = 0.445
+directional_shadow_split_3 = 0.641
+directional_shadow_blend_splits = true
+
+[node name="Spawns" type="Node" parent="."]
+
+[node name="Spawn" type="Node3D" parent="Spawns"]
+transform = Transform3D(0.70071, 0, 0.713446, 0, 1, 0, -0.713446, 0, 0.70071, 33.3879, 1.47204, 5.18243)
+
+[node name="Marker3D" type="Marker3D" parent="Spawns/Spawn"]
+gizmo_extents = 2.0
+
+[node name="Spawn2" type="Node3D" parent="Spawns"]
+transform = Transform3D(-0.913425, 0, 0.407008, 0, 1, 0, -0.407008, 0, -0.913425, 12.6217, 2.86782, -26.5776)
+
+[node name="Marker3D" type="Marker3D" parent="Spawns/Spawn2"]
+gizmo_extents = 2.0
+
+[node name="Spawn3" type="Node3D" parent="Spawns"]
+transform = Transform3D(0.661469, 0, -0.749973, 0, 1, 0, 0.749973, 0, 0.661469, -24.5265, 2.22803, 22.7965)
+
+[node name="Marker3D" type="Marker3D" parent="Spawns/Spawn3"]
+gizmo_extents = 2.0
+
+[node name="Spawn4" type="Node3D" parent="Spawns"]
+transform = Transform3D(0.591676, 0, 0.806176, 0, 1, 0, -0.806176, 0, 0.591676, 15.6325, 1.88888, 33.0633)
+
+[node name="Marker3D" type="Marker3D" parent="Spawns/Spawn4"]
+gizmo_extents = 2.0
+
+[node name="Spawn5" type="Node3D" parent="Spawns"]
+transform = Transform3D(-0.928965, 0, -0.370168, 0, 1, 0, 0.370168, 0, -0.928965, -32.7935, 13.0316, -21.8225)
+
+[node name="Marker3D" type="Marker3D" parent="Spawns/Spawn5"]
+gizmo_extents = 2.0
+
+[node name="Camera3D" type="Camera3D" parent="."]
+process_priority = 100
+process_physics_priority = 100
+transform = Transform3D(-0.321919, -0.402112, 0.857131, 2.30841e-08, 0.905324, 0.424721, -0.946767, 0.136726, -0.291441, 39.8116, 11.2379, -2.66712)
+environment = ExtResource("5_ex3be")
+script = ExtResource("6_nh120")
+stiffness = 5.0
+offset = Vector3(0, 5, 8)
+rotOffset = Vector3(-30, 0, 0)
+tAccelPosFactor = 0.03
+tAccelRotFactor = 0.01
+
+[node name="CPUParticles3D" type="CPUParticles3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 28.9075, 0.744695, 21.9426)
+amount = 100
+lifetime = 2.0
+mesh = ExtResource("7_u2n52")
+direction = Vector3(0, 0, -1)
+spread = 30.0
+flatness = 0.5
+gravity = Vector3(0, 1, 0)
+initial_velocity_min = 1.0
+initial_velocity_max = 6.32
+angular_velocity_min = 10.0
+angular_velocity_max = 81.66
+damping_min = 1.885
+damping_max = 2.35
+angle_min = -720.0
+angle_max = 720.0
+scale_amount_min = 0.5
+scale_amount_max = 2.4
+scale_amount_curve = SubResource("Curve_8c10a")
+color = Color(0.42, 0.31374, 0.2268, 1)
+color_ramp = SubResource("Gradient_1s787")
+
+[node name="CSGPolygon3D" type="CSGPolygon3D" parent="."]
+use_collision = true
+polygon = PackedVector2Array(-10, 0, -10, 1, 10, 1, 10, 0)
+mode = 2
+path_node = NodePath("../Path3D")
+path_interval_type = 1
+path_interval = 0.06
+path_simplify_angle = 0.0
+path_rotation = 2
+path_local = false
+path_continuous_u = true
+path_u_distance = 1.0
+path_joined = false
+material = ExtResource("3_2kg8b")
+
+[node name="Path3D" type="Path3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.987961, 40)
+curve = SubResource("Curve3D_rcufb")
+
+[node name="Audio" type="Node" parent="."]
+
+[node name="Background Wind" type="AudioStreamPlayer" parent="Audio"]
+stream = ExtResource("8_wslpp")
+volume_db = -15.0
+
+[node name="Tall Grass" type="Node" parent="."]
+
+[node name="TallGrass_Hunt" parent="Tall Grass" instance=ExtResource("10_bpmkq")]
+transform = Transform3D(0.813781, 0, -0.581172, 0, 1, 0, 0.581172, 0, 0.813781, 31.3726, 0, -20.9534)
+
+[node name="TallGrass_Hunt2" parent="Tall Grass" instance=ExtResource("10_bpmkq")]
+transform = Transform3D(0.813781, 0, -0.581172, 0, 1, 0, 0.581172, 0, 0.813781, 31.3726, 0, -21.8002)
+
+[node name="TallGrass_Hunt3" parent="Tall Grass" instance=ExtResource("10_bpmkq")]
+transform = Transform3D(0.316791, 0, -0.948495, 0, 1, 0, 0.948495, 0, 0.316791, 31.3726, 0, -22.6263)
+
+[node name="TallGrass_Hunt4" parent="Tall Grass" instance=ExtResource("10_bpmkq")]
+transform = Transform3D(0.813781, 0, -0.581172, 0, 1, 0, 0.581172, 0, 0.813781, 31.2505, 0, -23.3629)
+
+[node name="TallGrass_Hunt5" parent="Tall Grass" instance=ExtResource("10_bpmkq")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 31.3377, 0, -24.1828)
+
+[node name="TallGrass_Hunt6" parent="Tall Grass" instance=ExtResource("10_bpmkq")]
+transform = Transform3D(0.316791, 0, -0.948495, 0, 1, 0, 0.948495, 0, 0.316791, 33.4935, 0, -21.9675)
+
+[node name="TallGrass_Hunt7" parent="Tall Grass" instance=ExtResource("10_bpmkq")]
+transform = Transform3D(0.179747, 0, -0.983713, 0, 1, 0, 0.983713, 0, 0.179747, 33.4935, 0, -22.6308)
+
+[node name="TallGrass_Hunt8" parent="Tall Grass" instance=ExtResource("10_bpmkq")]
+transform = Transform3D(0.887663, 0, -0.460494, 0, 1, 0, 0.460494, 0, 0.887663, 33.4586, 0, -23.4918)
+
+[node name="TallGrass_Hunt9" parent="Tall Grass" instance=ExtResource("10_bpmkq")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 33.4586, 0, -24.2202)
+
+[node name="TallGrass_Hunt10" parent="Tall Grass" instance=ExtResource("10_bpmkq")]
+transform = Transform3D(0.717981, 0, -0.696063, 0, 1, 0, 0.696063, 0, 0.717981, 33.4586, 0, -24.9266)
+
+[node name="TallGrass_Hunt11" parent="Tall Grass" instance=ExtResource("10_bpmkq")]
+transform = Transform3D(0.813781, 0, -0.581172, 0, 1, 0, 0.581172, 0, 0.813781, 33.5807, 0, -25.7043)
+
+[node name="TallGrass_Hunt12" parent="Tall Grass" instance=ExtResource("10_bpmkq")]
+transform = Transform3D(0.316791, 0, -0.948495, 0, 1, 0, 0.948495, 0, 0.316791, 33.6562, 0, -26.4463)
+
+[node name="TallGrass_Hunt13" parent="Tall Grass" instance=ExtResource("10_bpmkq")]
+transform = Transform3D(0.454737, 0, -0.890626, 0, 1, 0, 0.890626, 0, 0.454737, 33.6562, 0, -27.2205)
+
+[node name="TallGrass_Hunt14" parent="Tall Grass" instance=ExtResource("10_bpmkq")]
+transform = Transform3D(0.887663, 0, -0.460494, 0, 1, 0, 0.460494, 0, 0.887663, 31.3887, 0, -24.9222)
+
+[node name="TallGrass_Hunt15" parent="Tall Grass" instance=ExtResource("10_bpmkq")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 31.5108, 0, -25.6852)
+
+[node name="TallGrass_Hunt16" parent="Tall Grass" instance=ExtResource("10_bpmkq")]
+transform = Transform3D(0.717981, 0, -0.696063, 0, 1, 0, 0.696063, 0, 0.717981, 31.5863, 0, -26.3795)
+
+[node name="TallGrass_Hunt17" parent="Tall Grass" instance=ExtResource("10_bpmkq")]
+transform = Transform3D(-0.813781, 0, 0.581172, 0, 1, 0, -0.581172, 0, -0.813781, 30.9615, -4.76837e-07, -26.3307)
+
+[node name="TallGrass_Hunt18" parent="Tall Grass" instance=ExtResource("10_bpmkq")]
+transform = Transform3D(-0.813781, 0, 0.581172, 0, 1, 0, -0.581172, 0, -0.813781, 30.886, -4.76837e-07, -25.4839)
+
+[node name="TallGrass_Hunt19" parent="Tall Grass" instance=ExtResource("10_bpmkq")]
+transform = Transform3D(-0.316791, 0, 0.948495, 0, 1, 0, -0.948495, 0, -0.316791, 30.7639, -4.76837e-07, -24.6579)
+
+[node name="TallGrass_Hunt20" parent="Tall Grass" instance=ExtResource("10_bpmkq")]
+transform = Transform3D(-0.813781, 0, 0.581172, 0, 1, 0, -0.581172, 0, -0.813781, 33.0314, -4.76837e-07, -26.9498)
+
+[node name="TallGrass_Hunt21" parent="Tall Grass" instance=ExtResource("10_bpmkq")]
+transform = Transform3D(-1, 0, 8.74228e-08, 0, 1, 0, -8.74228e-08, 0, -1, 32.9559, -4.76837e-07, -26.1299)
+
+[node name="TallGrass_Hunt22" parent="Tall Grass" instance=ExtResource("10_bpmkq")]
+transform = Transform3D(-0.316791, 0, 0.948495, 0, 1, 0, -0.948495, 0, -0.316791, 32.9559, -4.76837e-07, -25.2424)
+
+[node name="TallGrass_Hunt23" parent="Tall Grass" instance=ExtResource("10_bpmkq")]
+transform = Transform3D(-0.179746, 0, 0.983713, 0, 1, 0, -0.983713, 0, -0.179746, 32.8338, -4.76837e-07, -24.5791)
+
+[node name="TallGrass_Hunt24" parent="Tall Grass" instance=ExtResource("10_bpmkq")]
+transform = Transform3D(-0.887663, 0, 0.460494, 0, 1, 0, -0.460494, 0, -0.887663, 32.8338, -4.76837e-07, -23.7181)
+
+[node name="TallGrass_Hunt25" parent="Tall Grass" instance=ExtResource("10_bpmkq")]
+transform = Transform3D(-1, 0, 8.74228e-08, 0, 1, 0, -8.74228e-08, 0, -1, 32.8687, -4.76837e-07, -22.9897)
+
+[node name="TallGrass_Hunt26" parent="Tall Grass" instance=ExtResource("10_bpmkq")]
+transform = Transform3D(-0.71798, 0, 0.696063, 0, 1, 0, -0.696063, 0, -0.71798, 32.8687, -4.76837e-07, -22.2833)
+
+[node name="TallGrass_Hunt27" parent="Tall Grass" instance=ExtResource("10_bpmkq")]
+transform = Transform3D(-0.813781, 0, 0.581172, 0, 1, 0, -0.581172, 0, -0.813781, 32.8687, -4.76837e-07, -21.5056)
+
+[node name="TallGrass_Hunt28" parent="Tall Grass" instance=ExtResource("10_bpmkq")]
+transform = Transform3D(-0.316791, 0, 0.948495, 0, 1, 0, -0.948495, 0, -0.316791, 30.713, -4.76837e-07, -23.8663)
+
+[node name="TallGrass_Hunt29" parent="Tall Grass" instance=ExtResource("10_bpmkq")]
+transform = Transform3D(-0.454737, 0, 0.890626, 0, 1, 0, -0.890626, 0, -0.454737, 30.7479, -4.76837e-07, -23.0922)
+
+[node name="TallGrass_Hunt30" parent="Tall Grass" instance=ExtResource("10_bpmkq")]
+transform = Transform3D(-0.887663, 0, 0.460494, 0, 1, 0, -0.460494, 0, -0.887663, 30.7479, -4.76837e-07, -22.3619)
+
+[node name="TallGrass_Hunt31" parent="Tall Grass" instance=ExtResource("10_bpmkq")]
+transform = Transform3D(-1, 0, 8.74228e-08, 0, 1, 0, -8.74228e-08, 0, -1, 30.7479, -4.76837e-07, -21.5989)
+
+[node name="TallGrass_Hunt32" parent="Tall Grass" instance=ExtResource("10_bpmkq")]
+transform = Transform3D(-0.71798, 0, 0.696063, 0, 1, 0, -0.696063, 0, -0.71798, 30.7479, -4.76837e-07, -20.9046)
+
+[node name="TallGrass_Hunt33" parent="Tall Grass" instance=ExtResource("10_bpmkq")]
+transform = Transform3D(-0.813781, 0, 0.581172, 0, 1, 0, -0.581172, 0, -0.813781, 29.9202, -4.76837e-07, -26.347)
+
+[node name="TallGrass_Hunt34" parent="Tall Grass" instance=ExtResource("10_bpmkq")]
+transform = Transform3D(-0.813781, 0, 0.581172, 0, 1, 0, -0.581172, 0, -0.813781, 29.8447, -4.76837e-07, -25.5002)
+
+[node name="TallGrass_Hunt35" parent="Tall Grass" instance=ExtResource("10_bpmkq")]
+transform = Transform3D(-0.316791, 0, 0.948495, 0, 1, 0, -0.948495, 0, -0.316791, 29.7226, -4.76837e-07, -24.6741)
+
+[node name="TallGrass_Hunt36" parent="Tall Grass" instance=ExtResource("10_bpmkq")]
+transform = Transform3D(-0.813781, 0, 0.581172, 0, 1, 0, -0.581172, 0, -0.813781, 31.9901, -4.76837e-07, -26.966)
+
+[node name="TallGrass_Hunt37" parent="Tall Grass" instance=ExtResource("10_bpmkq")]
+transform = Transform3D(-1, 0, 8.74228e-08, 0, 1, 0, -8.74228e-08, 0, -1, 31.9146, -4.76837e-07, -26.1461)
+
+[node name="TallGrass_Hunt38" parent="Tall Grass" instance=ExtResource("10_bpmkq")]
+transform = Transform3D(-0.316791, 0, 0.948495, 0, 1, 0, -0.948495, 0, -0.316791, 31.9146, -4.76837e-07, -25.2587)
+
+[node name="TallGrass_Hunt39" parent="Tall Grass" instance=ExtResource("10_bpmkq")]
+transform = Transform3D(-0.179746, 0, 0.983713, 0, 1, 0, -0.983713, 0, -0.179746, 31.7925, -4.76837e-07, -24.5953)
+
+[node name="TallGrass_Hunt40" parent="Tall Grass" instance=ExtResource("10_bpmkq")]
+transform = Transform3D(-0.887663, 0, 0.460494, 0, 1, 0, -0.460494, 0, -0.887663, 31.7925, -4.76837e-07, -23.7343)
+
+[node name="TallGrass_Hunt41" parent="Tall Grass" instance=ExtResource("10_bpmkq")]
+transform = Transform3D(-1, 0, 8.74228e-08, 0, 1, 0, -8.74228e-08, 0, -1, 31.8274, -4.76837e-07, -23.006)
+
+[node name="TallGrass_Hunt42" parent="Tall Grass" instance=ExtResource("10_bpmkq")]
+transform = Transform3D(-0.71798, 0, 0.696063, 0, 1, 0, -0.696063, 0, -0.71798, 31.8274, -4.76837e-07, -22.2996)
+
+[node name="TallGrass_Hunt43" parent="Tall Grass" instance=ExtResource("10_bpmkq")]
+transform = Transform3D(-0.813781, 0, 0.581172, 0, 1, 0, -0.581172, 0, -0.813781, 31.8274, -4.76837e-07, -21.5219)
+
+[node name="TallGrass_Hunt44" parent="Tall Grass" instance=ExtResource("10_bpmkq")]
+transform = Transform3D(-0.316791, 0, 0.948495, 0, 1, 0, -0.948495, 0, -0.316791, 29.6716, -4.76837e-07, -23.8826)
+
+[node name="TallGrass_Hunt45" parent="Tall Grass" instance=ExtResource("10_bpmkq")]
+transform = Transform3D(-0.454737, 0, 0.890626, 0, 1, 0, -0.890626, 0, -0.454737, 29.5844, -4.76837e-07, -23.1084)
+
+[node name="TallGrass_Hunt46" parent="Tall Grass" instance=ExtResource("10_bpmkq")]
+transform = Transform3D(-0.887663, 0, 0.460494, 0, 1, 0, -0.460494, 0, -0.887663, 29.7065, -4.76837e-07, -22.3781)
+
+[node name="TallGrass_Hunt47" parent="Tall Grass" instance=ExtResource("10_bpmkq")]
+transform = Transform3D(-1, 0, 8.74228e-08, 0, 1, 0, -8.74228e-08, 0, -1, 29.7065, -4.76837e-07, -21.6152)
+
+[node name="TallGrass_Hunt48" parent="Tall Grass" instance=ExtResource("10_bpmkq")]
+transform = Transform3D(-0.71798, 0, 0.696063, 0, 1, 0, -0.696063, 0, -0.71798, 29.7065, -4.76837e-07, -20.9209)
+
+[node name="TallGrass_Hunt49" parent="Tall Grass" instance=ExtResource("10_bpmkq")]
+transform = Transform3D(0.813781, 0, -0.581172, 0, 1, 0, 0.581172, 0, 0.813781, 30.2081, -9.53674e-07, -21.0951)
+
+[node name="TallGrass_Hunt50" parent="Tall Grass" instance=ExtResource("10_bpmkq")]
+transform = Transform3D(0.813781, 0, -0.581172, 0, 1, 0, 0.581172, 0, 0.813781, 30.2081, -9.53674e-07, -21.9419)
+
+[node name="TallGrass_Hunt51" parent="Tall Grass" instance=ExtResource("10_bpmkq")]
+transform = Transform3D(0.316791, 0, -0.948495, 0, 1, 0, 0.948495, 0, 0.316791, 30.2081, -9.53674e-07, -22.768)
+
+[node name="TallGrass_Hunt52" parent="Tall Grass" instance=ExtResource("10_bpmkq")]
+transform = Transform3D(0.813781, 0, -0.581172, 0, 1, 0, 0.581172, 0, 0.813781, 30.086, -9.53674e-07, -23.5046)
+
+[node name="TallGrass_Hunt53" parent="Tall Grass" instance=ExtResource("10_bpmkq")]
+transform = Transform3D(1, 0, -1.74846e-07, 0, 1, 0, 1.74846e-07, 0, 1, 32.3289, -9.53674e-07, -21.2217)
+
+[node name="TallGrass_Hunt54" parent="Tall Grass" instance=ExtResource("10_bpmkq")]
+transform = Transform3D(0.316791, 0, -0.948495, 0, 1, 0, 0.948495, 0, 0.316791, 32.3289, -9.53674e-07, -22.1092)
+
+[node name="TallGrass_Hunt55" parent="Tall Grass" instance=ExtResource("10_bpmkq")]
+transform = Transform3D(0.179746, 0, -0.983713, 0, 1, 0, 0.983713, 0, 0.179746, 32.3289, -9.53674e-07, -22.7725)
+
+[node name="TallGrass_Hunt56" parent="Tall Grass" instance=ExtResource("10_bpmkq")]
+transform = Transform3D(0.887663, 0, -0.460494, 0, 1, 0, 0.460494, 0, 0.887663, 32.294, -9.53674e-07, -23.6335)
+
+[node name="TallGrass_Hunt57" parent="Tall Grass" instance=ExtResource("10_bpmkq")]
+transform = Transform3D(1, 0, -1.74846e-07, 0, 1, 0, 1.74846e-07, 0, 1, 32.294, -9.53674e-07, -24.3619)
+
+[node name="TallGrass_Hunt58" parent="Tall Grass" instance=ExtResource("10_bpmkq")]
+transform = Transform3D(0.71798, 0, -0.696063, 0, 1, 0, 0.696063, 0, 0.71798, 32.294, -9.53674e-07, -25.0683)
+
+[node name="TallGrass_Hunt59" parent="Tall Grass" instance=ExtResource("10_bpmkq")]
+transform = Transform3D(0.813781, 0, -0.581172, 0, 1, 0, 0.581172, 0, 0.813781, 32.4161, -9.53674e-07, -25.846)
+
+[node name="TallGrass_Hunt60" parent="Tall Grass" instance=ExtResource("10_bpmkq")]
+transform = Transform3D(0.316791, 0, -0.948495, 0, 1, 0, 0.948495, 0, 0.316791, 32.4916, -9.53674e-07, -26.5881)
+
+[node name="TallGrass_Hunt61" parent="Tall Grass" instance=ExtResource("10_bpmkq")]
+transform = Transform3D(0.454737, 0, -0.890626, 0, 1, 0, 0.890626, 0, 0.454737, 30.2242, -9.53674e-07, -24.3337)
+
+[node name="TallGrass_Hunt62" parent="Tall Grass" instance=ExtResource("10_bpmkq")]
+transform = Transform3D(0.887663, 0, -0.460494, 0, 1, 0, 0.460494, 0, 0.887663, 30.3463, -9.53674e-07, -25.064)
+
+[node name="TallGrass_Hunt63" parent="Tall Grass" instance=ExtResource("10_bpmkq")]
+transform = Transform3D(1, 0, -1.74846e-07, 0, 1, 0, 1.74846e-07, 0, 1, 30.3463, -9.53674e-07, -25.8269)
+
+[node name="TallGrass_Hunt64" parent="Tall Grass" instance=ExtResource("10_bpmkq")]
+transform = Transform3D(0.71798, 0, -0.696063, 0, 1, 0, 0.696063, 0, 0.71798, 30.4218, -9.53674e-07, -26.5212)

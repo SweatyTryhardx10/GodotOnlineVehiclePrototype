@@ -1,0 +1,6 @@
+[gd_resource type="StandardMaterial3D" load_steps=2 format=3 uid="uid://cw1350k3t7mvt"]
+
+[ext_resource type="Texture2D" uid="uid://icdeob7yuwyd" path="res://Textures/Brass 2K/Metal048B_2K-PNG_Roughness.png" id="1_riauc"]
+
+[resource]
+albedo_texture = ExtResource("1_riauc")

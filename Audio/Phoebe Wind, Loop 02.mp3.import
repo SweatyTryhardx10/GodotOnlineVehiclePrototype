@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://bmv10tuu53cno"
+path="res://.godot/imported/Phoebe Wind, Loop 02.mp3-d3c3e8c4736ff7bac84e7b12a6bab6c8.mp3str"
+
+[deps]
+
+source_file="res://Audio/Phoebe Wind, Loop 02.mp3"
+dest_files=["res://.godot/imported/Phoebe Wind, Loop 02.mp3-d3c3e8c4736ff7bac84e7b12a6bab6c8.mp3str"]
+
+[params]
+
+loop=true
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

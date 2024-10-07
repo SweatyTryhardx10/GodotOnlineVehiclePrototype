@@ -1,0 +1,16 @@
+[gd_resource type="StandardMaterial3D" load_steps=5 format=3 uid="uid://ce1thvhy54x5e"]
+
+[ext_resource type="Texture2D" uid="uid://c06gk8d18txjh" path="res://Textures/Brass 2K/Metal048B_2K-PNG_Displacement.png" id="1_uk7rp"]
+[ext_resource type="Texture2D" uid="uid://2vv0o6hpsua4" path="res://Textures/Brass 2K/Metal048B_2K-PNG_Metalness.png" id="2_phyo7"]
+[ext_resource type="Texture2D" uid="uid://d7ql3gbfjoe5" path="res://Textures/Brass 2K/Metal048B_2K-PNG_NormalGL.png" id="3_viboc"]
+[ext_resource type="Texture2D" uid="uid://icdeob7yuwyd" path="res://Textures/Brass 2K/Metal048B_2K-PNG_Roughness.png" id="4_s114m"]
+
+[resource]
+metallic = 1.0
+metallic_texture = ExtResource("2_phyo7")
+roughness = 0.54
+roughness_texture = ExtResource("4_s114m")
+normal_enabled = true
+normal_texture = ExtResource("3_viboc")
+heightmap_scale = 0.2
+heightmap_texture = ExtResource("1_uk7rp")

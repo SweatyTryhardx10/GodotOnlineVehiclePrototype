@@ -1,0 +1,272 @@
+[gd_scene load_steps=21 format=3 uid="uid://clysr2jtipfvr"]
+
+[ext_resource type="Script" path="res://Scripts/VehicleController.cs" id="1_m825y"]
+[ext_resource type="Script" path="res://Scripts/RigidBodyInterpolater.cs" id="3_8kyhh"]
+[ext_resource type="Material" uid="uid://ccw2tuc2fex2k" path="res://Materials/pbr_tri_proto_green.tres" id="4_0148q"]
+[ext_resource type="Material" uid="uid://cdqvhlw4ydusi" path="res://Materials/Debug/debug_transparent_red.tres" id="5_dt6p7"]
+[ext_resource type="PhysicsMaterial" uid="uid://d0tyduv0wwgse" path="res://Data/physMat_Slippery.tres" id="6_if1q7"]
+[ext_resource type="Material" uid="uid://bmoqd82be6h4l" path="res://Materials/pbr_tri_proto_dark.tres" id="8_82rxt"]
+[ext_resource type="Material" uid="uid://pmhdpge6h15x" path="res://Materials/pbr_tri_proto_red.tres" id="9_pvsmc"]
+[ext_resource type="AudioStream" uid="uid://b7l0evj6kexpr" path="res://Audio/Chopper. Standing Still, Close, Loop.mp3" id="10_xpc16"]
+[ext_resource type="Script" path="res://Scripts/Audio/MotionAudio.cs" id="11_m1uso"]
+[ext_resource type="Script" path="res://Scripts/Joints/WheelJoint.cs" id="12_aet2b"]
+[ext_resource type="Curve" uid="uid://d0baj0wfpyvpf" path="res://Data/Slip Curves/lateralSlipCurve_Realistic.tres" id="13_6sug4"]
+[ext_resource type="Curve" uid="uid://dlwgmtjh1vqpl" path="res://Data/Slip Curves/longitudinalSlipCurve_Standard.tres" id="14_qmoo2"]
+[ext_resource type="AudioStream" uid="uid://ds1c3twbvm88j" path="res://Audio/Porsche Macan S, Take 08, Engine, 0k RPM Idle, Loop.mp3" id="15_wu5s2"]
+[ext_resource type="Script" path="res://Scripts/Audio/VehicleEngineSound.cs" id="16_k8aor"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_dqocv"]
+material = ExtResource("4_0148q")
+size = Vector3(2, 0.8, 3)
+
+[sub_resource type="BoxMesh" id="BoxMesh_2115m"]
+material = ExtResource("4_0148q")
+size = Vector3(1, 0.5, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_xd1hs"]
+size = Vector3(2, 0.681152, 3)
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_gupqr"]
+height = 0.173773
+radius = 4.93
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_7vhvg"]
+size = Vector3(0.609375, 0.34375, 4.82892)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_qkhi3"]
+material = ExtResource("8_82rxt")
+height = 0.3
+
+[node name="Vehicle_MobileApache" type="RigidBody3D"]
+mass = 100.0
+gravity_scale = 2.0
+continuous_cd = true
+script = ExtResource("1_m825y")
+
+[node name="MeshObject" type="Node3D" parent="." node_paths=PackedStringArray("body")]
+script = ExtResource("3_8kyhh")
+body = NodePath("..")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="MeshObject"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0957834, 0)
+mesh = SubResource("BoxMesh_dqocv")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="MeshObject"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.75, 0)
+mesh = SubResource("BoxMesh_2115m")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.159424, 0)
+shape = SubResource("BoxShape3D_xd1hs")
+
+[node name="Fast Speed Shape (Propeller)" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.10462, 0)
+shape = SubResource("CylinderShape3D_gupqr")
+disabled = true
+
+[node name="CSGCylinder3D" type="CSGCylinder3D" parent="Fast Speed Shape (Propeller)"]
+visible = false
+radius = 4.92872
+height = 0.291605
+sides = 24
+material = ExtResource("5_dt6p7")
+
+[node name="HingeJoint3D" type="HingeJoint3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 1, 0)
+node_a = NodePath("..")
+node_b = NodePath("../Propeller")
+params/bias = 0.99
+motor/enable = true
+motor/target_velocity = 6.28319
+
+[node name="Propeller" type="RigidBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.10462, 0)
+collision_layer = 16
+mass = 30.0
+physics_material_override = ExtResource("6_if1q7")
+gravity_scale = 2.0
+continuous_cd = true
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Propeller"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -2.47031)
+shape = SubResource("BoxShape3D_7vhvg")
+
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="Propeller"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 2.47)
+shape = SubResource("BoxShape3D_7vhvg")
+
+[node name="CollisionShape3D3" type="CollisionShape3D" parent="Propeller"]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 2.47, 0, 0)
+shape = SubResource("BoxShape3D_7vhvg")
+
+[node name="CollisionShape3D4" type="CollisionShape3D" parent="Propeller"]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -2.47, 0, 0)
+shape = SubResource("BoxShape3D_7vhvg")
+
+[node name="CollisionShape3D5" type="CollisionShape3D" parent="Propeller"]
+transform = Transform3D(0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, -1.74672, 0, -1.74679)
+shape = SubResource("BoxShape3D_7vhvg")
+
+[node name="CollisionShape3D6" type="CollisionShape3D" parent="Propeller"]
+transform = Transform3D(0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, 1.74661, 0, 1.74653)
+shape = SubResource("BoxShape3D_7vhvg")
+
+[node name="CollisionShape3D7" type="CollisionShape3D" parent="Propeller"]
+transform = Transform3D(-0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, -0.707107, 1.74661, 0, -1.74658)
+shape = SubResource("BoxShape3D_7vhvg")
+
+[node name="CollisionShape3D8" type="CollisionShape3D" parent="Propeller"]
+transform = Transform3D(-0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, -0.707107, -1.7465, 0, 1.74653)
+shape = SubResource("BoxShape3D_7vhvg")
+
+[node name="Mesh Container" type="Node3D" parent="Propeller" node_paths=PackedStringArray("body")]
+script = ExtResource("3_8kyhh")
+body = NodePath("..")
+
+[node name="CSGCylinder3D" type="CSGCylinder3D" parent="Propeller/Mesh Container"]
+radius = 0.3
+height = 0.159961
+sides = 16
+material = ExtResource("8_82rxt")
+
+[node name="CSGPolygon3D" type="CSGPolygon3D" parent="Propeller/Mesh Container"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0)
+polygon = PackedVector2Array(0.229544, -0.152149, 4.86473, -0.403862, 4.94702, -0.258284, 4.95025, -0.00148854, 4.94069, 0.197437, 4.8584, 0.355673, 0.236377, 0.115986)
+depth = 0.1
+material = ExtResource("9_pvsmc")
+
+[node name="CSGPolygon3D2" type="CSGPolygon3D" parent="Propeller/Mesh Container"]
+transform = Transform3D(0.707107, -0.707107, 3.09086e-08, 0, -4.37114e-08, -1, 0.707107, 0.707107, -3.09086e-08, 0, 0, 0)
+polygon = PackedVector2Array(0.229544, -0.152149, 4.86473, -0.403862, 4.94702, -0.258284, 4.95025, -0.00148854, 4.94069, 0.197437, 4.8584, 0.355673, 0.236377, 0.115986)
+depth = 0.1
+material = ExtResource("9_pvsmc")
+
+[node name="CSGPolygon3D3" type="CSGPolygon3D" parent="Propeller/Mesh Container"]
+transform = Transform3D(0, -1, 4.37114e-08, 0, -4.37114e-08, -1, 1, 0, -3.55271e-15, 0, 0, 0)
+polygon = PackedVector2Array(0.229544, -0.152149, 4.86473, -0.403862, 4.94702, -0.258284, 4.95025, -0.00148854, 4.94069, 0.197437, 4.8584, 0.355673, 0.236377, 0.115986)
+depth = 0.1
+material = ExtResource("9_pvsmc")
+
+[node name="CSGPolygon3D4" type="CSGPolygon3D" parent="Propeller/Mesh Container"]
+transform = Transform3D(-0.707107, -0.707107, 3.09086e-08, 0, -4.37114e-08, -1, 0.707107, -0.707107, 3.09086e-08, 0, 0, 0)
+polygon = PackedVector2Array(0.229544, -0.152149, 4.86473, -0.403862, 4.94702, -0.258284, 4.95025, -0.00148854, 4.94069, 0.197437, 4.8584, 0.355673, 0.236377, 0.115986)
+depth = 0.1
+material = ExtResource("9_pvsmc")
+
+[node name="CSGPolygon3D5" type="CSGPolygon3D" parent="Propeller/Mesh Container"]
+transform = Transform3D(-1, 0, 1.06581e-14, 0, -4.37114e-08, -1, 0, -1, 4.37114e-08, 0, 0, 0)
+polygon = PackedVector2Array(0.229544, -0.152149, 4.86473, -0.403862, 4.94702, -0.258284, 4.95025, -0.00148854, 4.94069, 0.197437, 4.8584, 0.355673, 0.236377, 0.115986)
+depth = 0.1
+material = ExtResource("9_pvsmc")
+
+[node name="CSGPolygon3D6" type="CSGPolygon3D" parent="Propeller/Mesh Container"]
+transform = Transform3D(-0.707106, 0.707106, -3.09086e-08, 0, -4.37114e-08, -1, -0.707106, -0.707106, 3.09086e-08, 0, 0, 0)
+polygon = PackedVector2Array(0.229544, -0.152149, 4.86473, -0.403862, 4.94702, -0.258284, 4.95025, -0.00148854, 4.94069, 0.197437, 4.8584, 0.355673, 0.236377, 0.115986)
+depth = 0.1
+material = ExtResource("9_pvsmc")
+
+[node name="CSGPolygon3D7" type="CSGPolygon3D" parent="Propeller/Mesh Container"]
+transform = Transform3D(0, 1, -4.37114e-08, 0, -4.37114e-08, -1, -1, 0, 1.24345e-14, 0, 0, 0)
+polygon = PackedVector2Array(0.229544, -0.152149, 4.86473, -0.403862, 4.94702, -0.258284, 4.95025, -0.00148854, 4.94069, 0.197437, 4.8584, 0.355673, 0.236377, 0.115986)
+depth = 0.1
+material = ExtResource("9_pvsmc")
+
+[node name="CSGPolygon3D8" type="CSGPolygon3D" parent="Propeller/Mesh Container"]
+transform = Transform3D(0.707106, 0.707106, -3.09086e-08, 0, -4.37114e-08, -1, -0.707106, 0.707106, -3.09086e-08, 0, 0, 0)
+polygon = PackedVector2Array(0.229544, -0.152149, 4.86473, -0.403862, 4.94702, -0.258284, 4.95025, -0.00148854, 4.94069, 0.197437, 4.8584, 0.355673, 0.236377, 0.115986)
+depth = 0.1
+material = ExtResource("9_pvsmc")
+
+[node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="Propeller"]
+stream = ExtResource("10_xpc16")
+unit_size = 20.0
+autoplay = true
+doppler_tracking = 2
+script = ExtResource("11_m1uso")
+angularVelocityInfluence = 1.0
+angularVelocityRange = Vector2(4, 15)
+pitchRange = Vector2(1, 1.2)
+volumeRange = Vector2(-80, 0)
+
+[node name="Wheel" type="Node3D" parent="." node_paths=PackedStringArray("wheelMesh")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.16744, 0, 1)
+script = ExtResource("12_aet2b")
+length = 1.0
+stiffness = 6000.0
+damping = 200.0
+lateralSlipCurve = ExtResource("13_6sug4")
+longitudinalSlipCurve = ExtResource("14_qmoo2")
+lateralSlipScaling = 1.2
+longitudinalSlipScaling = 1.1
+SteeringInterval = Vector2(0, 0)
+wheelMesh = NodePath("Mesh Container")
+
+[node name="Mesh Container" type="Node3D" parent="Wheel"]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Wheel/Mesh Container"]
+transform = Transform3D(-4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, 0, 0, 0)
+mesh = SubResource("CylinderMesh_qkhi3")
+
+[node name="Wheel2" type="Node3D" parent="." node_paths=PackedStringArray("wheelMesh")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.16744, 0, -1)
+script = ExtResource("12_aet2b")
+length = 1.0
+stiffness = 6000.0
+damping = 200.0
+lateralSlipCurve = ExtResource("13_6sug4")
+longitudinalSlipCurve = ExtResource("14_qmoo2")
+lateralSlipScaling = 1.2
+longitudinalSlipScaling = 1.1
+PoweredByEngine = false
+wheelMesh = NodePath("Mesh Container")
+
+[node name="Mesh Container" type="Node3D" parent="Wheel2"]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Wheel2/Mesh Container"]
+transform = Transform3D(-4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, 0, 0, 0)
+mesh = SubResource("CylinderMesh_qkhi3")
+
+[node name="Wheel3" type="Node3D" parent="." node_paths=PackedStringArray("wheelMesh")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.167, 0, 1)
+script = ExtResource("12_aet2b")
+length = 1.0
+stiffness = 6000.0
+damping = 200.0
+lateralSlipCurve = ExtResource("13_6sug4")
+longitudinalSlipCurve = ExtResource("14_qmoo2")
+lateralSlipScaling = 1.2
+longitudinalSlipScaling = 1.1
+SteeringInterval = Vector2(0, 0)
+wheelMesh = NodePath("Mesh Container")
+
+[node name="Mesh Container" type="Node3D" parent="Wheel3"]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Wheel3/Mesh Container"]
+transform = Transform3D(-4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, 0, 0, 0)
+mesh = SubResource("CylinderMesh_qkhi3")
+
+[node name="Wheel4" type="Node3D" parent="." node_paths=PackedStringArray("wheelMesh")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.167, 0, -1)
+script = ExtResource("12_aet2b")
+length = 1.0
+stiffness = 6000.0
+damping = 200.0
+lateralSlipCurve = ExtResource("13_6sug4")
+longitudinalSlipCurve = ExtResource("14_qmoo2")
+lateralSlipScaling = 1.2
+longitudinalSlipScaling = 1.1
+PoweredByEngine = false
+wheelMesh = NodePath("Mesh Container")
+
+[node name="Mesh Container" type="Node3D" parent="Wheel4"]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Wheel4/Mesh Container"]
+transform = Transform3D(-4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, 0, 0, 0)
+mesh = SubResource("CylinderMesh_qkhi3")
+
+[node name="Engine Sound" type="AudioStreamPlayer3D" parent="."]
+stream = ExtResource("15_wu5s2")
+volume_db = -4.0
+autoplay = true
+script = ExtResource("16_k8aor")

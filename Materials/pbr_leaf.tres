@@ -1,0 +1,13 @@
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://cvvv3cw4shsbf"]
+
+[resource]
+cull_mode = 2
+albedo_color = Color(0.42588, 0.63, 0.2898, 1)
+roughness = 0.3
+rim_enabled = true
+subsurf_scatter_enabled = true
+subsurf_scatter_strength = 0.2
+backlight_enabled = true
+backlight = Color(0, 0.731614, 0.411613, 1)
+uv1_triplanar = true
+uv1_triplanar_sharpness = 1.93187

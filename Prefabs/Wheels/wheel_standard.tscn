@@ -1,0 +1,58 @@
+[gd_scene load_steps=15 format=3 uid="uid://c7y5ygnwb7vkm"]
+
+[ext_resource type="Script" path="res://Scripts/Joints/WheelJoint.cs" id="1_tjvgc"]
+[ext_resource type="Material" uid="uid://pmhdpge6h15x" path="res://Materials/pbr_tri_proto_red.tres" id="4_qokuh"]
+[ext_resource type="PackedScene" uid="uid://c86ohjp3qjkra" path="res://Data/Terrain Profiles/terrain_profile_default.tscn" id="5_vxaa8"]
+[ext_resource type="PackedScene" uid="uid://mlllksmjlv7t" path="res://Data/Terrain Profiles/terrain_profile_dirt.tscn" id="6_7jf1p"]
+[ext_resource type="AudioStream" uid="uid://bswdt21r0ooow" path="res://Audio/ES_ImpactPound/ES_ImpactPound-01.wav" id="6_sdsy8"]
+[ext_resource type="AudioStream" uid="uid://b1lam3sroumy0" path="res://Audio/ES_ImpactPound/ES_ImpactPound-02.wav" id="7_db4pc"]
+[ext_resource type="PackedScene" uid="uid://dkg7c3xkokyqy" path="res://Data/Terrain Profiles/terrain_profile_ice.tscn" id="7_ehkvk"]
+[ext_resource type="AudioStream" uid="uid://bbttd2j0ss6ol" path="res://Audio/ES_ImpactPound/ES_ImpactPound-03.wav" id="8_bku1f"]
+[ext_resource type="AudioStream" uid="uid://bc1xew1n17pj1" path="res://Audio/ES_ImpactPound/ES_ImpactPound-04.wav" id="9_w3arl"]
+[ext_resource type="AudioStream" uid="uid://c2nvt1x0ly1h6" path="res://Audio/ES_ImpactPound/ES_ImpactPound-05.wav" id="10_4ue6p"]
+[ext_resource type="AudioStream" uid="uid://beul7toumli1p" path="res://Audio/ES_ImpactPound/ES_ImpactPound-06.wav" id="11_p3336"]
+[ext_resource type="Script" path="res://Scripts/Audio/AudioWheel.cs" id="12_x3e5t"]
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_vgd4m"]
+height = 0.3
+
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_ao7yg"]
+streams_count = 6
+stream_0/stream = ExtResource("6_sdsy8")
+stream_1/stream = ExtResource("7_db4pc")
+stream_2/stream = ExtResource("8_bku1f")
+stream_3/stream = ExtResource("9_w3arl")
+stream_4/stream = ExtResource("10_4ue6p")
+stream_5/stream = ExtResource("11_p3336")
+
+[node name="Spring (FL)" type="Node3D" node_paths=PackedStringArray("wheelMesh")]
+script = ExtResource("1_tjvgc")
+length = 1.0
+stiffness = 3500.0
+damping = 350.0
+longitudinalInfluenceOnLateral = 5.0
+camberInfluence = -1.0
+SteeringInterval = Vector2(0, 0)
+PoweredByEngine = false
+wheelMesh = NodePath("Mesh Container")
+
+[node name="Mesh Container" type="Node3D" parent="."]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Mesh Container"]
+transform = Transform3D(-4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, 0, 0, 0)
+material_override = ExtResource("4_qokuh")
+mesh = SubResource("CylinderMesh_vgd4m")
+skeleton = NodePath("../..")
+
+[node name="Terrain Profile (Default)" parent="." instance=ExtResource("5_vxaa8")]
+
+[node name="Terrain Profile (Dirt)" parent="." instance=ExtResource("6_7jf1p")]
+
+[node name="Terrain Profile (Ice)" parent="." instance=ExtResource("7_ehkvk")]
+
+[node name="Audio - Tire Landing" type="AudioStreamPlayer3D" parent="."]
+stream = SubResource("AudioStreamRandomizer_ao7yg")
+volume_db = -8.0
+unit_size = 8.0
+script = ExtResource("12_x3e5t")
+playOnLanding = true

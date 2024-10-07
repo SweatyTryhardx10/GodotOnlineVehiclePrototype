@@ -1,0 +1,13 @@
+[gd_resource type="StandardMaterial3D" load_steps=2 format=3 uid="uid://b0sbf7kom0a3"]
+
+[ext_resource type="Texture2D" uid="uid://dw4mivkb7uxn7" path="res://addons/kenney_prototype_textures/orange/texture_06.png" id="1_0xe4h"]
+
+[resource]
+albedo_texture = ExtResource("1_0xe4h")
+uv1_scale = Vector3(0.5, 0.5, 0.5)
+uv1_triplanar = true
+uv1_triplanar_sharpness = 30.0
+uv1_world_triplanar = true
+distance_fade_mode = 2
+distance_fade_min_distance = 4.0
+distance_fade_max_distance = 5.0

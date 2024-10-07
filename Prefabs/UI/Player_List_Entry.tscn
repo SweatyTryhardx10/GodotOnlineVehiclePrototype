@@ -1,0 +1,60 @@
+[gd_scene load_steps=2 format=3 uid="uid://dfjmkssxy2p2l"]
+
+[ext_resource type="LabelSettings" uid="uid://d0xcws23hq63m" path="res://Data/UI/label_settings_small.tres" id="1_wg3wk"]
+
+[node name="Player List Entry" type="Panel"]
+clip_contents = true
+custom_minimum_size = Vector2(0, 20)
+size_flags_vertical = 2
+
+[node name="ID" type="Label" parent="."]
+layout_mode = 2
+offset_left = 13.0
+offset_top = 1.0
+offset_right = 96.0
+offset_bottom = 19.0
+grow_vertical = 2
+text = "ID"
+label_settings = ExtResource("1_wg3wk")
+text_overrun_behavior = 3
+
+[node name="ColorRect" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 9
+anchor_bottom = 1.0
+offset_left = 103.0
+offset_right = 104.0
+grow_vertical = 2
+color = Color(0.404511, 0.404511, 0.404511, 1)
+
+[node name="Name" type="Label" parent="."]
+layout_mode = 2
+offset_left = 109.0
+offset_top = 1.0
+offset_right = 266.0
+offset_bottom = 19.0
+text = "Name here"
+label_settings = ExtResource("1_wg3wk")
+text_overrun_behavior = 3
+
+[node name="ColorRect2" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 9
+anchor_bottom = 1.0
+offset_left = 272.0
+offset_right = 273.0
+grow_vertical = 2
+color = Color(0.404511, 0.404511, 0.404511, 1)
+
+[node name="Connection" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -73.0
+offset_bottom = 18.0
+grow_horizontal = 0
+theme_override_colors/font_color = Color(0.45, 0.45, 0.45, 1)
+theme_override_font_sizes/font_size = 13
+text = "waiting..."
+text_overrun_behavior = 3

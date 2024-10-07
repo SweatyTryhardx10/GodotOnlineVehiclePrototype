@@ -1,0 +1,20 @@
+[gd_resource type="StandardMaterial3D" load_steps=4 format=3 uid="uid://7wc4p0xj4re0"]
+
+[ext_resource type="Texture2D" uid="uid://lh3jx1o5l6is" path="res://addons/kenney_prototype_textures/dark/texture_06.png" id="1_dnftm"]
+[ext_resource type="Texture2D" uid="uid://d23qt8rih6us7" path="res://addons/kenney_prototype_textures/light/texture_05.png" id="2_dqlis"]
+[ext_resource type="Texture2D" uid="uid://cwwqwu7cqss8t" path="res://Textures/Particles/kenney_prototype_grid_half_normal.png" id="3_f18pa"]
+
+[resource]
+albedo_texture = ExtResource("1_dnftm")
+normal_enabled = true
+normal_texture = ExtResource("3_f18pa")
+heightmap_scale = 4.272
+heightmap_deep_parallax = true
+heightmap_min_layers = 8
+heightmap_max_layers = 32
+heightmap_texture = ExtResource("2_dqlis")
+uv1_scale = Vector3(0.5, 0.5, 0.5)
+uv1_triplanar = true
+uv1_triplanar_sharpness = 30.0
+uv1_world_triplanar = true
+texture_filter = 5

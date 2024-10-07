@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://lmy3cip83mrp"
+path="res://.godot/imported/Porsche Macan S, Take 11, Engine, 2k RPM, Loop.mp3-c6ee1cc63690635e3aa14b394cae02fb.mp3str"
+
+[deps]
+
+source_file="res://Audio/Porsche Macan S, Take 11, Engine, 2k RPM, Loop.mp3"
+dest_files=["res://.godot/imported/Porsche Macan S, Take 11, Engine, 2k RPM, Loop.mp3-c6ee1cc63690635e3aa14b394cae02fb.mp3str"]
+
+[params]
+
+loop=true
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

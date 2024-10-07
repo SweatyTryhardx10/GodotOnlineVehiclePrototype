@@ -1,0 +1,5 @@
+[gd_resource type="Curve" format=3 uid="uid://ohewdlexmlnb"]
+
+[resource]
+_data = [Vector2(0, 0.0124871), 0.0, 3.9805, 0, 0, Vector2(0.0599455, 0.458897), -0.586324, -0.586324, 0, 0, Vector2(0.188011, 0.140999), -0.115456, -0.115456, 0, 0, Vector2(1, 0.546826), 0.190946, 0.0, 0, 0]
+point_count = 4
