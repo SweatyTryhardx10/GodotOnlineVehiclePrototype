@@ -1,6 +1,7 @@
 using Godot;
 using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 
 public partial class DebugOverlay : Control
 {
@@ -54,7 +55,7 @@ public partial class DebugOverlay : Control
 	/// NOTE: Do not use this to display text that tracks 3D object.
 	/// </summary>
 	/// <param name="screenPosition">The normalized screen position for the text.</param>
-	public static void ShowTextOnScreen(string text, Vector2 screenPosition, string id)
+	public static async void ShowTextOnScreen(string text, Vector2 screenPosition, string id)
 	{
 		if (!Instance.IsValid())
 			return;
@@ -62,8 +63,13 @@ public partial class DebugOverlay : Control
 		var label = AssertScreenLabelExistence(id);
 
 		label.Text = text;
+		
+		// Await for the Debug Overlay's layout to be updated (as a result of the label's text-change)
+		// NOTE: Failing to wait for the update will invalidate the 'label.size' variable; it will be 0.
+		await Instance.ToSignal(Instance, SignalName.Draw);
+		
 		// label.Position = new Vector2(screenPosition.X * Instance.Size.X, screenPosition.Y * Instance.Size.Y);
-		label.Position = screenPosition * Instance.Size;
+		label.Position = screenPosition * Instance.Size - label.Size / 2f;
 	}
 
 	public static void ShowTextAtPosition(string text, Vector3 globalPosition, ulong id)

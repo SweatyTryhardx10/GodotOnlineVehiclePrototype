@@ -48,7 +48,7 @@ public partial class VehicleController : RigidBody3D
 
 		// Bind the engine to relevant objects
 		engine.BindBody(this);
-		engine.BindJoints(allJoints.Where(j => j.PoweredByEngine).ToArray());
+		engine.BindJoints(allJoints);
 	}
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -58,7 +58,7 @@ public partial class VehicleController : RigidBody3D
 		if (engine.IsValid())
 		{
 			float speed = -(GlobalBasis.Inverse() * LinearVelocity).Z;
-			engine.throttle = throttle;
+			engine.Throttle = throttle;
 			
 			DebugOverlay.ShowTextOnScreen($"Speed: {speed:0.00}", new Vector2(0.7f, 0.8f), "Speed-o-meter");
 		}
@@ -105,6 +105,8 @@ public partial class VehicleController : RigidBody3D
 	public void QueueReset()
 	{
 		queueReset = true;
+
+		engine.Reset();
 
 		foreach (var n in allJoints)
 		{

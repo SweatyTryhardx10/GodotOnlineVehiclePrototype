@@ -1,0 +1,520 @@
+[gd_scene load_steps=23 format=3 uid="uid://dr057ngllbjlx"]
+
+[ext_resource type="Script" path="res://Scripts/Demo/DemoController.cs" id="1_jyxmy"]
+[ext_resource type="Material" uid="uid://7wc4p0xj4re0" path="res://Materials/pbr_triG_proto_dark.tres" id="2_lhqwy"]
+[ext_resource type="Material" uid="uid://bmoqd82be6h4l" path="res://Materials/pbr_tri_proto_dark.tres" id="2_ti2ui"]
+[ext_resource type="PackedScene" uid="uid://suinvyn3ii48" path="res://Prefabs/Vehicle_Standard.tscn" id="2_y7r2w"]
+[ext_resource type="Environment" uid="uid://bbn65qd1khvqw" path="res://Data/Environment_Default.tres" id="3_dajeh"]
+[ext_resource type="PackedScene" uid="uid://cmguesj6pr45u" path="res://Prefabs/Vehicle_RollerDome.tscn" id="3_r1pcc"]
+[ext_resource type="Script" path="res://Scripts/Camera/CameraController.cs" id="4_5rxjd"]
+[ext_resource type="PackedScene" uid="uid://cq4a6lilby0bp" path="res://Prefabs/Vehicle_Truck.tscn" id="4_gp7dh"]
+[ext_resource type="LabelSettings" uid="uid://b22ae57tkkrw4" path="res://Data/UI/label_title.tres" id="5_1muke"]
+[ext_resource type="Material" uid="uid://pmhdpge6h15x" path="res://Materials/pbr_tri_proto_red.tres" id="7_82pgc"]
+[ext_resource type="Material" uid="uid://bi2ispdqnc7m2" path="res://Materials/pbr_tri_proto_light_emissive.tres" id="7_258vw"]
+[ext_resource type="Material" uid="uid://ccw2tuc2fex2k" path="res://Materials/pbr_tri_proto_green.tres" id="8_sgd0w"]
+[ext_resource type="Material" uid="uid://ce1thvhy54x5e" path="res://Materials/pbr_tri_reflective.tres" id="8_v87l4"]
+[ext_resource type="Material" uid="uid://b0sbf7kom0a3" path="res://Materials/pbr_triG_proto_orange.tres" id="8_yrtx2"]
+[ext_resource type="Material" uid="uid://bi5ebb17naq7o" path="res://Materials/pbr_triG_proto_purple.tres" id="16_3rhnt"]
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_klo70"]
+viewport_path = NodePath("Info Billboard/SubViewport")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_8r7sl"]
+resource_local_to_scene = true
+transparency = 1
+albedo_texture = SubResource("ViewportTexture_klo70")
+
+[sub_resource type="QuadMesh" id="QuadMesh_kyv5v"]
+resource_local_to_scene = true
+material = SubResource("StandardMaterial3D_8r7sl")
+size = Vector2(5, 3)
+
+[sub_resource type="LabelSettings" id="LabelSettings_gyufx"]
+line_spacing = 1.0
+font_size = 20
+outline_size = 2
+outline_color = Color(0, 0, 0, 0.54902)
+shadow_size = 2
+shadow_color = Color(0, 0, 0, 0.156863)
+shadow_offset = Vector2(1, 2)
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_dt22g"]
+viewport_path = NodePath("Info Billboard2/SubViewport")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ims4f"]
+resource_local_to_scene = true
+transparency = 1
+albedo_texture = SubResource("ViewportTexture_dt22g")
+
+[sub_resource type="QuadMesh" id="QuadMesh_01hil"]
+resource_local_to_scene = true
+material = SubResource("StandardMaterial3D_ims4f")
+size = Vector2(5, 3)
+
+[node name="LevelDemo" type="Node3D" node_paths=PackedStringArray("spawnNode")]
+script = ExtResource("1_jyxmy")
+playerObjectList = [ExtResource("2_y7r2w"), ExtResource("3_r1pcc"), ExtResource("4_gp7dh")]
+spawnNode = NodePath("Spawn Location")
+
+[node name="Sun" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.707107, 0.612372, 0.353553, 0, -0.5, 0.866025, 0.707107, -0.612372, -0.353553, 0, 13.7632, 29.0975)
+shadow_enabled = true
+
+[node name="Ground" type="CSGBox3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, -20)
+use_collision = true
+size = Vector3(150, 2, 140)
+material = ExtResource("2_lhqwy")
+
+[node name="Camera3D" type="Camera3D" parent="."]
+process_priority = 100
+process_physics_priority = 100
+transform = Transform3D(0.999999, 0, 0, 0, 0.967709, 0.252069, 0, -0.252069, 0.967709, 0.242, 6.648, 38.398)
+environment = ExtResource("3_dajeh")
+current = true
+script = ExtResource("4_5rxjd")
+stiffness = 10.0
+offset = Vector3(0, 5, 8)
+rotOffset = Vector3(-30, 0, 0)
+freeCamSpeed = 15.0
+
+[node name="Info Billboard" type="CSGBox3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.5, 29.638)
+use_collision = true
+size = Vector3(5, 3, 0.1)
+material = ExtResource("2_ti2ui")
+
+[node name="Viewport Quad" type="MeshInstance3D" parent="Info Billboard"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.0646744)
+mesh = SubResource("QuadMesh_kyv5v")
+
+[node name="SubViewport" type="SubViewport" parent="Info Billboard"]
+disable_3d = true
+transparent_bg = true
+handle_input_locally = false
+size = Vector2i(768, 420)
+render_target_update_mode = 4
+
+[node name="Title" type="Label" parent="Info Billboard/SubViewport"]
+anchors_preset = 10
+anchor_right = 1.0
+offset_top = 35.215
+offset_bottom = 69.215
+grow_horizontal = 2
+text = "DEMO LEVEL"
+label_settings = ExtResource("5_1muke")
+horizontal_alignment = 1
+
+[node name="Description" type="Label" parent="Info Billboard/SubViewport"]
+anchors_preset = 10
+anchor_right = 1.0
+offset_top = 93.57
+offset_bottom = 382.57
+grow_horizontal = 2
+text = "In this demo level, several areas are available which aim to showcase the implemented physics (e.g. tires).
+
+1. Suspension & Camber Testing
+2. Hillclimbing Area
+3. External Force Zone
+4. The Terrain Blender
+
+Your vehicle configuration can be changed
+via the keybinds listed in the top left of the screen."
+label_settings = SubResource("LabelSettings_gyufx")
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="Spotlight (Mesh)" type="CSGCylinder3D" parent="Info Billboard"]
+transform = Transform3D(1, 0, 0, 0, -0.5, -0.866025, 0, 0.866025, -0.5, 0, -2.41736, 3.00023)
+height = 0.790783
+cone = true
+material = ExtResource("7_258vw")
+
+[node name="SpotLight3D" type="SpotLight3D" parent="Info Billboard/Spotlight (Mesh)"]
+transform = Transform3D(1, 0, 0, 0, -5.96046e-08, 1, 0, -1, -5.96046e-08, 0, 0.0709534, -0.0736694)
+light_energy = 8.0
+spot_range = 6.77346
+spot_angle = 53.76
+
+[node name="Beam" type="CSGCylinder3D" parent="Info Billboard"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, -1, -0.192806)
+radius = 0.15
+height = 4.0
+material = ExtResource("8_v87l4")
+
+[node name="Beam2" type="CSGCylinder3D" parent="Info Billboard"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, -1, -0.192806)
+radius = 0.15
+height = 4.0
+material = ExtResource("8_v87l4")
+
+[node name="Beam3" type="CSGCylinder3D" parent="Info Billboard"]
+transform = Transform3D(-4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, 0, 1, 8.74228e-08, 0, -0.192806)
+radius = 0.15
+height = 4.0
+material = ExtResource("8_v87l4")
+
+[node name="Info Billboard2" type="CSGBox3D" parent="."]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 2.63738e-07, 1.5, 47.6933)
+use_collision = true
+size = Vector3(3, 2, 0.1)
+material = ExtResource("2_ti2ui")
+
+[node name="Viewport Quad" type="MeshInstance3D" parent="Info Billboard2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.0646744)
+mesh = SubResource("QuadMesh_01hil")
+
+[node name="SubViewport" type="SubViewport" parent="Info Billboard2"]
+disable_3d = true
+transparent_bg = true
+handle_input_locally = false
+size = Vector2i(768, 420)
+render_target_update_mode = 0
+
+[node name="Title" type="Label" parent="Info Billboard2/SubViewport"]
+anchors_preset = 10
+anchor_right = 1.0
+offset_top = 177.27
+offset_bottom = 211.27
+grow_horizontal = 2
+text = "OTHER WAY PLEASE."
+label_settings = ExtResource("5_1muke")
+horizontal_alignment = 1
+
+[node name="Beam" type="CSGCylinder3D" parent="Info Billboard2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, -1, -0.192806)
+radius = 0.15
+height = 4.0
+material = ExtResource("8_v87l4")
+
+[node name="Beam2" type="CSGCylinder3D" parent="Info Billboard2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, -1, -0.192806)
+radius = 0.15
+height = 4.0
+material = ExtResource("8_v87l4")
+
+[node name="Beam3" type="CSGCylinder3D" parent="Info Billboard2"]
+transform = Transform3D(-4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, 0, 1, 8.74228e-08, 0, -0.192806)
+radius = 0.15
+material = ExtResource("8_v87l4")
+
+[node name="Starting Area (Circle)" type="CSGCylinder3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, 35)
+use_collision = true
+radius = 15.0
+height = 6.0
+sides = 32
+material = ExtResource("8_yrtx2")
+
+[node name="CSGCylinder3D2" type="CSGCylinder3D" parent="Starting Area (Circle)"]
+operation = 2
+radius = 14.0
+height = 10.0
+sides = 32
+material = ExtResource("8_yrtx2")
+
+[node name="CSGBox3D" type="CSGBox3D" parent="Starting Area (Circle)"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -13)
+operation = 2
+size = Vector3(10, 10, 4)
+material = ExtResource("2_lhqwy")
+
+[node name="Starting Hallway" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 10.5)
+
+[node name="CSGBox3D" type="CSGBox3D" parent="Starting Hallway"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.5, 3, -0.0324402)
+use_collision = true
+size = Vector3(1, 6, 20.9351)
+material = ExtResource("2_lhqwy")
+
+[node name="CSGBox3D2" type="CSGBox3D" parent="Starting Hallway"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.5, 3, -0.0324402)
+use_collision = true
+size = Vector3(1, 6, 20.9351)
+material = ExtResource("2_lhqwy")
+
+[node name="CSGCylinder3D" type="CSGCylinder3D" parent="Starting Hallway"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 6, 2.62268e-07)
+use_collision = true
+radius = 6.0
+height = 20.5
+sides = 24
+material = ExtResource("8_yrtx2")
+
+[node name="Subtract Bottom" type="CSGBox3D" parent="Starting Hallway/CSGCylinder3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 3)
+operation = 2
+size = Vector3(15, 22, 6)
+
+[node name="Subtract Inside" type="CSGCylinder3D" parent="Starting Hallway/CSGCylinder3D"]
+operation = 2
+radius = 5.0
+height = 20.5
+sides = 24
+material = ExtResource("2_lhqwy")
+
+[node name="SpotLight3D" type="SpotLight3D" parent="Starting Hallway"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 9, 4)
+light_color = Color(0.91, 0.9505, 1, 1)
+light_energy = 8.815
+shadow_enabled = true
+spot_range = 13.66
+spot_angle = 58.2
+spot_angle_attenuation = 0.435276
+
+[node name="SpotLight3D2" type="SpotLight3D" parent="Starting Hallway"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 9, -4)
+light_color = Color(0.91, 0.9505, 1, 1)
+light_energy = 8.815
+shadow_enabled = true
+spot_range = 13.66
+spot_angle = 58.2
+spot_angle_attenuation = 0.435276
+
+[node name="Starting Area (Circle)2" type="CSGCylinder3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, -24.5)
+use_collision = true
+radius = 25.0
+height = 6.0
+sides = 32
+material = ExtResource("8_yrtx2")
+
+[node name="CSGCylinder3D2" type="CSGCylinder3D" parent="Starting Area (Circle)2"]
+operation = 2
+radius = 24.0
+height = 10.0
+sides = 32
+material = ExtResource("8_yrtx2")
+
+[node name="CSGBox3D" type="CSGBox3D" parent="Starting Area (Circle)2"]
+transform = Transform3D(0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, -17, 0, -17)
+operation = 2
+size = Vector3(6, 10, 4)
+material = ExtResource("2_lhqwy")
+
+[node name="CSGBox3D3" type="CSGBox3D" parent="Starting Area (Circle)2"]
+transform = Transform3D(0.707107, 0, -0.707107, 0, 1, 0, 0.707107, 0, 0.707107, 17, 0, -17)
+operation = 2
+size = Vector3(6, 10, 4)
+material = ExtResource("2_lhqwy")
+
+[node name="CSGBox3D4" type="CSGBox3D" parent="Starting Area (Circle)2"]
+transform = Transform3D(0.707107, 0, -0.707107, 0, 1, 0, 0.707107, 0, 0.707107, -17, 0, 17)
+operation = 2
+size = Vector3(6, 10, 4)
+material = ExtResource("2_lhqwy")
+
+[node name="CSGBox3D5" type="CSGBox3D" parent="Starting Area (Circle)2"]
+transform = Transform3D(0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, 17, 0, 17)
+operation = 2
+size = Vector3(6, 10, 4)
+material = ExtResource("2_lhqwy")
+
+[node name="CSGBox3D2" type="CSGBox3D" parent="Starting Area (Circle)2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 24)
+operation = 2
+size = Vector3(10, 10, 4)
+material = ExtResource("2_lhqwy")
+
+[node name="Spawn Location" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.89886, 39.4545)
+
+[node name="Marker3D" type="Marker3D" parent="Spawn Location"]
+gizmo_extents = 2.0
+
+[node name="Suspension_and_Camber Area" type="Node3D" parent="."]
+
+[node name="Bumps (Red)" type="Node3D" parent="Suspension_and_Camber Area"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -54.7388, -1, -9.705)
+
+[node name="CSGCylinder3D" type="CSGCylinder3D" parent="Suspension_and_Camber Area/Bumps (Red)"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 12.4643, -0.46931, -3.5914)
+use_collision = true
+radius = 1.7273
+height = 6.60309
+sides = 16
+material = ExtResource("7_82pgc")
+
+[node name="CSGCylinder3D2" type="CSGCylinder3D" parent="Suspension_and_Camber Area/Bumps (Red)"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 10.4643, -0.46931, -3.5914)
+use_collision = true
+radius = 1.7273
+height = 6.60309
+sides = 16
+material = ExtResource("7_82pgc")
+
+[node name="CSGCylinder3D3" type="CSGCylinder3D" parent="Suspension_and_Camber Area/Bumps (Red)"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 8.46428, -0.46931, -3.5914)
+use_collision = true
+radius = 1.7273
+height = 6.60309
+sides = 16
+material = ExtResource("7_82pgc")
+
+[node name="CSGCylinder3D4" type="CSGCylinder3D" parent="Suspension_and_Camber Area/Bumps (Red)"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 6.46428, -0.46931, -3.5914)
+use_collision = true
+radius = 1.7273
+height = 6.60309
+sides = 16
+material = ExtResource("7_82pgc")
+
+[node name="CSGCylinder3D5" type="CSGCylinder3D" parent="Suspension_and_Camber Area/Bumps (Red)"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 4.46428, -0.46931, -3.5914)
+use_collision = true
+radius = 1.7273
+height = 6.60309
+sides = 16
+material = ExtResource("7_82pgc")
+
+[node name="CSGCylinder3D6" type="CSGCylinder3D" parent="Suspension_and_Camber Area/Bumps (Red)"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 2.46428, -0.46931, -3.5914)
+use_collision = true
+radius = 1.7273
+height = 6.60309
+sides = 16
+material = ExtResource("7_82pgc")
+
+[node name="CSGCylinder3D7" type="CSGCylinder3D" parent="Suspension_and_Camber Area/Bumps (Red)"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0.464279, -0.46931, -3.5914)
+use_collision = true
+radius = 1.7273
+height = 6.60309
+sides = 16
+material = ExtResource("7_82pgc")
+
+[node name="CSGCylinder3D8" type="CSGCylinder3D" parent="Suspension_and_Camber Area/Bumps (Red)"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, -1.53572, -0.46931, -3.5914)
+use_collision = true
+radius = 1.7273
+height = 6.60309
+sides = 16
+material = ExtResource("7_82pgc")
+
+[node name="CSGCylinder3D9" type="CSGCylinder3D" parent="Suspension_and_Camber Area/Bumps (Red)"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, -3.53572, -0.46931, -3.5914)
+use_collision = true
+radius = 1.7273
+height = 6.60309
+sides = 16
+material = ExtResource("7_82pgc")
+
+[node name="CSGCylinder3D10" type="CSGCylinder3D" parent="Suspension_and_Camber Area/Bumps (Red)"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, -5.53572, -0.46931, -3.5914)
+use_collision = true
+radius = 1.7273
+height = 6.60309
+sides = 16
+material = ExtResource("7_82pgc")
+
+[node name="Bumps (Green)" type="Node3D" parent="Suspension_and_Camber Area"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -54.2202, -1, -3.47963)
+
+[node name="CSGCylinder3D11" type="CSGCylinder3D" parent="Suspension_and_Camber Area/Bumps (Green)"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 12.4643, -0.110437, 1.1059)
+use_collision = true
+radius = 1.7273
+height = 10.0
+sides = 16
+material = ExtResource("8_sgd0w")
+
+[node name="CSGCylinder3D12" type="CSGCylinder3D" parent="Suspension_and_Camber Area/Bumps (Green)"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 9.46428, -0.110437, 1.1059)
+use_collision = true
+radius = 1.7273
+height = 10.0
+sides = 16
+material = ExtResource("8_sgd0w")
+
+[node name="CSGCylinder3D13" type="CSGCylinder3D" parent="Suspension_and_Camber Area/Bumps (Green)"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 6.46428, -0.110437, 1.1059)
+use_collision = true
+radius = 1.7273
+height = 10.0
+sides = 16
+material = ExtResource("8_sgd0w")
+
+[node name="CSGCylinder3D14" type="CSGCylinder3D" parent="Suspension_and_Camber Area/Bumps (Green)"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 3.46428, -0.110437, 1.1059)
+use_collision = true
+radius = 1.7273
+height = 10.0
+sides = 16
+material = ExtResource("8_sgd0w")
+
+[node name="CSGCylinder3D15" type="CSGCylinder3D" parent="Suspension_and_Camber Area/Bumps (Green)"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0.464281, -0.110437, 1.1059)
+use_collision = true
+radius = 1.7273
+height = 10.0
+sides = 16
+material = ExtResource("8_sgd0w")
+
+[node name="CSGCylinder3D16" type="CSGCylinder3D" parent="Suspension_and_Camber Area/Bumps (Green)"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, -2.53572, -0.110437, 1.1059)
+use_collision = true
+radius = 1.7273
+height = 10.0
+sides = 16
+material = ExtResource("8_sgd0w")
+
+[node name="CSGCylinder3D17" type="CSGCylinder3D" parent="Suspension_and_Camber Area/Bumps (Green)"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, -5.53572, -0.110437, 1.1059)
+use_collision = true
+radius = 1.7273
+height = 10.0
+sides = 16
+material = ExtResource("8_sgd0w")
+
+[node name="Camber Ramp" type="CSGCylinder3D" parent="Suspension_and_Camber Area"]
+transform = Transform3D(0.95122, 0.0131131, 0.308236, 0.307188, 0.0522821, -0.950212, -0.0285753, 0.998547, 0.0457036, -60, 0, 25)
+use_collision = true
+radius = 11.16
+height = 26.115
+sides = 32
+material = ExtResource("16_3rhnt")
+
+[node name="CSGCylinder3D2" type="CSGCylinder3D" parent="Suspension_and_Camber Area/Camber Ramp"]
+transform = Transform3D(1, 2.98023e-08, 2.79397e-09, -1.49012e-08, 1, -2.23517e-08, 0, 1.49012e-08, 1, 8.27972, -0.277622, -11.7343)
+operation = 2
+radius = 14.88
+height = 32.455
+sides = 32
+material = ExtResource("8_yrtx2")
+
+[node name="CSGBox3D" type="CSGBox3D" parent="Suspension_and_Camber Area/Camber Ramp"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.27448, -2.23517e-07, 8.3819e-08)
+operation = 2
+size = Vector3(12.33, 28.995, 11.36)
+
+[node name="Camber Tunnel" type="CSGCylinder3D" parent="Suspension_and_Camber Area"]
+transform = Transform3D(-4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, -37.1951, 4.00787, 40.1224)
+use_collision = true
+radius = 7.81468
+height = 18.1148
+sides = 32
+material = ExtResource("2_ti2ui")
+
+[node name="CSGCylinder3D2" type="CSGCylinder3D" parent="Suspension_and_Camber Area/Camber Tunnel"]
+transform = Transform3D(-0.996541, -0.0826026, 0.00916055, 0.0825796, -0.99658, -0.00286462, 0.00936584, -0.00209825, 0.999954, -0.259198, 1.31656, 0.00896456)
+operation = 2
+radius = 7.81468
+height = 33.1658
+sides = 32
+cone = true
+
+[node name="CSGBox3D" type="CSGBox3D" parent="Suspension_and_Camber Area/Camber Tunnel"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.26294, 0, 0)
+operation = 2
+size = Vector3(9.6521, 20.9795, 20.8965)
+
+[node name="CSGBox3D2" type="CSGBox3D" parent="Suspension_and_Camber Area/Camber Tunnel"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.262363, 0, -8.36173)
+operation = 2
+size = Vector3(9.6521, 20.9795, 4.42993)
+
+[node name="CSGBox3D3" type="CSGBox3D" parent="Suspension_and_Camber Area/Camber Tunnel"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.262363, 0, 8.39095)
+operation = 2
+size = Vector3(9.6521, 20.9795, 4.42993)

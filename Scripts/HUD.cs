@@ -14,6 +14,7 @@ public partial class HUD : Node
 		EndScreen,
 		EndScreenServer,
 		Options,
+		Demo,
 		None    // This should always be the last value
 	}
 

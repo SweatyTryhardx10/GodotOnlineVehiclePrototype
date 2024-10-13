@@ -15,8 +15,11 @@ public partial class VehicleEngineSound : AudioStreamPlayer3D
 		if (!engine.IsValid())
 			return;
 		
-		float targetPitch;
-		targetPitch = Mathf.Lerp(pitchInterval.X, pitchInterval.Y, Mathf.Clamp(engine.NormRPM, 0f, 1f));	// Should the normalized RPM be clamped here or before you get it?
+		float targetPitch = 1f;
+		if (engine is EngineRealistic er)
+			targetPitch = Mathf.Lerp(pitchInterval.X, pitchInterval.Y, Mathf.Clamp(er.NormRPM, 0f, 1f));	// Should the normalized RPM be clamped here or before you get it?
+		else if (engine is EngineSimple es)
+			targetPitch = Mathf.Lerp(pitchInterval.X, pitchInterval.Y, Mathf.Clamp(es.Utilization, 0f, 1f));
 
 		float newPitch = Util.ExpDecay(PitchScale, targetPitch, 10, (float)delta);
 		PitchScale = newPitch;

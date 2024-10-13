@@ -1,15 +1,15 @@
-[gd_scene load_steps=30 format=3 uid="uid://suinvyn3ii48"]
+[gd_scene load_steps=29 format=3 uid="uid://suinvyn3ii48"]
 
 [ext_resource type="PhysicsMaterial" uid="uid://dndcfdqduc6qj" path="res://Data/physMat_elastic.tres" id="1_dentn"]
 [ext_resource type="Script" path="res://Scripts/VehicleController.cs" id="2_k3iwu"]
 [ext_resource type="Material" uid="uid://ccw2tuc2fex2k" path="res://Materials/pbr_tri_proto_green.tres" id="3_5baxy"]
+[ext_resource type="Script" path="res://Scripts/EngineSimple.cs" id="3_abgn6"]
 [ext_resource type="Script" path="res://Scripts/RigidBodyInterpolater.cs" id="4_ppror"]
 [ext_resource type="AudioStream" uid="uid://ds1c3twbvm88j" path="res://Audio/Porsche Macan S, Take 08, Engine, 0k RPM Idle, Loop.mp3" id="11_h1ny4"]
 [ext_resource type="Script" path="res://Scripts/Audio/VehicleEngineSound.cs" id="12_x5el2"]
 [ext_resource type="PackedScene" uid="uid://c7y5ygnwb7vkm" path="res://Prefabs/Wheels/wheel_standard.tscn" id="15_pcuam"]
 [ext_resource type="Script" path="res://Scripts/Health.cs" id="16_tvrd3"]
 [ext_resource type="AudioStream" uid="uid://b6wyk6t3rf3n2" path="res://Audio/ES_MetalDoor_Impact/ES_MetalDoor_Impact-01.wav" id="17_impe7"]
-[ext_resource type="Script" path="res://Scripts/Engine.cs" id="17_nrfsv"]
 [ext_resource type="Script" path="res://Scripts/DamageSource.cs" id="17_vg0ti"]
 [ext_resource type="AudioStream" uid="uid://dxj7i2poa3g4w" path="res://Audio/ES_MetalDoor_Impact/ES_MetalDoor_Impact-02.wav" id="18_vi2uc"]
 [ext_resource type="AudioStream" uid="uid://hv5nynco1uxd" path="res://Audio/Gear Change/GearChange-01.wav" id="19_6qnuc"]
@@ -24,12 +24,6 @@
 [ext_resource type="AudioStream" uid="uid://y0th501jneqo" path="res://Audio/ES_MetalDoor_Impact/ES_MetalDoor_Impact-07.wav" id="23_kuohq"]
 [ext_resource type="AudioStream" uid="uid://06mn4swbb0ad" path="res://Audio/ES_MetalDoor_Impact/ES_MetalDoor_Impact-08.wav" id="24_oxat2"]
 [ext_resource type="AudioStream" uid="uid://bm6tr88f7y012" path="res://Audio/ES_MetalDoor_Impact/ES_MetalDoor_Impact-09.wav" id="25_m6k8l"]
-
-[sub_resource type="Curve" id="Curve_2clbd"]
-min_value = 50.0
-max_value = 100.0
-_data = [Vector2(0, 50), 0.0, 0.0, 0, 0, Vector2(0.668, 100), 0.0, 0.0, 0, 0, Vector2(0.880109, 100), 0.0, 0.0, 0, 0, Vector2(1, 86.9609), -32.8994, 0.0, 0, 0]
-point_count = 4
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_ikhbo"]
 size = Vector3(2, 0.7, 4)
@@ -71,25 +65,22 @@ script = ExtResource("2_k3iwu")
 engine = NodePath("Engine")
 
 [node name="Engine" type="Node" parent="."]
-script = ExtResource("17_nrfsv")
-torqueCurve = SubResource("Curve_2clbd")
-brakeStrength = 4.0
-engineBrakeStrength = 0.196
-gearRatios = PackedFloat32Array(-2, 2, 1, 0.45)
-gearChangeTime = 0.35
-rpmRange = Vector2(500, 3000)
+script = ExtResource("3_abgn6")
+torque = 100.0
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.143311, 0)
 shape = SubResource("BoxShape3D_ikhbo")
 
 [node name="MeshObject" type="MeshInstance3D" parent="." node_paths=PackedStringArray("body")]
-process_priority = -10
-process_physics_priority = -10
+process_priority = 10
+process_physics_priority = 10
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.143, 0)
 material_override = ExtResource("3_5baxy")
 mesh = SubResource("BoxMesh_vxlv5")
 script = ExtResource("4_ppror")
+interpolatePosition = false
+interpolateRotation = false
 body = NodePath("..")
 
 [node name="Wheel (BR)" parent="." instance=ExtResource("15_pcuam")]
@@ -97,20 +88,24 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.186, 0, 1.137)
 lateralSlipScaling = 0.8
 longitudinalSlipScaling = 0.8
 PoweredByEngine = true
+interpolateSpringState = false
 
 [node name="Wheel (BL)" parent="." instance=ExtResource("15_pcuam")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.186, 0, 1.137)
 lateralSlipScaling = 0.8
 longitudinalSlipScaling = 0.8
 PoweredByEngine = true
+interpolateSpringState = false
 
 [node name="Wheel (FL)" parent="." instance=ExtResource("15_pcuam")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.186, 0, -1.137)
 SteeringInterval = Vector2(-30, 30)
+interpolateSpringState = false
 
 [node name="Wheel (FR)" parent="." instance=ExtResource("15_pcuam")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.18608, 0, -1.137)
 SteeringInterval = Vector2(-30, 30)
+interpolateSpringState = false
 
 [node name="Engine Sound" type="AudioStreamPlayer3D" parent="." node_paths=PackedStringArray("engine")]
 stream = ExtResource("11_h1ny4")
@@ -142,6 +137,5 @@ volume_db = -8.0
 max_db = -5.0
 max_polyphony = 3
 
-[connection signal="OnGearChanged" from="Engine" to="Audio - Gear Change" method="OnGearChanged"]
 [connection signal="OnHealthChanged" from="Health" to="Engine Sound" method="OnHealthChanged"]
 [connection signal="OnHealthChanged" from="Health" to="Audio - Health Changed" method="play" unbinds=1]

@@ -1,9 +1,8 @@
-[gd_scene load_steps=27 format=3 uid="uid://b10be8b37v3su"]
+[gd_scene load_steps=24 format=3 uid="uid://b10be8b37v3su"]
 
 [ext_resource type="Script" path="res://Scripts/VehicleController.cs" id="1_qkoxn"]
-[ext_resource type="Script" path="res://Scripts/Engine.cs" id="2_6bdku"]
+[ext_resource type="Script" path="res://Scripts/EngineSimple.cs" id="2_trl0k"]
 [ext_resource type="Script" path="res://Scripts/RigidBodyInterpolater.cs" id="3_8g8by"]
-[ext_resource type="Curve" uid="uid://gfa656aoyhcn" path="res://Data/acceleration_slowAndSteady.tres" id="3_45alj"]
 [ext_resource type="Material" uid="uid://ccw2tuc2fex2k" path="res://Materials/pbr_tri_proto_green.tres" id="4_kw6we"]
 [ext_resource type="Script" path="res://Scripts/Joints/PropellerJoint.cs" id="5_0n5ov"]
 [ext_resource type="Material" uid="uid://bmoqd82be6h4l" path="res://Materials/pbr_tri_proto_dark.tres" id="6_hce5r"]
@@ -12,13 +11,11 @@
 [ext_resource type="Material" uid="uid://pmhdpge6h15x" path="res://Materials/pbr_tri_proto_red.tres" id="7_67bkj"]
 [ext_resource type="Script" path="res://Scripts/Joints/WheelJoint.cs" id="8_3xph7"]
 [ext_resource type="AudioStream" uid="uid://b7l0evj6kexpr" path="res://Audio/Chopper. Standing Still, Close, Loop.mp3" id="9_iyum8"]
-[ext_resource type="Curve" uid="uid://d0baj0wfpyvpf" path="res://Data/Slip Curves/lateralSlipCurve_Realistic.tres" id="9_kga7v"]
 [ext_resource type="Script" path="res://Scripts/Audio/MotionAudio.cs" id="10_nsy0p"]
 [ext_resource type="Script" path="res://Scripts/DamageSource.cs" id="12_h757s"]
 [ext_resource type="AudioStream" uid="uid://ds1c3twbvm88j" path="res://Audio/Porsche Macan S, Take 08, Engine, 0k RPM Idle, Loop.mp3" id="12_x0ws1"]
 [ext_resource type="Script" path="res://Scripts/Joints/HydraulicJoint.cs" id="12_y0boc"]
 [ext_resource type="Script" path="res://Scripts/Audio/VehicleEngineSound.cs" id="13_3uy18"]
-[ext_resource type="Curve" uid="uid://btlwnx0un8o8e" path="res://Data/Slip Curves/longitudinalSlipCurve_Realistic.tres" id="17_ocrur"]
 [ext_resource type="Script" path="res://Scripts/Health.cs" id="19_exrey"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_dqocv"]
@@ -53,14 +50,8 @@ script = ExtResource("1_qkoxn")
 engine = NodePath("Engine")
 
 [node name="Engine" type="Node" parent="."]
-script = ExtResource("2_6bdku")
-displacementSpeed = 3000.0
-accelerationCurve = ExtResource("3_45alj")
-brakeStrength = 4.0
-engineBrakeStrength = 0.196
-gearRatios = PackedFloat32Array(1)
-gearChangeTime = 1.0
-rpmRange = Vector2(500, 3000)
+script = ExtResource("2_trl0k")
+torque = 50.0
 
 [node name="MeshObject" type="Node3D" parent="." node_paths=PackedStringArray("body")]
 script = ExtResource("3_8g8by")
@@ -81,6 +72,8 @@ shape = SubResource("BoxShape3D_xd1hs")
 
 [node name="PinJoint3D (for propeller)" type="PinJoint3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+node_a = NodePath("..")
+node_b = NodePath("../CTRL_Propeller")
 params/bias = 0.7
 params/impulse_clamp = 10.19
 
@@ -259,8 +252,6 @@ script = ExtResource("8_3xph7")
 length = 1.0
 stiffness = 5000.0
 damping = 450.0
-lateralSlipCurve = ExtResource("9_kga7v")
-longitudinalSlipCurve = ExtResource("17_ocrur")
 SteeringInterval = Vector2(0, 0)
 wheelMesh = NodePath("Mesh Container")
 
@@ -276,8 +267,6 @@ script = ExtResource("8_3xph7")
 length = 1.0
 stiffness = 5000.0
 damping = 450.0
-lateralSlipCurve = ExtResource("9_kga7v")
-longitudinalSlipCurve = ExtResource("17_ocrur")
 steeringTime = 2.0
 PoweredByEngine = false
 wheelMesh = NodePath("Mesh Container")
@@ -294,8 +283,6 @@ script = ExtResource("8_3xph7")
 length = 1.0
 stiffness = 5000.0
 damping = 450.0
-lateralSlipCurve = ExtResource("9_kga7v")
-longitudinalSlipCurve = ExtResource("17_ocrur")
 SteeringInterval = Vector2(0, 0)
 wheelMesh = NodePath("Mesh Container")
 
@@ -311,8 +298,6 @@ script = ExtResource("8_3xph7")
 length = 1.0
 stiffness = 5000.0
 damping = 450.0
-lateralSlipCurve = ExtResource("9_kga7v")
-longitudinalSlipCurve = ExtResource("17_ocrur")
 steeringTime = 2.0
 PoweredByEngine = false
 wheelMesh = NodePath("Mesh Container")

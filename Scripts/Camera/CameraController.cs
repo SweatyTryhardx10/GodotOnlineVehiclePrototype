@@ -26,6 +26,11 @@ public partial class CameraController : Camera3D
 	private ulong lastLookInputTime;
 	private float TimeSinceLookInput => (Time.GetTicksMsec() - lastLookInputTime) / 1000f;
 
+	[ExportGroup("Free Cam Settings")]
+	[Export] private float freeCamSpeed = 10f;
+
+	public static bool FreeCamEnabled {get; private set; } = false;
+
 	public override void _Ready()
 	{
 		Input.MouseMode = Input.MouseModeEnum.Captured;
@@ -79,7 +84,10 @@ public partial class CameraController : Camera3D
 		// Compute the camera transform "stack"
 		Vector3 newPosition = Vector3.Zero;
 		Vector3 newRotation = Vector3.Zero;
-		ProcessCamera(delta, ref newPosition, ref newRotation);	// #1
+		if (FreeCamEnabled)
+			ProcessFreeCam(delta, ref newPosition, ref newRotation);
+		else
+			ProcessCamera(delta, ref newPosition, ref newRotation);	// #1
 		ProcessShakeObjects(ref newPosition, ref newRotation);	// #2
 
 		// Set position and rotation of camera
@@ -110,6 +118,24 @@ public partial class CameraController : Camera3D
 		rotation = targetRotation;
 	}
 
+	private void ProcessFreeCam(double delta, ref Vector3 position, ref Vector3 rotation)
+	{
+		// TODO: Improve the way input actions are retrieved. Using a set of strings to retrieve an input vector in several scripts is not maintainable.
+		Vector2 moveInput = Input.GetVector("Steer Left", "Steer Right", "Brake", "Accelerate");
+		float moveVertical = (Input.IsKeyPressed(Key.Ctrl) ? -1f : 0f) + (Input.IsKeyPressed(Key.Space) ? 1f : 0f);
+		Vector3 moveVector = GlobalBasis * new Vector3(
+			moveInput.X,
+			moveVertical,
+			-moveInput.Y
+		);
+		
+		Vector3 targetPosition = GlobalPosition + moveVector * freeCamSpeed * (Input.IsKeyPressed(Key.Shift) ? 2f : 1f) * (float)delta;
+		Vector3 targetRotation = GlobalRotation - new Vector3(inputLookSmoothed.Y, inputLookSmoothed.X, 0f) * (float)delta;
+		
+		position = targetPosition;
+		rotation = targetRotation;
+	}
+
 	private void ProcessShakeObjects(ref Vector3 position, ref Vector3 rotation)
 	{
 		Vector3 posOffsetSum = Vector3.Zero;
@@ -123,6 +149,11 @@ public partial class CameraController : Camera3D
 		
 		position += posOffsetSum;
 		rotation *= rotOffsetSum;
+	}
+
+	public static void SetFreeCam(bool enable)
+	{
+		FreeCamEnabled = enable;
 	}
 
 	public override void _Input(InputEvent @event)

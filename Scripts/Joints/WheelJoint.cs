@@ -322,7 +322,7 @@ public partial class WheelJoint : Node3D
 			else
 			{
 				// No terrain data is available. Use the first (default) terrain profile.
-				GD.PushWarning("No terrain data is available!");
+				// GD.PushWarning("No terrain data is available!");
 				latestTerrainProfileIdx = 0;
 			}
 		}

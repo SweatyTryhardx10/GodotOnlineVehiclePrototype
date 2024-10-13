@@ -1,8 +1,8 @@
-[gd_scene load_steps=31 format=3 uid="uid://cq4a6lilby0bp"]
+[gd_scene load_steps=30 format=3 uid="uid://cq4a6lilby0bp"]
 
 [ext_resource type="PhysicsMaterial" uid="uid://d0tyduv0wwgse" path="res://Data/physMat_Slippery.tres" id="1_su6v1"]
 [ext_resource type="Script" path="res://Scripts/VehicleController.cs" id="2_rmoyc"]
-[ext_resource type="Script" path="res://Scripts/Engine.cs" id="3_uqbac"]
+[ext_resource type="Script" path="res://Scripts/EngineSimple.cs" id="3_rdtx1"]
 [ext_resource type="Material" uid="uid://ccw2tuc2fex2k" path="res://Materials/pbr_tri_proto_green.tres" id="4_up0al"]
 [ext_resource type="Script" path="res://Scripts/RigidBodyInterpolater.cs" id="5_l8mnx"]
 [ext_resource type="Material" uid="uid://ce1thvhy54x5e" path="res://Materials/pbr_tri_reflective.tres" id="5_oi70n"]
@@ -17,12 +17,6 @@
 [ext_resource type="PackedScene" uid="uid://dkg7c3xkokyqy" path="res://Data/Terrain Profiles/terrain_profile_ice.tscn" id="15_5sx3u"]
 [ext_resource type="AudioStream" uid="uid://bwqyhn635c2ky" path="res://Audio/Truck Engine, Airy, Medium RPM.mp3" id="15_i0r0q"]
 [ext_resource type="Script" path="res://Scripts/Audio/VehicleEngineSound.cs" id="15_lpww2"]
-
-[sub_resource type="Curve" id="Curve_kfo5q"]
-min_value = 50.0
-max_value = 300.0
-_data = [Vector2(0, 50), 0.0, 0.0, 0, 0, Vector2(0.667575, 300), 0.0, 0.0, 0, 0, Vector2(1, 215.453), 0.0, 0.0, 0, 0]
-point_count = 3
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_djj7r"]
 size = Vector3(4, 3.4673, 4)
@@ -94,14 +88,7 @@ script = ExtResource("2_rmoyc")
 engine = NodePath("Engine")
 
 [node name="Engine" type="Node" parent="."]
-script = ExtResource("3_uqbac")
-displacementSpeed = 3000.0
-torqueCurve = SubResource("Curve_kfo5q")
-brakeStrength = 4.0
-engineBrakeStrength = 0.196
-gearRatios = PackedFloat32Array(1, 5, 6)
-gearChangeTime = 1.0
-rpmRange = Vector2(500, 3000)
+script = ExtResource("3_rdtx1")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, -2.38419e-07, 1.52696, -2.39913)
@@ -123,6 +110,8 @@ shape = SubResource("CylinderShape3D_23ge7")
 process_priority = -10
 process_physics_priority = -10
 script = ExtResource("5_l8mnx")
+interpolatePosition = false
+interpolateRotation = false
 body = NodePath("..")
 
 [node name="MeshInstance3D2" type="MeshInstance3D" parent="MeshObject"]
@@ -178,10 +167,11 @@ length = 1.0
 stiffness = 35000.0
 damping = 550.0
 radius = 1.0
-lateralSlipScaling = 0.8
+lateralSlipScaling = 1.1
 SteeringInterval = Vector2(-20, 20)
 steeringTime = 3.0
 PoweredByEngine = false
+interpolateSpringState = false
 wheelMesh = NodePath("Mesh Container")
 
 [node name="Mesh Container" type="Node3D" parent="Spring (FR)"]
@@ -233,13 +223,13 @@ script = ExtResource("12_bwps6")
 slipActivationThreshold = 0.35
 
 [node name="Terrain Profile (Default)" parent="Spring (FR)" node_paths=PackedStringArray("particles") instance=ExtResource("13_xwgeu")]
-particles = [NodePath(""), NodePath("")]
+particles = [null, null]
 
 [node name="Terrain Profile (Dirt)" parent="Spring (FR)" node_paths=PackedStringArray("particles") instance=ExtResource("14_d0c14")]
-particles = [NodePath(""), NodePath("")]
+particles = [null, null]
 
 [node name="Terrain Profile (Ice)" parent="Spring (FR)" node_paths=PackedStringArray("particles") instance=ExtResource("15_5sx3u")]
-particles = [NodePath(""), NodePath("")]
+particles = [null, null]
 
 [node name="Spring (FL)" type="Node3D" parent="." node_paths=PackedStringArray("wheelMesh")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.293, 0.0631142, -2.72243)
@@ -248,10 +238,11 @@ length = 1.0
 stiffness = 35000.0
 damping = 550.0
 radius = 1.0
-lateralSlipScaling = 0.8
+lateralSlipScaling = 1.1
 SteeringInterval = Vector2(-20, 20)
 steeringTime = 3.0
 PoweredByEngine = false
+interpolateSpringState = false
 wheelMesh = NodePath("Mesh Container")
 
 [node name="Mesh Container" type="Node3D" parent="Spring (FL)"]
@@ -303,23 +294,24 @@ script = ExtResource("12_bwps6")
 slipActivationThreshold = 0.35
 
 [node name="Terrain Profile (Default)" parent="Spring (FL)" node_paths=PackedStringArray("particles") instance=ExtResource("13_xwgeu")]
-particles = [NodePath(""), NodePath("")]
+particles = [null, null]
 
 [node name="Terrain Profile (Dirt)" parent="Spring (FL)" node_paths=PackedStringArray("particles") instance=ExtResource("14_d0c14")]
-particles = [NodePath(""), NodePath("")]
+particles = [null, null]
 
 [node name="Terrain Profile (Ice)" parent="Spring (FL)" node_paths=PackedStringArray("particles") instance=ExtResource("15_5sx3u")]
-particles = [NodePath(""), NodePath("")]
+particles = [null, null]
 
 [node name="Spring (BR)3" type="Node3D" parent="." node_paths=PackedStringArray("wheelMesh")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.29333, 0.0631142, 2.10297)
 script = ExtResource("7_hjwp7")
 length = 1.0
-stiffness = 12000.0
-damping = 550.0
+stiffness = 14000.0
+damping = 750.0
 radius = 1.0
 lateralSlipScaling = 0.8
 SteeringInterval = Vector2(0, 0)
+interpolateSpringState = false
 wheelMesh = NodePath("Mesh Container")
 
 [node name="Mesh Container" type="Node3D" parent="Spring (BR)3"]
@@ -371,23 +363,24 @@ script = ExtResource("12_bwps6")
 slipActivationThreshold = 0.35
 
 [node name="Terrain Profile (Default)" parent="Spring (BR)3" node_paths=PackedStringArray("particles") instance=ExtResource("13_xwgeu")]
-particles = [NodePath(""), NodePath("")]
+particles = [null, null]
 
 [node name="Terrain Profile (Dirt)" parent="Spring (BR)3" node_paths=PackedStringArray("particles") instance=ExtResource("14_d0c14")]
-particles = [NodePath(""), NodePath("")]
+particles = [null, null]
 
 [node name="Terrain Profile (Ice)" parent="Spring (BR)3" node_paths=PackedStringArray("particles") instance=ExtResource("15_5sx3u")]
-particles = [NodePath(""), NodePath("")]
+particles = [null, null]
 
 [node name="Spring (BR)4" type="Node3D" parent="." node_paths=PackedStringArray("wheelMesh")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.293, 0.0631142, 2.10254)
 script = ExtResource("7_hjwp7")
 length = 1.0
-stiffness = 12000.0
-damping = 550.0
+stiffness = 14000.0
+damping = 750.0
 radius = 1.0
 lateralSlipScaling = 0.8
 SteeringInterval = Vector2(0, 0)
+interpolateSpringState = false
 wheelMesh = NodePath("Mesh Container")
 
 [node name="Mesh Container" type="Node3D" parent="Spring (BR)4"]
@@ -439,23 +432,24 @@ script = ExtResource("12_bwps6")
 slipActivationThreshold = 0.35
 
 [node name="Terrain Profile (Default)" parent="Spring (BR)4" node_paths=PackedStringArray("particles") instance=ExtResource("13_xwgeu")]
-particles = [NodePath(""), NodePath("")]
+particles = [null, null]
 
 [node name="Terrain Profile (Dirt)" parent="Spring (BR)4" node_paths=PackedStringArray("particles") instance=ExtResource("14_d0c14")]
-particles = [NodePath(""), NodePath("")]
+particles = [null, null]
 
 [node name="Terrain Profile (Ice)" parent="Spring (BR)4" node_paths=PackedStringArray("particles") instance=ExtResource("15_5sx3u")]
-particles = [NodePath(""), NodePath("")]
+particles = [null, null]
 
 [node name="Spring (BR)5" type="Node3D" parent="." node_paths=PackedStringArray("wheelMesh")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.29333, 0.0631142, 4.26383)
 script = ExtResource("7_hjwp7")
 length = 1.0
-stiffness = 12000.0
-damping = 550.0
+stiffness = 14000.0
+damping = 750.0
 radius = 1.0
 lateralSlipScaling = 0.8
 SteeringInterval = Vector2(0, 0)
+interpolateSpringState = false
 wheelMesh = NodePath("Mesh Container")
 
 [node name="Mesh Container" type="Node3D" parent="Spring (BR)5"]
@@ -507,23 +501,24 @@ script = ExtResource("12_bwps6")
 slipActivationThreshold = 0.35
 
 [node name="Terrain Profile (Default)" parent="Spring (BR)5" node_paths=PackedStringArray("particles") instance=ExtResource("13_xwgeu")]
-particles = [NodePath(""), NodePath("")]
+particles = [null, null]
 
 [node name="Terrain Profile (Dirt)" parent="Spring (BR)5" node_paths=PackedStringArray("particles") instance=ExtResource("14_d0c14")]
-particles = [NodePath(""), NodePath("")]
+particles = [null, null]
 
 [node name="Terrain Profile (Ice)" parent="Spring (BR)5" node_paths=PackedStringArray("particles") instance=ExtResource("15_5sx3u")]
-particles = [NodePath(""), NodePath("")]
+particles = [null, null]
 
 [node name="Spring (BR)6" type="Node3D" parent="." node_paths=PackedStringArray("wheelMesh")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.293, 0.0631142, 4.2634)
 script = ExtResource("7_hjwp7")
 length = 1.0
-stiffness = 12000.0
-damping = 550.0
+stiffness = 14000.0
+damping = 750.0
 radius = 1.0
 lateralSlipScaling = 0.8
 SteeringInterval = Vector2(0, 0)
+interpolateSpringState = false
 wheelMesh = NodePath("Mesh Container")
 
 [node name="Mesh Container" type="Node3D" parent="Spring (BR)6"]
@@ -575,13 +570,13 @@ script = ExtResource("12_bwps6")
 slipActivationThreshold = 0.35
 
 [node name="Terrain Profile (Default)" parent="Spring (BR)6" node_paths=PackedStringArray("particles") instance=ExtResource("13_xwgeu")]
-particles = [NodePath(""), NodePath("")]
+particles = [null, null]
 
 [node name="Terrain Profile (Dirt)" parent="Spring (BR)6" node_paths=PackedStringArray("particles") instance=ExtResource("14_d0c14")]
-particles = [NodePath(""), NodePath("")]
+particles = [null, null]
 
 [node name="Terrain Profile (Ice)" parent="Spring (BR)6" node_paths=PackedStringArray("particles") instance=ExtResource("15_5sx3u")]
-particles = [NodePath(""), NodePath("")]
+particles = [null, null]
 
 [node name="Engine Sound" type="AudioStreamPlayer3D" parent="." node_paths=PackedStringArray("engine")]
 stream = ExtResource("15_i0r0q")

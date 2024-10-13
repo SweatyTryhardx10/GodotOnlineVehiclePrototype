@@ -45,7 +45,8 @@ public partial class ClientInput : Node
 			vehicle = vc;
 		}
 
-		// Get references to all control nodes
+		// Get references to all control nodes (e.g. helicopter joint, hydraulics etc.)
+		// NOTE: Polymorphism via explicit function calls and object naming.
 		controlNodes = GetParent().GetAllNodes<Node>(true).Where(n => ((string)n.Name).Contains("CTRL_")).ToList();
 		
 		string msg = string.Empty;
@@ -63,7 +64,7 @@ public partial class ClientInput : Node
 			return;
 
 		// Control the vehicle if this is determined to be owned by the local client
-		if (isLocal)
+		if (isLocal || peerID == -1)	// NOTE: a peer ID of -1 means the client is not considered part of a network.
 		{
 			float throttle = Input.GetAxis(INPUTBACK, INPUTFORWARD);
 			float steering = Input.GetAxis(INPUTLEFT, INPUTRIGHT);
@@ -74,7 +75,7 @@ public partial class ClientInput : Node
 			vehicle.steering = steering;
 
 			// Send local vehicle input to other peers
-			if (mp.IsValid())
+			if (mp.IsValid() && peerID != -1)
 				Rpc(MethodName.PerformInput, steering, throttle);
 
 			// Send control action to other peers
@@ -100,7 +101,7 @@ public partial class ClientInput : Node
 	{
 		if (inFocus)
 		{
-			if (@event.IsActionPressed("Reset") && isLocal)
+			if (@event.IsActionPressed("Reset") && (isLocal || peerID == -1))
 			{
 				vehicle.QueueReset();
 			}
