@@ -1,4 +1,4 @@
-[gd_scene load_steps=23 format=3 uid="uid://dr057ngllbjlx"]
+[gd_scene load_steps=28 format=3 uid="uid://dr057ngllbjlx"]
 
 [ext_resource type="Script" path="res://Scripts/Demo/DemoController.cs" id="1_jyxmy"]
 [ext_resource type="Material" uid="uid://7wc4p0xj4re0" path="res://Materials/pbr_triG_proto_dark.tres" id="2_lhqwy"]
@@ -50,6 +50,26 @@ albedo_texture = SubResource("ViewportTexture_dt22g")
 resource_local_to_scene = true
 material = SubResource("StandardMaterial3D_ims4f")
 size = Vector2(5, 3)
+
+[sub_resource type="PrismMesh" id="PrismMesh_pkryy"]
+left_to_right = 1.0
+size = Vector3(10, 2, 10)
+
+[sub_resource type="PrismMesh" id="PrismMesh_xhfop"]
+left_to_right = 1.0
+size = Vector3(10, 4, 14)
+
+[sub_resource type="PrismMesh" id="PrismMesh_4hwpm"]
+left_to_right = 1.0
+size = Vector3(10, 5, 14)
+
+[sub_resource type="PrismMesh" id="PrismMesh_j22ec"]
+left_to_right = 1.0
+size = Vector3(10, 10, 10)
+
+[sub_resource type="PrismMesh" id="PrismMesh_pfiyg"]
+left_to_right = 1.0
+size = Vector3(15, 10, 10)
 
 [node name="LevelDemo" type="Node3D" node_paths=PackedStringArray("spawnNode")]
 script = ExtResource("1_jyxmy")
@@ -272,46 +292,46 @@ spot_range = 13.66
 spot_angle = 58.2
 spot_angle_attenuation = 0.435276
 
-[node name="Starting Area (Circle)2" type="CSGCylinder3D" parent="."]
+[node name="Center Area (Circle)" type="CSGCylinder3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, -24.5)
 use_collision = true
 radius = 25.0
-height = 6.0
+height = 12.0
 sides = 32
 material = ExtResource("8_yrtx2")
 
-[node name="CSGCylinder3D2" type="CSGCylinder3D" parent="Starting Area (Circle)2"]
+[node name="CSGCylinder3D2" type="CSGCylinder3D" parent="Center Area (Circle)"]
 operation = 2
 radius = 24.0
-height = 10.0
+height = 18.0
 sides = 32
 material = ExtResource("8_yrtx2")
 
-[node name="CSGBox3D" type="CSGBox3D" parent="Starting Area (Circle)2"]
+[node name="CSGBox3D" type="CSGBox3D" parent="Center Area (Circle)"]
 transform = Transform3D(0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, -17, 0, -17)
 operation = 2
 size = Vector3(6, 10, 4)
 material = ExtResource("2_lhqwy")
 
-[node name="CSGBox3D3" type="CSGBox3D" parent="Starting Area (Circle)2"]
+[node name="CSGBox3D3" type="CSGBox3D" parent="Center Area (Circle)"]
 transform = Transform3D(0.707107, 0, -0.707107, 0, 1, 0, 0.707107, 0, 0.707107, 17, 0, -17)
 operation = 2
 size = Vector3(6, 10, 4)
 material = ExtResource("2_lhqwy")
 
-[node name="CSGBox3D4" type="CSGBox3D" parent="Starting Area (Circle)2"]
+[node name="CSGBox3D4" type="CSGBox3D" parent="Center Area (Circle)"]
 transform = Transform3D(0.707107, 0, -0.707107, 0, 1, 0, 0.707107, 0, 0.707107, -17, 0, 17)
 operation = 2
 size = Vector3(6, 10, 4)
 material = ExtResource("2_lhqwy")
 
-[node name="CSGBox3D5" type="CSGBox3D" parent="Starting Area (Circle)2"]
+[node name="CSGBox3D5" type="CSGBox3D" parent="Center Area (Circle)"]
 transform = Transform3D(0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, 17, 0, 17)
 operation = 2
 size = Vector3(6, 10, 4)
 material = ExtResource("2_lhqwy")
 
-[node name="CSGBox3D2" type="CSGBox3D" parent="Starting Area (Circle)2"]
+[node name="CSGBox3D2" type="CSGBox3D" parent="Center Area (Circle)"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 24)
 operation = 2
 size = Vector3(10, 10, 4)
@@ -518,3 +538,119 @@ size = Vector3(9.6521, 20.9795, 4.42993)
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.262363, 0, 8.39095)
 operation = 2
 size = Vector3(9.6521, 20.9795, 4.42993)
+
+[node name="CSGBox3D" type="CSGBox3D" parent="Suspension_and_Camber Area"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -49.922, 5, -24)
+use_collision = true
+size = Vector3(51, 10, 1)
+material = ExtResource("2_lhqwy")
+
+[node name="CSGBox3D2" type="CSGBox3D" parent="Suspension_and_Camber Area"]
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, -74.922, 5, 13)
+use_collision = true
+size = Vector3(73, 10, 1)
+material = ExtResource("2_lhqwy")
+
+[node name="CSGBox3D3" type="CSGBox3D" parent="Suspension_and_Camber Area"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -38.922, 5, 50)
+use_collision = true
+size = Vector3(73, 10, 1)
+material = ExtResource("2_lhqwy")
+
+[node name="Hillclimbing Area" type="Node3D" parent="."]
+
+[node name="CSGBox3D4" type="CSGBox3D" parent="Hillclimbing Area"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -49.922, 5, -25)
+use_collision = true
+size = Vector3(51, 10, 1)
+material = ExtResource("2_lhqwy")
+
+[node name="CSGBox3D5" type="CSGBox3D" parent="Hillclimbing Area"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -37.922, 7.5, -90)
+use_collision = true
+size = Vector3(75, 15, 1)
+material = ExtResource("2_lhqwy")
+
+[node name="CSGBox3D6" type="CSGBox3D" parent="Hillclimbing Area"]
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, -74.922, 7.5, -57.5)
+use_collision = true
+size = Vector3(64, 15, 1)
+material = ExtResource("2_lhqwy")
+
+[node name="CSGBox3D7" type="CSGBox3D" parent="Hillclimbing Area"]
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 5.46392e-07, 5, -70)
+use_collision = true
+size = Vector3(41, 10, 1)
+material = ExtResource("2_lhqwy")
+
+[node name="CSGMesh3D" type="CSGMesh3D" parent="Hillclimbing Area"]
+transform = Transform3D(-0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, -0.707107, -27.2929, 1, -51.8787)
+use_collision = true
+mesh = SubResource("PrismMesh_pkryy")
+material = ExtResource("8_sgd0w")
+
+[node name="CSGMesh3D2" type="CSGMesh3D" parent="Hillclimbing Area/CSGMesh3D"]
+transform = Transform3D(-1, 0, 8.74228e-08, 0, 1, 0, -8.74228e-08, 0, -1, 10, 0, 8.74228e-07)
+mesh = SubResource("PrismMesh_pkryy")
+material = ExtResource("8_sgd0w")
+
+[node name="CSGMesh3D2" type="CSGMesh3D" parent="Hillclimbing Area"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -55, 2, -32)
+use_collision = true
+mesh = SubResource("PrismMesh_xhfop")
+material = ExtResource("8_yrtx2")
+
+[node name="CSGMesh3D3" type="CSGMesh3D" parent="Hillclimbing Area/CSGMesh3D2"]
+transform = Transform3D(-1, 0, 8.74228e-08, 0, 1, 0, -8.74228e-08, 0, -1, 10, 0, 0)
+mesh = SubResource("PrismMesh_xhfop")
+material = ExtResource("8_yrtx2")
+
+[node name="CSGMesh3D3" type="CSGMesh3D" parent="Hillclimbing Area"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -55, 2.5, -82.5)
+use_collision = true
+mesh = SubResource("PrismMesh_4hwpm")
+material = ExtResource("7_82pgc")
+
+[node name="CSGBox3D" type="CSGBox3D" parent="Hillclimbing Area/CSGMesh3D3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 0, 0)
+size = Vector3(10, 5, 14)
+material = ExtResource("2_ti2ui")
+
+[node name="CSGMesh3D4" type="CSGMesh3D" parent="Hillclimbing Area/CSGMesh3D3"]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 20, 0, 0)
+mesh = SubResource("PrismMesh_4hwpm")
+material = ExtResource("7_82pgc")
+
+[node name="CSGMesh3D4" type="CSGMesh3D" parent="Hillclimbing Area"]
+transform = Transform3D(-1, 0, 8.74228e-08, 0, 1, 0, -8.74228e-08, 0, -1, -69.4, 5, -63)
+use_collision = true
+mesh = SubResource("PrismMesh_j22ec")
+material = ExtResource("16_3rhnt")
+
+[node name="CSGMesh3D5" type="CSGMesh3D" parent="Hillclimbing Area"]
+transform = Transform3D(-1, 0, 8.74228e-08, 0, 1, 0, -8.74228e-08, 0, -1, -66.9, 5, -51)
+use_collision = true
+mesh = SubResource("PrismMesh_pfiyg")
+material = ExtResource("16_3rhnt")
+
+[node name="CSGCylinder3D" type="CSGCylinder3D" parent="Hillclimbing Area/CSGMesh3D5"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, -7, 7, 3.0598e-07)
+operation = 2
+radius = 11.82
+height = 12.0
+sides = 32
+material = ExtResource("16_3rhnt")
+
+[node name="Reflection Probes" type="Node3D" parent="."]
+
+[node name="ReflectionProbe" type="ReflectionProbe" parent="Reflection Probes"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.49401, 35.2468)
+size = Vector3(33.033, 16.2454, 38.418)
+
+[node name="ReflectionProbe2" type="ReflectionProbe" parent="Reflection Probes"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -46.3393, 4.49401, 16.8756)
+size = Vector3(62.6718, 16.2454, 68.4325)
+
+[node name="ReflectionProbe3" type="ReflectionProbe" parent="Reflection Probes"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.49401, -23.7702)
+size = Vector3(52.3301, 16.2454, 52.3904)

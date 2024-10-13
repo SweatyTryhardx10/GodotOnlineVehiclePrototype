@@ -16,7 +16,7 @@ public partial class EngineSimple : VehicleSystem.Engine
     {
         if (!Mathf.IsZeroApprox(Throttle))
         {
-            if (Mathf.Sign(Throttle) == Mathf.Sign(VehicleSpeed) || Mathf.Abs(VehicleSpeed) < 2f)
+            if (Mathf.Sign(Throttle) == Mathf.Sign(VehicleSpeed) || Mathf.Abs(VehicleSpeed) < 1f)
             {
                 // Accelerate all powered joints towards a maximum
                 foreach (var j in joints)
