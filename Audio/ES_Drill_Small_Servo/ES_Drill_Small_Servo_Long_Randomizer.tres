@@ -1,0 +1,10 @@
+[gd_resource type="AudioStreamRandomizer" load_steps=3 format=3 uid="uid://bcsnd1gmbokud"]
+
+[ext_resource type="AudioStream" uid="uid://bspftmwksypfg" path="res://Audio/ES_Drill_Small_Servo/ES_Drill_Small_Servo_Long_01.wav" id="1_cw0p6"]
+[ext_resource type="AudioStream" uid="uid://serwd2wmcquo" path="res://Audio/ES_Drill_Small_Servo/ES_Drill_Small_Servo_Long_02.wav" id="2_q6d84"]
+
+[resource]
+random_pitch = 1.1
+streams_count = 2
+stream_0/stream = ExtResource("1_cw0p6")
+stream_1/stream = ExtResource("2_q6d84")

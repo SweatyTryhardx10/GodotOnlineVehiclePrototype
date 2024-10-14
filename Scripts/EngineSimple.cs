@@ -10,13 +10,13 @@ public partial class EngineSimple : VehicleSystem.Engine
 
     private float VehicleSpeed => -(rb.GlobalBasis.Inverse() * rb.LinearVelocity).Z;    // Positive is forward
     /// <summary>A metric [-1, 1] that describes how close the vehicle's speed is to the engine's max speed.</summary>
-    public float Utilization => VehicleSpeed / maxVehicleSpeed;
+    public float Utilization => JointsGrounded ? VehicleSpeed / maxVehicleSpeed : Throttle;
 
     protected override void RunEngineSolver(double delta)
     {
         if (!Mathf.IsZeroApprox(Throttle))
         {
-            if (Mathf.Sign(Throttle) == Mathf.Sign(VehicleSpeed) || Mathf.Abs(VehicleSpeed) < 1f)
+            if (Mathf.Sign(Throttle) == Mathf.Sign(VehicleSpeed) || Mathf.Abs(VehicleSpeed) < 1f || !JointsGrounded)
             {
                 // Accelerate all powered joints towards a maximum
                 foreach (var j in joints)

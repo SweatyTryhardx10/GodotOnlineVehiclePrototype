@@ -1,0 +1,8 @@
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://c6molni1dqr2o"]
+
+[resource]
+transparency = 1
+cull_mode = 2
+albedo_color = Color(1, 1, 0, 0.321569)
+proximity_fade_enabled = true
+proximity_fade_distance = 0.5

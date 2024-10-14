@@ -89,6 +89,8 @@ engine = NodePath("Engine")
 
 [node name="Engine" type="Node" parent="."]
 script = ExtResource("3_rdtx1")
+maxVehicleSpeed = 14.0
+torque = 150.0
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, -2.38419e-07, 1.52696, -2.39913)

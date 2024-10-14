@@ -1,0 +1,14 @@
+[gd_resource type="AudioStreamRandomizer" load_steps=5 format=3 uid="uid://ccmnoytwfaijv"]
+
+[ext_resource type="AudioStream" uid="uid://c3d2qwsooht0c" path="res://Audio/ES_Drill_Small_Servo/ES_Drill_Small_Servo_01.wav" id="1_dae64"]
+[ext_resource type="AudioStream" uid="uid://dhdfpdx5vo0tx" path="res://Audio/ES_Drill_Small_Servo/ES_Drill_Small_Servo_02.wav" id="2_xd3ag"]
+[ext_resource type="AudioStream" uid="uid://jp3ghor6q6c3" path="res://Audio/ES_Drill_Small_Servo/ES_Drill_Small_Servo_03.wav" id="3_fyo2h"]
+[ext_resource type="AudioStream" uid="uid://cteqi02ww73kk" path="res://Audio/ES_Drill_Small_Servo/ES_Drill_Small_Servo_04.wav" id="4_w1en2"]
+
+[resource]
+random_pitch = 1.05
+streams_count = 4
+stream_0/stream = ExtResource("1_dae64")
+stream_1/stream = ExtResource("2_xd3ag")
+stream_2/stream = ExtResource("3_fyo2h")
+stream_3/stream = ExtResource("4_w1en2")

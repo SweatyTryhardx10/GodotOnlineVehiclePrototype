@@ -1,4 +1,4 @@
-[gd_scene load_steps=28 format=3 uid="uid://dr057ngllbjlx"]
+[gd_scene load_steps=49 format=3 uid="uid://dr057ngllbjlx"]
 
 [ext_resource type="Script" path="res://Scripts/Demo/DemoController.cs" id="1_jyxmy"]
 [ext_resource type="Material" uid="uid://7wc4p0xj4re0" path="res://Materials/pbr_triG_proto_dark.tres" id="2_lhqwy"]
@@ -15,6 +15,12 @@
 [ext_resource type="Material" uid="uid://ce1thvhy54x5e" path="res://Materials/pbr_tri_reflective.tres" id="8_v87l4"]
 [ext_resource type="Material" uid="uid://b0sbf7kom0a3" path="res://Materials/pbr_triG_proto_orange.tres" id="8_yrtx2"]
 [ext_resource type="Material" uid="uid://bi5ebb17naq7o" path="res://Materials/pbr_triG_proto_purple.tres" id="16_3rhnt"]
+[ext_resource type="Material" uid="uid://mqh42wsjekrb" path="res://Materials/Debug/debug_transparent_green.tres" id="16_ctakc"]
+[ext_resource type="Material" uid="uid://cdqvhlw4ydusi" path="res://Materials/Debug/debug_transparent_red.tres" id="16_halit"]
+[ext_resource type="Material" uid="uid://c6molni1dqr2o" path="res://Materials/Debug/debug_transparent_yellow.tres" id="16_ihbky"]
+[ext_resource type="FontFile" uid="uid://cmyf55tmw7u5l" path="res://Fonts/CONSOLAB.TTF" id="17_47nb0"]
+[ext_resource type="AudioStream" uid="uid://ccmnoytwfaijv" path="res://Audio/ES_Drill_Small_Servo/ES_Drill_Small_Servo_Randomizer.tres" id="20_uy7v7"]
+[ext_resource type="AudioStream" uid="uid://bcsnd1gmbokud" path="res://Audio/ES_Drill_Small_Servo/ES_Drill_Small_Servo_Long_Randomizer.tres" id="21_xtte7"]
 
 [sub_resource type="ViewportTexture" id="ViewportTexture_klo70"]
 viewport_path = NodePath("Info Billboard/SubViewport")
@@ -38,18 +44,65 @@ shadow_size = 2
 shadow_color = Color(0, 0, 0, 0.156863)
 shadow_offset = Vector2(1, 2)
 
-[sub_resource type="ViewportTexture" id="ViewportTexture_dt22g"]
+[sub_resource type="ViewportTexture" id="ViewportTexture_3bykk"]
 viewport_path = NodePath("Info Billboard2/SubViewport")
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ims4f"]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_b0wro"]
 resource_local_to_scene = true
 transparency = 1
-albedo_texture = SubResource("ViewportTexture_dt22g")
+cull_mode = 2
+albedo_texture = SubResource("ViewportTexture_3bykk")
 
 [sub_resource type="QuadMesh" id="QuadMesh_01hil"]
 resource_local_to_scene = true
-material = SubResource("StandardMaterial3D_ims4f")
-size = Vector2(5, 3)
+material = SubResource("StandardMaterial3D_b0wro")
+size = Vector2(3, 2)
+
+[sub_resource type="LabelSettings" id="LabelSettings_xbaph"]
+font_size = 54
+outline_size = 2
+outline_color = Color(0, 0, 0, 0.54902)
+shadow_size = 2
+shadow_color = Color(0, 0, 0, 0.156863)
+shadow_offset = Vector2(1, 2)
+
+[sub_resource type="Animation" id="Animation_lc7kn"]
+resource_name = "spotlight_rainbow_desaturated"
+length = 10.0
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("SpotLight3D:light_color")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1.26667, 2.5, 3.76667, 5, 6.26667, 7.5, 8.76667, 10),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1),
+"update": 0,
+"values": [Color(1, 0.9, 0.9, 1), Color(1, 0.975, 0.9, 1), Color(0.9, 1, 0.925, 1), Color(0.9, 1, 0.925, 1), Color(0.9, 1, 1, 1), Color(0.9, 0.949333, 1, 1), Color(0.9, 0.9, 1, 1), Color(1, 0.9, 1, 1), Color(1, 0.9, 0.901667, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_mnand"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("SpotLight3D:light_color")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 0.92, 0.92, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_bkuio"]
+_data = {
+"RESET": SubResource("Animation_mnand"),
+"spotlight_rainbow_desaturated": SubResource("Animation_lc7kn")
+}
 
 [sub_resource type="PrismMesh" id="PrismMesh_pkryy"]
 left_to_right = 1.0
@@ -70,6 +123,119 @@ size = Vector3(10, 10, 10)
 [sub_resource type="PrismMesh" id="PrismMesh_pfiyg"]
 left_to_right = 1.0
 size = Vector3(15, 10, 10)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_8w604"]
+size = Vector3(20, 4, 20)
+
+[sub_resource type="BoxMesh" id="BoxMesh_igym0"]
+size = Vector3(20, 4, 20)
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_iqt7v"]
+radius = 10.0
+
+[sub_resource type="SphereMesh" id="SphereMesh_xm8ob"]
+radius = 10.0
+height = 20.0
+
+[sub_resource type="PrismMesh" id="PrismMesh_bb6r6"]
+left_to_right = 1.0
+size = Vector3(10, 2, 12)
+
+[sub_resource type="PrismMesh" id="PrismMesh_jlxlu"]
+left_to_right = 1.0
+size = Vector3(10, 5, 28)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_2hwih"]
+size = Vector3(8, 4, 8)
+
+[sub_resource type="BoxMesh" id="BoxMesh_aekmp"]
+size = Vector3(8, 4, 8)
+
+[sub_resource type="Animation" id="Animation_mbwbb"]
+resource_name = "actuator_demo"
+length = 5.0
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AnimatableBody3D:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.133333, 0.333333, 0.533333, 2, 3, 3.63333, 5),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1),
+"update": 0,
+"values": [Vector3(0, -1.926, 0), Vector3(0, 0.6, 0), Vector3(0, 0.48, 0), Vector3(0, 0.5, 0), Vector3(0, 0.5, 0), Vector3(0, -1.85, 0), Vector3(0, -1.926, 0), Vector3(0, -1.926, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Actuation Audio (Short):playing")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Actuation Audio (Long):playing")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(2),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+
+[sub_resource type="Animation" id="Animation_8kalv"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AnimatableBody3D:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, -1.926, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Actuation Audio (Short):playing")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Actuation Audio (Long):playing")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_0u16b"]
+_data = {
+"RESET": SubResource("Animation_8kalv"),
+"actuator_demo": SubResource("Animation_mbwbb")
+}
 
 [node name="LevelDemo" type="Node3D" node_paths=PackedStringArray("spawnNode")]
 script = ExtResource("1_jyxmy")
@@ -113,9 +279,17 @@ disable_3d = true
 transparent_bg = true
 handle_input_locally = false
 size = Vector2i(768, 420)
-render_target_update_mode = 4
 
-[node name="Title" type="Label" parent="Info Billboard/SubViewport"]
+[node name="Control" type="Control" parent="Info Billboard/SubViewport"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Title" type="Label" parent="Info Billboard/SubViewport/Control"]
+layout_mode = 1
 anchors_preset = 10
 anchor_right = 1.0
 offset_top = 35.215
@@ -125,7 +299,8 @@ text = "DEMO LEVEL"
 label_settings = ExtResource("5_1muke")
 horizontal_alignment = 1
 
-[node name="Description" type="Label" parent="Info Billboard/SubViewport"]
+[node name="Description" type="Label" parent="Info Billboard/SubViewport/Control"]
+layout_mode = 1
 anchors_preset = 10
 anchor_right = 1.0
 offset_top = 93.57
@@ -181,7 +356,7 @@ size = Vector3(3, 2, 0.1)
 material = ExtResource("2_ti2ui")
 
 [node name="Viewport Quad" type="MeshInstance3D" parent="Info Billboard2"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.0646744)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.88535e-09, 0, 0.120552)
 mesh = SubResource("QuadMesh_01hil")
 
 [node name="SubViewport" type="SubViewport" parent="Info Billboard2"]
@@ -189,16 +364,24 @@ disable_3d = true
 transparent_bg = true
 handle_input_locally = false
 size = Vector2i(768, 420)
-render_target_update_mode = 0
 
-[node name="Title" type="Label" parent="Info Billboard2/SubViewport"]
+[node name="Control" type="Control" parent="Info Billboard2/SubViewport"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Title" type="Label" parent="Info Billboard2/SubViewport/Control"]
+layout_mode = 1
 anchors_preset = 10
 anchor_right = 1.0
-offset_top = 177.27
-offset_bottom = 211.27
+offset_top = 168.295
+offset_bottom = 242.295
 grow_horizontal = 2
 text = "OTHER WAY PLEASE."
-label_settings = ExtResource("5_1muke")
+label_settings = SubResource("LabelSettings_xbaph")
 horizontal_alignment = 1
 
 [node name="Beam" type="CSGCylinder3D" parent="Info Billboard2"]
@@ -239,6 +422,55 @@ operation = 2
 size = Vector3(10, 10, 4)
 material = ExtResource("2_lhqwy")
 
+[node name="CSGSphere (Roof)" type="CSGSphere3D" parent="Starting Area (Circle)"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, 0)
+radius = 15.0
+radial_segments = 32
+rings = 24
+material = ExtResource("8_yrtx2")
+
+[node name="CSGSphere (Roof)2" type="CSGSphere3D" parent="Starting Area (Circle)/CSGSphere (Roof)"]
+operation = 2
+radius = 14.0
+radial_segments = 32
+rings = 24
+material = ExtResource("2_lhqwy")
+
+[node name="Subtract Bottom" type="CSGBox3D" parent="Starting Area (Circle)/CSGSphere (Roof)"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -15, 0)
+operation = 2
+size = Vector3(35, 30, 35)
+
+[node name="Subtract Tunnel" type="CSGCylinder3D" parent="Starting Area (Circle)/CSGSphere (Roof)"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, -15)
+operation = 2
+radius = 5.0
+height = 20.5
+sides = 24
+material = ExtResource("2_lhqwy")
+
+[node name="Spotlight (Starting Area)" type="CSGCylinder3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 13.083, 35)
+height = 0.790783
+cone = true
+material = ExtResource("7_258vw")
+
+[node name="SpotLight3D" type="SpotLight3D" parent="Spotlight (Starting Area)"]
+transform = Transform3D(1, 0, 0, 0, -5.96046e-08, 1, 0, -1, -5.96046e-08, 0, 0.0709534, -0.0736694)
+light_color = Color(1, 0.92, 0.92, 1)
+light_energy = 8.0
+shadow_enabled = true
+spot_range = 29.593
+spot_attenuation = 0.0
+spot_angle = 51.11
+spot_angle_attenuation = 2.07053
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Spotlight (Starting Area)"]
+libraries = {
+"": SubResource("AnimationLibrary_bkuio")
+}
+autoplay = "spotlight_rainbow_desaturated"
+
 [node name="Starting Hallway" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 10.5)
 
@@ -258,7 +490,7 @@ material = ExtResource("2_lhqwy")
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 6, 2.62268e-07)
 use_collision = true
 radius = 6.0
-height = 20.5
+height = 21.0
 sides = 24
 material = ExtResource("8_yrtx2")
 
@@ -270,7 +502,7 @@ size = Vector3(15, 22, 6)
 [node name="Subtract Inside" type="CSGCylinder3D" parent="Starting Hallway/CSGCylinder3D"]
 operation = 2
 radius = 5.0
-height = 20.5
+height = 21.5
 sides = 24
 material = ExtResource("2_lhqwy")
 
@@ -346,7 +578,7 @@ gizmo_extents = 2.0
 [node name="Suspension_and_Camber Area" type="Node3D" parent="."]
 
 [node name="Bumps (Red)" type="Node3D" parent="Suspension_and_Camber Area"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -54.7388, -1, -9.705)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -54, -1, -13)
 
 [node name="CSGCylinder3D" type="CSGCylinder3D" parent="Suspension_and_Camber Area/Bumps (Red)"]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 12.4643, -0.46931, -3.5914)
@@ -429,7 +661,7 @@ sides = 16
 material = ExtResource("7_82pgc")
 
 [node name="Bumps (Green)" type="Node3D" parent="Suspension_and_Camber Area"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -54.2202, -1, -3.47963)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -54, -1, -8)
 
 [node name="CSGCylinder3D11" type="CSGCylinder3D" parent="Suspension_and_Camber Area/Bumps (Green)"]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 12.4643, -0.110437, 1.1059)
@@ -487,6 +719,51 @@ height = 10.0
 sides = 16
 material = ExtResource("8_sgd0w")
 
+[node name="Mini Fences (Purple)" type="Node3D" parent="Suspension_and_Camber Area"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -50, 0, 4)
+
+[node name="CSGBox3D" type="CSGBox3D" parent="Suspension_and_Camber Area/Mini Fences (Purple)"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.11525, 0)
+use_collision = true
+size = Vector3(0.2, 1, 10)
+material = ExtResource("16_3rhnt")
+
+[node name="CSGBox3D5" type="CSGBox3D" parent="Suspension_and_Camber Area/Mini Fences (Purple)"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 0.11525, 0)
+use_collision = true
+size = Vector3(0.2, 1, 10)
+material = ExtResource("16_3rhnt")
+
+[node name="CSGBox3D6" type="CSGBox3D" parent="Suspension_and_Camber Area/Mini Fences (Purple)"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 0.11525, 0)
+use_collision = true
+size = Vector3(0.2, 1, 10)
+material = ExtResource("16_3rhnt")
+
+[node name="CSGBox3D7" type="CSGBox3D" parent="Suspension_and_Camber Area/Mini Fences (Purple)"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9, 0.11525, 0)
+use_collision = true
+size = Vector3(0.2, 1, 10)
+material = ExtResource("16_3rhnt")
+
+[node name="CSGBox3D2" type="CSGBox3D" parent="Suspension_and_Camber Area/Mini Fences (Purple)"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 0.11525, 0)
+use_collision = true
+size = Vector3(0.2, 1, 10)
+material = ExtResource("16_3rhnt")
+
+[node name="CSGBox3D3" type="CSGBox3D" parent="Suspension_and_Camber Area/Mini Fences (Purple)"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 0.11525, 0)
+use_collision = true
+size = Vector3(0.2, 1, 10)
+material = ExtResource("16_3rhnt")
+
+[node name="CSGBox3D4" type="CSGBox3D" parent="Suspension_and_Camber Area/Mini Fences (Purple)"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9, 0.11525, 0)
+use_collision = true
+size = Vector3(0.2, 1, 10)
+material = ExtResource("16_3rhnt")
+
 [node name="Camber Ramp" type="CSGCylinder3D" parent="Suspension_and_Camber Area"]
 transform = Transform3D(0.95122, 0.0131131, 0.308236, 0.307188, 0.0522821, -0.950212, -0.0285753, 0.998547, 0.0457036, -60, 0, 25)
 use_collision = true
@@ -507,37 +784,6 @@ material = ExtResource("8_yrtx2")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.27448, -2.23517e-07, 8.3819e-08)
 operation = 2
 size = Vector3(12.33, 28.995, 11.36)
-
-[node name="Camber Tunnel" type="CSGCylinder3D" parent="Suspension_and_Camber Area"]
-transform = Transform3D(-4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, -37.1951, 4.00787, 40.1224)
-use_collision = true
-radius = 7.81468
-height = 18.1148
-sides = 32
-material = ExtResource("2_ti2ui")
-
-[node name="CSGCylinder3D2" type="CSGCylinder3D" parent="Suspension_and_Camber Area/Camber Tunnel"]
-transform = Transform3D(-0.996541, -0.0826026, 0.00916055, 0.0825796, -0.99658, -0.00286462, 0.00936584, -0.00209825, 0.999954, -0.259198, 1.31656, 0.00896456)
-operation = 2
-radius = 7.81468
-height = 33.1658
-sides = 32
-cone = true
-
-[node name="CSGBox3D" type="CSGBox3D" parent="Suspension_and_Camber Area/Camber Tunnel"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.26294, 0, 0)
-operation = 2
-size = Vector3(9.6521, 20.9795, 20.8965)
-
-[node name="CSGBox3D2" type="CSGBox3D" parent="Suspension_and_Camber Area/Camber Tunnel"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.262363, 0, -8.36173)
-operation = 2
-size = Vector3(9.6521, 20.9795, 4.42993)
-
-[node name="CSGBox3D3" type="CSGBox3D" parent="Suspension_and_Camber Area/Camber Tunnel"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.262363, 0, 8.39095)
-operation = 2
-size = Vector3(9.6521, 20.9795, 4.42993)
 
 [node name="CSGBox3D" type="CSGBox3D" parent="Suspension_and_Camber Area"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -49.922, 5, -24)
@@ -566,7 +812,7 @@ size = Vector3(51, 10, 1)
 material = ExtResource("2_lhqwy")
 
 [node name="CSGBox3D5" type="CSGBox3D" parent="Hillclimbing Area"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -37.922, 7.5, -90)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -37.422, 7.5, -90)
 use_collision = true
 size = Vector3(75, 15, 1)
 material = ExtResource("2_lhqwy")
@@ -578,7 +824,7 @@ size = Vector3(64, 15, 1)
 material = ExtResource("2_lhqwy")
 
 [node name="CSGBox3D7" type="CSGBox3D" parent="Hillclimbing Area"]
-transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 5.46392e-07, 5, -70)
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, -0.499999, 5, -70)
 use_collision = true
 size = Vector3(41, 10, 1)
 material = ExtResource("2_lhqwy")
@@ -641,6 +887,190 @@ height = 12.0
 sides = 32
 material = ExtResource("16_3rhnt")
 
+[node name="External Force Area" type="Node3D" parent="."]
+
+[node name="Walls" type="Node3D" parent="External Force Area"]
+
+[node name="CSGBox3D8" type="CSGBox3D" parent="External Force Area/Walls"]
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 0.500001, 5, -70)
+use_collision = true
+size = Vector3(41, 10, 1)
+material = ExtResource("2_lhqwy")
+
+[node name="CSGBox3D9" type="CSGBox3D" parent="External Force Area/Walls"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 37.578, 7.5, -90)
+use_collision = true
+size = Vector3(75, 15, 1)
+material = ExtResource("2_lhqwy")
+
+[node name="CSGBox3D10" type="CSGBox3D" parent="External Force Area/Walls"]
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 75.078, 7.5, -57.5)
+use_collision = true
+size = Vector3(64, 15, 1)
+material = ExtResource("2_lhqwy")
+
+[node name="CSGBox3D11" type="CSGBox3D" parent="External Force Area/Walls"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 50.078, 5, -25)
+use_collision = true
+size = Vector3(51, 10, 1)
+material = ExtResource("2_lhqwy")
+
+[node name="Force Area (2x)" type="Area3D" parent="External Force Area"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 11.2262, 1.66606, -80)
+gravity_space_override = 1
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="External Force Area/Force Area (2x)"]
+shape = SubResource("BoxShape3D_8w604")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="External Force Area/Force Area (2x)"]
+material_override = ExtResource("16_ihbky")
+mesh = SubResource("BoxMesh_igym0")
+
+[node name="Label3D" type="Label3D" parent="External Force Area/Force Area (2x)"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.52535, 0)
+billboard = 2
+text = "2x gravity"
+font = ExtResource("17_47nb0")
+font_size = 237
+
+[node name="Force Area (4x)" type="Area3D" parent="External Force Area"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 33, 1.66606, -80)
+gravity_space_override = 1
+gravity = 29.4
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="External Force Area/Force Area (4x)"]
+shape = SubResource("BoxShape3D_8w604")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="External Force Area/Force Area (4x)"]
+material_override = ExtResource("16_halit")
+mesh = SubResource("BoxMesh_igym0")
+
+[node name="Label3D" type="Label3D" parent="External Force Area/Force Area (4x)"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.52535, 0)
+billboard = 2
+text = "4x gravity"
+font = ExtResource("17_47nb0")
+font_size = 237
+
+[node name="Force Area (Half)" type="Area3D" parent="External Force Area"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 55, 1.66606, -80)
+gravity_space_override = 1
+gravity_point_center = Vector3(0, 1, 0)
+gravity_direction = Vector3(0, 1, 0)
+gravity = 4.9
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="External Force Area/Force Area (Half)"]
+shape = SubResource("BoxShape3D_8w604")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="External Force Area/Force Area (Half)"]
+material_override = ExtResource("16_ctakc")
+mesh = SubResource("BoxMesh_igym0")
+
+[node name="Label3D" type="Label3D" parent="External Force Area/Force Area (Half)"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.52535, 0)
+billboard = 2
+text = "0.5x gravity"
+font = ExtResource("17_47nb0")
+font_size = 237
+
+[node name="Repulsive Area (4x)" type="Area3D" parent="External Force Area"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 39, 1.07386, -46)
+gravity_space_override = 1
+gravity_point = true
+gravity_point_center = Vector3(0, 0, 0)
+gravity_direction = Vector3(0, 0, 0)
+gravity = -9.8
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="External Force Area/Repulsive Area (4x)"]
+shape = SubResource("SphereShape3D_iqt7v")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="External Force Area/Repulsive Area (4x)"]
+material_override = ExtResource("16_halit")
+mesh = SubResource("SphereMesh_xm8ob")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="External Force Area/Repulsive Area (4x)"]
+transform = Transform3D(0.0657282, 0, 0, 0, 0.0657282, 0, 0, 0, 0.0657282, 0, 0, 0)
+material_override = ExtResource("16_ctakc")
+mesh = SubResource("SphereMesh_xm8ob")
+
+[node name="Label3D" type="Label3D" parent="External Force Area/Repulsive Area (4x)"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.52535, 0)
+billboard = 2
+text = "Repulsion force
+(4x gravity)"
+font = ExtResource("17_47nb0")
+font_size = 237
+
+[node name="OnRamp for Repulsive Force" type="CSGBox3D" parent="External Force Area"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 55.5, 3, -46)
+use_collision = true
+size = Vector3(14, 6, 10)
+material = ExtResource("8_yrtx2")
+
+[node name="CSGMesh3D" type="CSGMesh3D" parent="External Force Area/OnRamp for Repulsive Force"]
+transform = Transform3D(1, -8.74228e-08, 8.74228e-08, -8.74228e-08, -1, 0, 8.74228e-08, -7.64274e-15, -1, 2.21969, 2.18187, -1.02987e-06)
+operation = 2
+mesh = SubResource("PrismMesh_bb6r6")
+material = ExtResource("8_yrtx2")
+
+[node name="CSGBox3D" type="CSGBox3D" parent="External Force Area/OnRamp for Repulsive Force"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13, -1.25, 0)
+size = Vector3(12, 5, 28)
+material = ExtResource("2_lhqwy")
+
+[node name="CSGMesh3D2" type="CSGMesh3D" parent="External Force Area/OnRamp for Repulsive Force"]
+transform = Transform3D(1, 1.74846e-07, -1.74846e-07, -1.74846e-07, 1, 1.52855e-14, 1.74846e-07, 1.52855e-14, 1, 1.99, -1.25, 0)
+mesh = SubResource("PrismMesh_jlxlu")
+material = ExtResource("2_lhqwy")
+
+[node name="Lights" type="Node3D" parent="External Force Area"]
+
+[node name="Spotlight (Mesh)" type="CSGCylinder3D" parent="External Force Area/Lights"]
+transform = Transform3D(-3.78552e-08, 0.5, 0.866025, -2.18557e-08, 0.866025, -0.5, -1, -3.78552e-08, -2.18557e-08, 74, 11.5826, -45.9998)
+height = 0.790783
+cone = true
+material = ExtResource("7_258vw")
+
+[node name="SpotLight3D" type="SpotLight3D" parent="External Force Area/Lights/Spotlight (Mesh)"]
+transform = Transform3D(1, 0, 0, 0, -5.96046e-08, 1, 0, -1, -5.96046e-08, 0, 0.0709534, -0.0736694)
+light_energy = 12.0
+spot_range = 15.178
+spot_angle = 53.76
+
+[node name="Repeating Actuator" type="Node3D" parent="External Force Area"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9, 0, -60)
+
+[node name="AnimatableBody3D" type="AnimatableBody3D" parent="External Force Area/Repeating Actuator"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.926, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="External Force Area/Repeating Actuator/AnimatableBody3D"]
+shape = SubResource("BoxShape3D_2hwih")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="External Force Area/Repeating Actuator/AnimatableBody3D"]
+material_override = ExtResource("7_82pgc")
+mesh = SubResource("BoxMesh_aekmp")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="External Force Area/Repeating Actuator"]
+libraries = {
+"": SubResource("AnimationLibrary_0u16b")
+}
+autoplay = "actuator_demo"
+
+[node name="Actuation Audio (Short)" type="AudioStreamPlayer3D" parent="External Force Area/Repeating Actuator"]
+stream = ExtResource("20_uy7v7")
+volume_db = -10.0
+unit_size = 20.6
+max_db = -5.0
+max_distance = 35.0
+
+[node name="Actuation Audio (Long)" type="AudioStreamPlayer3D" parent="External Force Area/Repeating Actuator"]
+stream = ExtResource("21_xtte7")
+volume_db = -10.0
+unit_size = 20.0
+max_db = -5.0
+pitch_scale = 0.85
+max_distance = 35.0
+
 [node name="Reflection Probes" type="Node3D" parent="."]
 
 [node name="ReflectionProbe" type="ReflectionProbe" parent="Reflection Probes"]
@@ -654,3 +1084,11 @@ size = Vector3(62.6718, 16.2454, 68.4325)
 [node name="ReflectionProbe3" type="ReflectionProbe" parent="Reflection Probes"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.49401, -23.7702)
 size = Vector3(52.3301, 16.2454, 52.3904)
+
+[node name="ReflectionProbe4" type="ReflectionProbe" parent="Reflection Probes"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 37.7483, 4.49401, -59.1244)
+size = Vector3(74.9848, 16.2454, 68.4325)
+
+[node name="ReflectionProbe5" type="ReflectionProbe" parent="Reflection Probes"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -37.2517, 4.49401, -59.1244)
+size = Vector3(74.9848, 16.2454, 68.4325)

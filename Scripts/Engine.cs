@@ -21,6 +21,24 @@ namespace VehicleSystem
 		protected RigidBody3D rb;
 		protected WheelJoint[] joints;
 
+		protected bool JointsGrounded
+		{
+			get
+			{
+				int groundedJoints = 0;
+				foreach (var j in joints)
+				{
+					if (j.OnFloor)
+						groundedJoints++;
+				}
+				
+				if (groundedJoints >= joints.Length / 2)
+					return true;
+				else
+					return false;
+			}
+		}
+
 		public void BindBody(RigidBody3D rb)
 		{
 			this.rb = rb;

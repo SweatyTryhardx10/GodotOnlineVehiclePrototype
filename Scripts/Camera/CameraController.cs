@@ -26,6 +26,11 @@ public partial class CameraController : Camera3D
 	private ulong lastLookInputTime;
 	private float TimeSinceLookInput => (Time.GetTicksMsec() - lastLookInputTime) / 1000f;
 
+	[ExportGroup("Collision Detection")]
+	[Export] private bool checkForCollisions = true;
+	[Export] private float collisionMargin = 0.05f;
+	[Export(PropertyHint.Layers3DPhysics)] private uint collisionMask = 1;
+
 	[ExportGroup("Free Cam Settings")]
 	[Export] private float freeCamSpeed = 10f;
 
@@ -113,6 +118,27 @@ public partial class CameraController : Camera3D
 		// Target acceleration influence
 		// targetPosition += smoothedLocalTargetAcceleration * tAccelPosFactor;
 		// targetRotation -= new Vector3(smoothedLocalTargetAcceleration.Z, 0f, -smoothedLocalTargetAcceleration.X) * tAccelRotFactor;
+
+		// Collision detection
+		if (checkForCollisions)
+		{
+			// Ignore the target object (if it's a physics body)
+			Rid[] excludes;
+			if (target is PhysicsBody3D pb)
+				excludes = new Rid[] { pb.GetRid() };
+			else
+				excludes = new Rid[0];
+			
+			// Perform the raycast
+			var result = this.Raycast(target.GlobalPosition, targetPosition, excludes, collisionMask);
+			
+			if (result.Count > 0) // If ray hit something
+			{
+				// Set the target position to the collision point (minus a specified margin)
+				Vector3 rayVector = targetPosition - target.GlobalPosition;
+				targetPosition = result["position"].As<Vector3>() - collisionMargin * rayVector.Normalized();
+			}
+		}
 
 		position = targetPosition;
 		rotation = targetRotation;

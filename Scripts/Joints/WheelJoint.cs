@@ -165,8 +165,7 @@ public partial class WheelJoint : Node3D
 
 		TireDynamics(delta);
 
-		if (!interpolateSpringState)
-			UpdateMesh();
+		UpdateMesh();
 
 		// DEBUG
 		if (showDebug)
@@ -452,23 +451,20 @@ public partial class WheelJoint : Node3D
 		{
 			localMeshPos = ToLocal(betweenState.EndPoint) + Vector3.Up * wheelRadius;
 
-			// if (OnFloor)
-			// {
-			// 	float distanceCovered = (ToLocal(springState.EndPoint) - ToLocal(oldSpringState.EndPoint)).Z;
-			// 	localMeshRotation += Vector3.Right * (distanceCovered / WheelRadius) * (float)(GetProcessDeltaTime() / GetPhysicsProcessDeltaTime());
-			// 	localMeshRotation.X = localMeshRotation.X % Mathf.Tau;
-			// }
-
-			localMeshRotation += Vector3.Right * AngularVelocity * (float)GetProcessDeltaTime();
+			localMeshRotation += Vector3.Right * AngularVelocity * (float)GetProcessDeltaTime();	// This part is/should be called in _Process()
 			localMeshRotation.X = localMeshRotation.X % Mathf.Tau;
 		}
 		else
 		{
 			localMeshPos = ToLocal(springState.EndPoint) + Vector3.Up * wheelRadius;
 
-			float distanceCovered = (ToLocal(springState.EndPoint) - ToLocal(oldSpringState.EndPoint)).Z;
-			localMeshRotation += Vector3.Right * distanceCovered / wheelRadius;
+			localMeshRotation += Vector3.Right * AngularVelocity * (float)GetPhysicsProcessDeltaTime();	// This part is/should be called in _PhysicsProcess();
 			localMeshRotation.X = localMeshRotation.X % Mathf.Tau;
+
+			// === FOR ROTATING MESH BASED ON DISTANCE TRAVELLED ===
+			// float distanceCovered = (ToLocal(springState.EndPoint) - ToLocal(oldSpringState.EndPoint)).Z;
+			// localMeshRotation += Vector3.Right * distanceCovered / wheelRadius;
+			// localMeshRotation.X = localMeshRotation.X % Mathf.Tau;
 		}
 
 		wheelMesh.Position = localMeshPos;

@@ -105,6 +105,14 @@ public partial class ClientInput : Node
 			{
 				vehicle.QueueReset();
 			}
+			if (@event is InputEventKey iek && iek.Keycode == Key.R && iek.Pressed && !iek.IsEcho())
+			{
+				Transform3D newTx = new Transform3D(
+					Basis.Identity,
+					vehicle.GlobalPosition + Vector3.Up * 3f
+				);
+				vehicle.QueuePhysicsState(newTx, Vector3.Zero, Vector3.Zero);
+			}
 		}
 	}
 

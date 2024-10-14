@@ -12,6 +12,8 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
 theme = ExtResource("1_gu2sj")
 script = ExtResource("1_dxtb4")
 panelValues = [NodePath("Default"), NodePath("Pause"), NodePath("Scoreboard"), NodePath("End"), NodePath("End_Server"), NodePath("Options"), NodePath("Demo")]
@@ -216,43 +218,69 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Control" type="Control" parent="Demo"]
+[node name="Left Control" type="Control" parent="Demo"]
 layout_mode = 1
 anchors_preset = 9
 anchor_bottom = 1.0
-offset_right = 200.0
+offset_right = 455.0
 grow_vertical = 2
 
-[node name="MarginContainer" type="MarginContainer" parent="Demo/Control"]
+[node name="MarginContainer" type="MarginContainer" parent="Demo/Left Control"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_constants/margin_left = 14
-theme_override_constants/margin_top = 14
-theme_override_constants/margin_right = 14
-theme_override_constants/margin_bottom = 14
+theme_override_constants/margin_left = 32
+theme_override_constants/margin_top = 32
+theme_override_constants/margin_right = 32
+theme_override_constants/margin_bottom = 64
 
-[node name="VBoxContainer" type="VBoxContainer" parent="Demo/Control/MarginContainer"]
+[node name="VBox" type="VBoxContainer" parent="Demo/Left Control/MarginContainer"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="Demo/Control/MarginContainer/VBoxContainer"]
+[node name="Vehicle Keybind Hints" type="VBoxContainer" parent="Demo/Left Control/MarginContainer/VBox"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Label" type="Label" parent="Demo/Left Control/MarginContainer/VBox/Vehicle Keybind Hints"]
 layout_mode = 2
 text = "[1] Standard"
+label_settings = ExtResource("3_h67ck")
 
-[node name="Label2" type="Label" parent="Demo/Control/MarginContainer/VBoxContainer"]
+[node name="Label2" type="Label" parent="Demo/Left Control/MarginContainer/VBox/Vehicle Keybind Hints"]
 layout_mode = 2
 text = "[2] Roller Dome"
+label_settings = ExtResource("3_h67ck")
 
-[node name="Label3" type="Label" parent="Demo/Control/MarginContainer/VBoxContainer"]
+[node name="Label3" type="Label" parent="Demo/Left Control/MarginContainer/VBox/Vehicle Keybind Hints"]
 layout_mode = 2
 text = "[3] Truck"
+label_settings = ExtResource("3_h67ck")
 
-[node name="Label4" type="Label" parent="Demo/Control/MarginContainer/VBoxContainer"]
+[node name="Label4" type="Label" parent="Demo/Left Control/MarginContainer/VBox/Vehicle Keybind Hints"]
 layout_mode = 2
 text = "[4] Apache"
+label_settings = ExtResource("3_h67ck")
+
+[node name="Demo Keybind Hints" type="VBoxContainer" parent="Demo/Left Control/MarginContainer/VBox"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Demo/Left Control/MarginContainer/VBox/Demo Keybind Hints"]
+layout_mode = 2
+text = "[M] Enable/Disable Free Cam"
+label_settings = ExtResource("3_h67ck")
+
+[node name="Label3" type="Label" parent="Demo/Left Control/MarginContainer/VBox/Demo Keybind Hints"]
+layout_mode = 2
+text = "[R] Flip Vehicle to Identity"
+label_settings = ExtResource("3_h67ck")
+
+[node name="Label2" type="Label" parent="Demo/Left Control/MarginContainer/VBox/Demo Keybind Hints"]
+layout_mode = 2
+text = "[Q] Return to Vehicle Spawn"
+label_settings = ExtResource("3_h67ck")
 
 [connection signal="pressed" from="Pause/CenterContainer/Panel/VBoxContainer2/btn_container/btn_resume" to="." method="OnPauseButtonResumePressed"]
 [connection signal="pressed" from="Pause/CenterContainer/Panel/VBoxContainer2/btn_container/btn_options" to="." method="OnPauseButtonOptionsPressed"]
