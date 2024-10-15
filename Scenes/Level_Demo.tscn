@@ -1,4 +1,4 @@
-[gd_scene load_steps=49 format=3 uid="uid://dr057ngllbjlx"]
+[gd_scene load_steps=52 format=3 uid="uid://dr057ngllbjlx"]
 
 [ext_resource type="Script" path="res://Scripts/Demo/DemoController.cs" id="1_jyxmy"]
 [ext_resource type="Material" uid="uid://7wc4p0xj4re0" path="res://Materials/pbr_triG_proto_dark.tres" id="2_lhqwy"]
@@ -21,9 +21,12 @@
 [ext_resource type="FontFile" uid="uid://cmyf55tmw7u5l" path="res://Fonts/CONSOLAB.TTF" id="17_47nb0"]
 [ext_resource type="AudioStream" uid="uid://ccmnoytwfaijv" path="res://Audio/ES_Drill_Small_Servo/ES_Drill_Small_Servo_Randomizer.tres" id="20_uy7v7"]
 [ext_resource type="AudioStream" uid="uid://bcsnd1gmbokud" path="res://Audio/ES_Drill_Small_Servo/ES_Drill_Small_Servo_Long_Randomizer.tres" id="21_xtte7"]
+[ext_resource type="Material" uid="uid://cxwbyfy7vrd0c" path="res://Materials/Terrain/terrain_id_blendTest.tres" id="22_40u5h"]
+[ext_resource type="Script" path="res://Scripts/TerrainData.cs" id="23_1okcy"]
+[ext_resource type="Texture2D" uid="uid://b0e1tntwfbgfd" path="res://Textures/Terrain Maps/TerrainID_Square.png" id="24_dmgii"]
 
 [sub_resource type="ViewportTexture" id="ViewportTexture_klo70"]
-viewport_path = NodePath("Info Billboard/SubViewport")
+viewport_path = NodePath("Starting Area/Info Billboard/SubViewport")
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_8r7sl"]
 resource_local_to_scene = true
@@ -45,7 +48,7 @@ shadow_color = Color(0, 0, 0, 0.156863)
 shadow_offset = Vector2(1, 2)
 
 [sub_resource type="ViewportTexture" id="ViewportTexture_3bykk"]
-viewport_path = NodePath("Info Billboard2/SubViewport")
+viewport_path = NodePath("Starting Area/Info Billboard2/SubViewport")
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_b0wro"]
 resource_local_to_scene = true
@@ -66,6 +69,21 @@ shadow_size = 2
 shadow_color = Color(0, 0, 0, 0.156863)
 shadow_offset = Vector2(1, 2)
 
+[sub_resource type="Animation" id="Animation_mnand"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("SpotLight3D:light_color")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 0.92, 0.92, 1)]
+}
+
 [sub_resource type="Animation" id="Animation_lc7kn"]
 resource_name = "spotlight_rainbow_desaturated"
 length = 10.0
@@ -81,21 +99,6 @@ tracks/0/keys = {
 "transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1),
 "update": 0,
 "values": [Color(1, 0.9, 0.9, 1), Color(1, 0.975, 0.9, 1), Color(0.9, 1, 0.925, 1), Color(0.9, 1, 0.925, 1), Color(0.9, 1, 1, 1), Color(0.9, 0.949333, 1, 1), Color(0.9, 0.9, 1, 1), Color(1, 0.9, 1, 1), Color(1, 0.9, 0.901667, 1)]
-}
-
-[sub_resource type="Animation" id="Animation_mnand"]
-length = 0.001
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("SpotLight3D:light_color")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Color(1, 0.92, 0.92, 1)]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_bkuio"]
@@ -151,6 +154,45 @@ size = Vector3(8, 4, 8)
 [sub_resource type="BoxMesh" id="BoxMesh_aekmp"]
 size = Vector3(8, 4, 8)
 
+[sub_resource type="Animation" id="Animation_8kalv"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AnimatableBody3D:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, -1.926, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Actuation Audio (Short):playing")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Actuation Audio (Long):playing")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+
 [sub_resource type="Animation" id="Animation_mbwbb"]
 resource_name = "actuator_demo"
 length = 5.0
@@ -192,45 +234,6 @@ tracks/2/keys = {
 "values": [true]
 }
 
-[sub_resource type="Animation" id="Animation_8kalv"]
-length = 0.001
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("AnimatableBody3D:position")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector3(0, -1.926, 0)]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("Actuation Audio (Short):playing")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [false]
-}
-tracks/2/type = "value"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath("Actuation Audio (Long):playing")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [false]
-}
-
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_0u16b"]
 _data = {
 "RESET": SubResource("Animation_8kalv"),
@@ -264,23 +267,25 @@ offset = Vector3(0, 5, 8)
 rotOffset = Vector3(-30, 0, 0)
 freeCamSpeed = 15.0
 
-[node name="Info Billboard" type="CSGBox3D" parent="."]
+[node name="Starting Area" type="Node3D" parent="."]
+
+[node name="Info Billboard" type="CSGBox3D" parent="Starting Area"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.5, 29.638)
 use_collision = true
 size = Vector3(5, 3, 0.1)
 material = ExtResource("2_ti2ui")
 
-[node name="Viewport Quad" type="MeshInstance3D" parent="Info Billboard"]
+[node name="Viewport Quad" type="MeshInstance3D" parent="Starting Area/Info Billboard"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.0646744)
 mesh = SubResource("QuadMesh_kyv5v")
 
-[node name="SubViewport" type="SubViewport" parent="Info Billboard"]
+[node name="SubViewport" type="SubViewport" parent="Starting Area/Info Billboard"]
 disable_3d = true
 transparent_bg = true
 handle_input_locally = false
 size = Vector2i(768, 420)
 
-[node name="Control" type="Control" parent="Info Billboard/SubViewport"]
+[node name="Control" type="Control" parent="Starting Area/Info Billboard/SubViewport"]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -288,7 +293,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Title" type="Label" parent="Info Billboard/SubViewport/Control"]
+[node name="Title" type="Label" parent="Starting Area/Info Billboard/SubViewport/Control"]
 layout_mode = 1
 anchors_preset = 10
 anchor_right = 1.0
@@ -299,7 +304,7 @@ text = "DEMO LEVEL"
 label_settings = ExtResource("5_1muke")
 horizontal_alignment = 1
 
-[node name="Description" type="Label" parent="Info Billboard/SubViewport/Control"]
+[node name="Description" type="Label" parent="Starting Area/Info Billboard/SubViewport/Control"]
 layout_mode = 1
 anchors_preset = 10
 anchor_right = 1.0
@@ -319,53 +324,53 @@ label_settings = SubResource("LabelSettings_gyufx")
 horizontal_alignment = 1
 autowrap_mode = 2
 
-[node name="Spotlight (Mesh)" type="CSGCylinder3D" parent="Info Billboard"]
+[node name="Spotlight (Mesh)" type="CSGCylinder3D" parent="Starting Area/Info Billboard"]
 transform = Transform3D(1, 0, 0, 0, -0.5, -0.866025, 0, 0.866025, -0.5, 0, -2.41736, 3.00023)
 height = 0.790783
 cone = true
 material = ExtResource("7_258vw")
 
-[node name="SpotLight3D" type="SpotLight3D" parent="Info Billboard/Spotlight (Mesh)"]
+[node name="SpotLight3D" type="SpotLight3D" parent="Starting Area/Info Billboard/Spotlight (Mesh)"]
 transform = Transform3D(1, 0, 0, 0, -5.96046e-08, 1, 0, -1, -5.96046e-08, 0, 0.0709534, -0.0736694)
 light_energy = 8.0
 spot_range = 6.77346
 spot_angle = 53.76
 
-[node name="Beam" type="CSGCylinder3D" parent="Info Billboard"]
+[node name="Beam" type="CSGCylinder3D" parent="Starting Area/Info Billboard"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, -1, -0.192806)
 radius = 0.15
 height = 4.0
 material = ExtResource("8_v87l4")
 
-[node name="Beam2" type="CSGCylinder3D" parent="Info Billboard"]
+[node name="Beam2" type="CSGCylinder3D" parent="Starting Area/Info Billboard"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, -1, -0.192806)
 radius = 0.15
 height = 4.0
 material = ExtResource("8_v87l4")
 
-[node name="Beam3" type="CSGCylinder3D" parent="Info Billboard"]
+[node name="Beam3" type="CSGCylinder3D" parent="Starting Area/Info Billboard"]
 transform = Transform3D(-4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, 0, 1, 8.74228e-08, 0, -0.192806)
 radius = 0.15
 height = 4.0
 material = ExtResource("8_v87l4")
 
-[node name="Info Billboard2" type="CSGBox3D" parent="."]
+[node name="Info Billboard2" type="CSGBox3D" parent="Starting Area"]
 transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 2.63738e-07, 1.5, 47.6933)
 use_collision = true
 size = Vector3(3, 2, 0.1)
 material = ExtResource("2_ti2ui")
 
-[node name="Viewport Quad" type="MeshInstance3D" parent="Info Billboard2"]
+[node name="Viewport Quad" type="MeshInstance3D" parent="Starting Area/Info Billboard2"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.88535e-09, 0, 0.120552)
 mesh = SubResource("QuadMesh_01hil")
 
-[node name="SubViewport" type="SubViewport" parent="Info Billboard2"]
+[node name="SubViewport" type="SubViewport" parent="Starting Area/Info Billboard2"]
 disable_3d = true
 transparent_bg = true
 handle_input_locally = false
 size = Vector2i(768, 420)
 
-[node name="Control" type="Control" parent="Info Billboard2/SubViewport"]
+[node name="Control" type="Control" parent="Starting Area/Info Billboard2/SubViewport"]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -373,7 +378,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Title" type="Label" parent="Info Billboard2/SubViewport/Control"]
+[node name="Title" type="Label" parent="Starting Area/Info Billboard2/SubViewport/Control"]
 layout_mode = 1
 anchors_preset = 10
 anchor_right = 1.0
@@ -384,24 +389,24 @@ text = "OTHER WAY PLEASE."
 label_settings = SubResource("LabelSettings_xbaph")
 horizontal_alignment = 1
 
-[node name="Beam" type="CSGCylinder3D" parent="Info Billboard2"]
+[node name="Beam" type="CSGCylinder3D" parent="Starting Area/Info Billboard2"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, -1, -0.192806)
 radius = 0.15
 height = 4.0
 material = ExtResource("8_v87l4")
 
-[node name="Beam2" type="CSGCylinder3D" parent="Info Billboard2"]
+[node name="Beam2" type="CSGCylinder3D" parent="Starting Area/Info Billboard2"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, -1, -0.192806)
 radius = 0.15
 height = 4.0
 material = ExtResource("8_v87l4")
 
-[node name="Beam3" type="CSGCylinder3D" parent="Info Billboard2"]
+[node name="Beam3" type="CSGCylinder3D" parent="Starting Area/Info Billboard2"]
 transform = Transform3D(-4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, 0, 1, 8.74228e-08, 0, -0.192806)
 radius = 0.15
 material = ExtResource("8_v87l4")
 
-[node name="Starting Area (Circle)" type="CSGCylinder3D" parent="."]
+[node name="Starting Area (Circle)" type="CSGCylinder3D" parent="Starting Area"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, 35)
 use_collision = true
 radius = 15.0
@@ -409,39 +414,39 @@ height = 6.0
 sides = 32
 material = ExtResource("8_yrtx2")
 
-[node name="CSGCylinder3D2" type="CSGCylinder3D" parent="Starting Area (Circle)"]
+[node name="CSGCylinder3D2" type="CSGCylinder3D" parent="Starting Area/Starting Area (Circle)"]
 operation = 2
 radius = 14.0
 height = 10.0
 sides = 32
 material = ExtResource("8_yrtx2")
 
-[node name="CSGBox3D" type="CSGBox3D" parent="Starting Area (Circle)"]
+[node name="CSGBox3D" type="CSGBox3D" parent="Starting Area/Starting Area (Circle)"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -13)
 operation = 2
 size = Vector3(10, 10, 4)
 material = ExtResource("2_lhqwy")
 
-[node name="CSGSphere (Roof)" type="CSGSphere3D" parent="Starting Area (Circle)"]
+[node name="CSGSphere (Roof)" type="CSGSphere3D" parent="Starting Area/Starting Area (Circle)"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, 0)
 radius = 15.0
 radial_segments = 32
 rings = 24
 material = ExtResource("8_yrtx2")
 
-[node name="CSGSphere (Roof)2" type="CSGSphere3D" parent="Starting Area (Circle)/CSGSphere (Roof)"]
+[node name="CSGSphere (Roof)2" type="CSGSphere3D" parent="Starting Area/Starting Area (Circle)/CSGSphere (Roof)"]
 operation = 2
 radius = 14.0
 radial_segments = 32
 rings = 24
 material = ExtResource("2_lhqwy")
 
-[node name="Subtract Bottom" type="CSGBox3D" parent="Starting Area (Circle)/CSGSphere (Roof)"]
+[node name="Subtract Bottom" type="CSGBox3D" parent="Starting Area/Starting Area (Circle)/CSGSphere (Roof)"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -15, 0)
 operation = 2
 size = Vector3(35, 30, 35)
 
-[node name="Subtract Tunnel" type="CSGCylinder3D" parent="Starting Area (Circle)/CSGSphere (Roof)"]
+[node name="Subtract Tunnel" type="CSGCylinder3D" parent="Starting Area/Starting Area (Circle)/CSGSphere (Roof)"]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, -15)
 operation = 2
 radius = 5.0
@@ -449,13 +454,13 @@ height = 20.5
 sides = 24
 material = ExtResource("2_lhqwy")
 
-[node name="Spotlight (Starting Area)" type="CSGCylinder3D" parent="."]
+[node name="Spotlight (Starting Area)" type="CSGCylinder3D" parent="Starting Area"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 13.083, 35)
 height = 0.790783
 cone = true
 material = ExtResource("7_258vw")
 
-[node name="SpotLight3D" type="SpotLight3D" parent="Spotlight (Starting Area)"]
+[node name="SpotLight3D" type="SpotLight3D" parent="Starting Area/Spotlight (Starting Area)"]
 transform = Transform3D(1, 0, 0, 0, -5.96046e-08, 1, 0, -1, -5.96046e-08, 0, 0.0709534, -0.0736694)
 light_color = Color(1, 0.92, 0.92, 1)
 light_energy = 8.0
@@ -465,7 +470,7 @@ spot_attenuation = 0.0
 spot_angle = 51.11
 spot_angle_attenuation = 2.07053
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="Spotlight (Starting Area)"]
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Starting Area/Spotlight (Starting Area)"]
 libraries = {
 "": SubResource("AnimationLibrary_bkuio")
 }
@@ -785,19 +790,21 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.27448, -2.23517e-07, 8.3819
 operation = 2
 size = Vector3(12.33, 28.995, 11.36)
 
-[node name="CSGBox3D" type="CSGBox3D" parent="Suspension_and_Camber Area"]
+[node name="Walls" type="Node3D" parent="Suspension_and_Camber Area"]
+
+[node name="CSGBox3D" type="CSGBox3D" parent="Suspension_and_Camber Area/Walls"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -49.922, 5, -24)
 use_collision = true
 size = Vector3(51, 10, 1)
 material = ExtResource("2_lhqwy")
 
-[node name="CSGBox3D2" type="CSGBox3D" parent="Suspension_and_Camber Area"]
+[node name="CSGBox3D2" type="CSGBox3D" parent="Suspension_and_Camber Area/Walls"]
 transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, -74.922, 5, 13)
 use_collision = true
 size = Vector3(73, 10, 1)
 material = ExtResource("2_lhqwy")
 
-[node name="CSGBox3D3" type="CSGBox3D" parent="Suspension_and_Camber Area"]
+[node name="CSGBox3D3" type="CSGBox3D" parent="Suspension_and_Camber Area/Walls"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -38.922, 5, 50)
 use_collision = true
 size = Vector3(73, 10, 1)
@@ -1071,6 +1078,108 @@ max_db = -5.0
 pitch_scale = 0.85
 max_distance = 35.0
 
+[node name="Terrain Blender Area" type="Node3D" parent="."]
+
+[node name="Walls" type="Node3D" parent="Terrain Blender Area"]
+
+[node name="CSGBox3D" type="CSGBox3D" parent="Terrain Blender Area/Walls"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 49.922, 5, -24)
+use_collision = true
+size = Vector3(51, 10, 1)
+material = ExtResource("2_lhqwy")
+
+[node name="CSGBox3D2" type="CSGBox3D" parent="Terrain Blender Area/Walls"]
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 74.922, 5, 13)
+use_collision = true
+size = Vector3(73, 10, 1)
+material = ExtResource("2_lhqwy")
+
+[node name="CSGBox3D3" type="CSGBox3D" parent="Terrain Blender Area/Walls"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 38.922, 5, 50)
+use_collision = true
+size = Vector3(73, 10, 1)
+material = ExtResource("2_lhqwy")
+
+[node name="Terrain" type="CSGCombiner3D" parent="Terrain Blender Area"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 40, 0, 12.5)
+use_collision = true
+
+[node name="CSGBox3D" type="CSGBox3D" parent="Terrain Blender Area/Terrain"]
+use_collision = true
+size = Vector3(70, 1, 75)
+material = ExtResource("22_40u5h")
+
+[node name="Center Subtraction" type="CSGCylinder3D" parent="Terrain Blender Area/Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -40, 0, -37)
+operation = 2
+radius = 25.0
+height = 18.0
+sides = 32
+material = ExtResource("8_yrtx2")
+
+[node name="Start Subtraction" type="CSGCylinder3D" parent="Terrain Blender Area/Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -40, 0, 22.5)
+operation = 2
+radius = 15.0
+height = 5.84057
+sides = 32
+material = ExtResource("8_yrtx2")
+
+[node name="TerrainData" type="Node" parent="Terrain Blender Area/Terrain"]
+script = ExtResource("23_1okcy")
+terrainIDTexture = ExtResource("24_dmgii")
+
+[node name="Labels" type="Node3D" parent="Terrain Blender Area"]
+
+[node name="Label (Asphalt)" type="Label3D" parent="Terrain Blender Area/Labels"]
+transform = Transform3D(1.91069e-15, 7.30144e-30, -1, -4.37114e-08, 1, -1.59578e-37, 1, 4.37114e-08, 1.91069e-15, 74.2377, 5.5786, 32)
+modulate = Color(1, 1, 1, 0.835294)
+text = "ASPHALT"
+font_size = 720
+
+[node name="Label (Asphalt)4" type="Label3D" parent="Terrain Blender Area/Labels"]
+transform = Transform3D(1.91069e-15, 7.30144e-30, -1, -4.37114e-08, 1, -1.59578e-37, 1, 4.37114e-08, 1.91069e-15, 74.2377, 5.5786, -6)
+modulate = Color(1, 1, 1, 0.835294)
+text = "ICE"
+font_size = 720
+
+[node name="Label (Asphalt)5" type="Label3D" parent="Terrain Blender Area/Labels"]
+transform = Transform3D(1, 4.37114e-08, 4.37114e-08, -4.37114e-08, 1, -3.19156e-37, -4.37114e-08, -1.91069e-15, 1, 58.2377, 5.5786, -23.3841)
+modulate = Color(1, 1, 1, 0.835294)
+text = "ICE"
+font_size = 720
+
+[node name="Label (Asphalt)6" type="Label3D" parent="Terrain Blender Area/Labels"]
+transform = Transform3D(0.289984, 1.26756e-08, 0.957032, -4.37114e-08, 1, -2.69243e-15, -0.957032, -4.18332e-08, 0.289984, 23.8516, 5.5786, -17.0559)
+modulate = Color(1, 1, 1, 0.835294)
+text = "RT"
+font_size = 720
+
+[node name="Label (Asphalt)7" type="Label3D" parent="Terrain Blender Area/Labels"]
+transform = Transform3D(0.45441, 1.98629e-08, 0.890793, -4.37114e-08, 1, -3.86504e-15, -0.890793, -3.89378e-08, 0.45441, 22.2703, 5.5786, -13.3204)
+modulate = Color(1, 1, 1, 0.835294)
+text = "DI"
+font_size = 720
+
+[node name="Label (Asphalt)2" type="Label3D" parent="Terrain Blender Area/Labels"]
+transform = Transform3D(-1, -4.37114e-08, 4.37114e-08, -4.37114e-08, 1, -3.19156e-37, -4.37114e-08, -1.91069e-15, -1, 58.2377, 5.5786, 49.2421)
+modulate = Color(1, 1, 1, 0.835294)
+text = "ASPHALT"
+font_size = 720
+
+[node name="Label (Asphalt)3" type="Label3D" parent="Terrain Blender Area/Labels"]
+transform = Transform3D(-1, -4.37114e-08, 4.37114e-08, -4.37114e-08, 1, -3.19156e-37, -4.37114e-08, -1.91069e-15, -1, 20.2377, 5.5786, 49.2421)
+modulate = Color(1, 1, 1, 0.835294)
+text = "UNDEFINED"
+font_size = 720
+
+[node name="Label (Asphalt)8" type="Label3D" parent="Terrain Blender Area/Labels"]
+transform = Transform3D(-0.707107, 0.707107, 6.18172e-08, 4.37114e-08, -4.37114e-08, 1, 0.707107, 0.707107, 0, 40.0092, 0.578605, 12.4489)
+modulate = Color(0, 0, 0, 0.454902)
+outline_modulate = Color(0, 0, 0, 0)
+text = "UNDEFINED"
+font_size = 540
+
 [node name="Reflection Probes" type="Node3D" parent="."]
 
 [node name="ReflectionProbe" type="ReflectionProbe" parent="Reflection Probes"]
@@ -1078,8 +1187,9 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.49401, 35.2468)
 size = Vector3(33.033, 16.2454, 38.418)
 
 [node name="ReflectionProbe2" type="ReflectionProbe" parent="Reflection Probes"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -46.3393, 4.49401, 16.8756)
-size = Vector3(62.6718, 16.2454, 68.4325)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -41.715, 4.49401, 16.8756)
+size = Vector3(71.9204, 16.2454, 68.4325)
+box_projection = true
 
 [node name="ReflectionProbe3" type="ReflectionProbe" parent="Reflection Probes"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.49401, -23.7702)
@@ -1088,7 +1198,14 @@ size = Vector3(52.3301, 16.2454, 52.3904)
 [node name="ReflectionProbe4" type="ReflectionProbe" parent="Reflection Probes"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 37.7483, 4.49401, -59.1244)
 size = Vector3(74.9848, 16.2454, 68.4325)
+box_projection = true
 
 [node name="ReflectionProbe5" type="ReflectionProbe" parent="Reflection Probes"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -37.2517, 4.49401, -59.1244)
 size = Vector3(74.9848, 16.2454, 68.4325)
+box_projection = true
+
+[node name="ReflectionProbe6" type="ReflectionProbe" parent="Reflection Probes"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 40.7703, 4.49401, 16.8756)
+size = Vector3(68.4526, 16.2454, 68.4325)
+box_projection = true

@@ -1,18 +1,35 @@
-[gd_resource type="ShaderMaterial" load_steps=7 format=3 uid="uid://cxwbyfy7vrd0c"]
+[gd_resource type="ShaderMaterial" load_steps=11 format=3 uid="uid://cxwbyfy7vrd0c"]
 
 [ext_resource type="Shader" uid="uid://bpe8c5uxkqfm5" path="res://Shaders/terrain_shader.tres" id="1_1vtna"]
-[ext_resource type="Texture2D" uid="uid://djwissmxrnljf" path="res://addons/kenney_prototype_textures/dark/texture_02.png" id="2_7604a"]
-[ext_resource type="Texture2D" uid="uid://c00rqsynvxe6g" path="res://addons/kenney_prototype_textures/orange/texture_02.png" id="3_63sk8"]
-[ext_resource type="Texture2D" uid="uid://cxj8q2uxfan7" path="res://addons/kenney_prototype_textures/purple/texture_02.png" id="4_qpgn3"]
-[ext_resource type="Texture2D" uid="uid://djpl5fu21dcse" path="res://addons/kenney_prototype_textures/light/texture_02.png" id="5_pli1d"]
+[ext_resource type="Texture2D" uid="uid://dqjkesw1nlem6" path="res://Textures/Asphalt/Asphalt_Albedo.png" id="2_foteg"]
+[ext_resource type="Texture2D" uid="uid://yxjp8f7bpq6d" path="res://Textures/Asphalt/Asphalt_Normal.png" id="3_1rd51"]
+[ext_resource type="Texture2D" uid="uid://b0lrtkpwd4l05" path="res://Textures/Rocky_Trail_02_2k/rocky_trail_02_diff_2k.jpg" id="4_4rjuq"]
+[ext_resource type="Texture2D" uid="uid://mcafyplq283c" path="res://Textures/Rocky_Trail_02_2k/rocky_trail_02_nor_gl_2k.jpg" id="5_07xnr"]
+[ext_resource type="Texture2D" uid="uid://vo08px6rnqk4" path="res://Textures/Blue_Ice/Blue_Ice_001_COLOR.jpg" id="6_d5pyl"]
 [ext_resource type="Texture2D" uid="uid://b0e1tntwfbgfd" path="res://Textures/Terrain Maps/TerrainID_Square.png" id="6_dkuvh"]
+[ext_resource type="Texture2D" uid="uid://cs1ncjc4ld4n3" path="res://Textures/Blue_Ice/Blue_Ice_001_NORM.jpg" id="6_g1kv2"]
+[ext_resource type="Texture2D" uid="uid://c63jd3fc43lb3" path="res://addons/kenney_prototype_textures/red/texture_09.png" id="7_necqt"]
+[ext_resource type="Texture2D" uid="uid://d3eit1rr760v8" path="res://addons/kenney_prototype_textures/light/texture_09.png" id="9_e78n6"]
 
 [resource]
 render_priority = 0
 shader = ExtResource("1_1vtna")
-shader_parameter/TerrainBoundaries = Vector3(0.75, 0.6, 0.25)
-shader_parameter/Terrain01_Albedo = ExtResource("2_7604a")
-shader_parameter/Terrain02_Albedo = ExtResource("3_63sk8")
+shader_parameter/Terrain01_UVScale = Vector2(5, 5)
+shader_parameter/Terrain02_UVScale = Vector2(5, 5)
+shader_parameter/Terrain03_UVScale = Vector2(6, 6)
+shader_parameter/Terrain04_UVScale = Vector2(5, 5)
+shader_parameter/Terrain05_UVScale = Vector2(-5, 5)
+shader_parameter/Terrain01_Rough = 0.56
+shader_parameter/Terrain02_Rough = 0.7
+shader_parameter/Terrain03_Rough = 0.1
+shader_parameter/Terrain04_Rough = 1.0
+shader_parameter/Terrain05_Rough = 1.0
+shader_parameter/Terrain01_Albedo = ExtResource("2_foteg")
+shader_parameter/Terrain02_Albedo = ExtResource("4_4rjuq")
 shader_parameter/TerrainID = ExtResource("6_dkuvh")
-shader_parameter/Terrain03_Albedo = ExtResource("4_qpgn3")
-shader_parameter/Terrain04_Albedo = ExtResource("5_pli1d")
+shader_parameter/Terrain03_Albedo = ExtResource("6_d5pyl")
+shader_parameter/Terrain04_Albedo = ExtResource("7_necqt")
+shader_parameter/Terrain05_Albedo = ExtResource("9_e78n6")
+shader_parameter/Terrain01_Normal = ExtResource("3_1rd51")
+shader_parameter/Terrain02_Normal = ExtResource("5_07xnr")
+shader_parameter/Terrain02_Normal2 = ExtResource("6_g1kv2")

@@ -282,14 +282,14 @@ public partial class WheelJoint : Node3D
 				// 	GD.Print($"({Name}) UV: {uv}");
 
 				Color terrainPixel;
-				if (uv != null && tData.IdImage.IsValid())
+				if (uv.HasValue && tData.IdImage.IsValid())
 				{
 					var idWidth = tData.IdImage.GetWidth();
 					var idHeight = tData.IdImage.GetHeight();
 
 					Vector2I pixelCoord = new Vector2I(
 						Mathf.Clamp(Mathf.FloorToInt(uv.Value.X * idWidth), 0, idWidth - 1),
-						(idHeight - 1) - Mathf.Clamp(Mathf.FloorToInt(uv.Value.Y * idHeight), 0, idHeight - 1)
+						Mathf.Clamp(Mathf.FloorToInt(uv.Value.Y * idHeight), 0, idHeight - 1)
 					);
 					terrainPixel = tData.IdImage.GetPixelv(pixelCoord);
 
@@ -299,24 +299,22 @@ public partial class WheelJoint : Node3D
 				else
 				{
 					GD.PushWarning("No valid UV was computed, or no terrain texture is set.");
-					terrainPixel = Colors.White;
+					terrainPixel = Colors.Black;
 				}
 
 				// Use terrain data to select a terrain profile
-				int lowestValidProfileIdx = 0;
-				float lowestValidProfileValue = Mathf.Inf;
-				for (int i = 0; i < terrainProfiles.Length; i++)
+				// TODO: Blend terrain profiles in case of partial color channel saturation (e.g. (0, 0.5, 0, 0) would be 50% default, and 50% 3rd profile)
+				int highestProfileIdx = 0;
+				float highestProfileValue = 0.5f;
+				for (int i = 0; i < Mathf.Min(terrainProfiles.Length - 1, 4); i++)
 				{
-					if (terrainProfiles[i].associatedValue > terrainPixel.R)
+					if (terrainPixel[i] >= highestProfileValue)
 					{
-						if (terrainProfiles[i].associatedValue < lowestValidProfileValue)
-						{
-							lowestValidProfileValue = terrainProfiles[i].associatedValue;
-							lowestValidProfileIdx = i;
-						}
+						highestProfileValue = terrainPixel[i];
+						highestProfileIdx = i + 1;
 					}
 				}
-				latestTerrainProfileIdx = lowestValidProfileIdx;
+				latestTerrainProfileIdx = highestProfileIdx;
 			}
 			else
 			{
@@ -324,6 +322,9 @@ public partial class WheelJoint : Node3D
 				// GD.PushWarning("No terrain data is available!");
 				latestTerrainProfileIdx = 0;
 			}
+			
+			if (Engine.GetPhysicsFrames() % 60 == 0)
+				GD.Print($"{Name} -> Terrain ID: {latestTerrainProfileIdx}");
 		}
 	}
 
@@ -451,14 +452,14 @@ public partial class WheelJoint : Node3D
 		{
 			localMeshPos = ToLocal(betweenState.EndPoint) + Vector3.Up * wheelRadius;
 
-			localMeshRotation += Vector3.Right * AngularVelocity * (float)GetProcessDeltaTime();	// This part is/should be called in _Process()
+			localMeshRotation += Vector3.Right * AngularVelocity * (float)GetProcessDeltaTime();    // This part is/should be called in _Process()
 			localMeshRotation.X = localMeshRotation.X % Mathf.Tau;
 		}
 		else
 		{
 			localMeshPos = ToLocal(springState.EndPoint) + Vector3.Up * wheelRadius;
 
-			localMeshRotation += Vector3.Right * AngularVelocity * (float)GetPhysicsProcessDeltaTime();	// This part is/should be called in _PhysicsProcess();
+			localMeshRotation += Vector3.Right * AngularVelocity * (float)GetPhysicsProcessDeltaTime(); // This part is/should be called in _PhysicsProcess();
 			localMeshRotation.X = localMeshRotation.X % Mathf.Tau;
 
 			// === FOR ROTATING MESH BASED ON DISTANCE TRAVELLED ===
@@ -472,7 +473,7 @@ public partial class WheelJoint : Node3D
 	}
 
 	public void ApplyTorque(float amount)
-	{	
+	{
 		AngularVelocity += amount / Inertia;    // Divide by inertia to get the correct amount
 	}
 

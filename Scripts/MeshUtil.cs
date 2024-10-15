@@ -113,23 +113,23 @@ public static class MeshUtil
 			// if ((faceNormal - normal).IsZeroApprox())
 			// 	continue;
 
-			// === Reject a face if the volume of the virtual tetrahedron, built from the face vertices and the point, is too large. ===
-			// NOTE: Adapted from Master's Thesis codebase.
+			// // === Reject a face if the volume of the virtual tetrahedron, built from the face vertices and the point, is too large. ===
+			// // NOTE: Adapted from Master's Thesis codebase.
 
-			// "Volume" Matrix
-			Vector3 column0 = v0 - point;
-			Vector3 column1 = v1 - point;
-			Vector3 column2 = v2 - point;
+			// // "Volume" Matrix
+			// Vector3 column0 = v0 - point;
+			// Vector3 column1 = v1 - point;
+			// Vector3 column2 = v2 - point;
 
-			// Determinant computation
-			float det0 = (column1.Y * column2.Z - column2.Y * column1.Z);
-			float det1 = (column0.Y * column2.Z - column2.Y * column0.Z);
-			float det2 = (column0.Y * column1.Z - column1.Y * column0.Z);
-			float volume = column0.X * det0 - column1.X * det1 - column2.X * det2;
+			// // Determinant computation
+			// float det0 = (column1.Y * column2.Z - column2.Y * column1.Z);
+			// float det1 = (column0.Y * column2.Z - column2.Y * column0.Z);
+			// float det2 = (column0.Y * column1.Z - column1.Y * column0.Z);
+			// float volume = column0.X * det0 - column1.X * det1 - column2.X * det2;
 
-			if (volume > 0.05f)  // In the most extreme case, the point is directly on the surface of the triangle and the volume would thus be 0.0
-				continue;
-			// ==========================================================================================================================
+			// if (volume > 1f)  // In the most extreme case, the point is directly on the surface of the triangle and the volume would thus be 0.0
+			// 	continue;
+			// // ==========================================================================================================================
 
 			// Check whether the point is inside the face (verified with barycentric coordinates)
 			Vector3? bc = IsPointInTriangle(point, v0, v1, v2);
