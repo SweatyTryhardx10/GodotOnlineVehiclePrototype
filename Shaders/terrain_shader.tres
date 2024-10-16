@@ -89,7 +89,7 @@ default_value = Vector2(1, 1)
 input_name = "uv"
 
 [sub_resource type="VisualShaderNodeFrame" id="VisualShaderNodeFrame_25c5c"]
-size = Vector2(673, 374)
+size = Vector2(624, 176)
 title = "ID Mask"
 attached_nodes = PackedInt32Array(3, 4)
 
@@ -583,7 +583,6 @@ void fragment() {
 
 }
 "
-graph_offset = Vector2(-549.698, 805.991)
 nodes/fragment/0/position = Vector2(1700, 1660)
 nodes/fragment/3/node = SubResource("VisualShaderNodeTexture2DParameter_bdsjc")
 nodes/fragment/3/position = Vector2(-1560, -600)

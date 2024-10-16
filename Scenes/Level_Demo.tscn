@@ -1,14 +1,15 @@
-[gd_scene load_steps=52 format=3 uid="uid://dr057ngllbjlx"]
+[gd_scene load_steps=53 format=3 uid="uid://dr057ngllbjlx"]
 
 [ext_resource type="Script" path="res://Scripts/Demo/DemoController.cs" id="1_jyxmy"]
 [ext_resource type="Material" uid="uid://7wc4p0xj4re0" path="res://Materials/pbr_triG_proto_dark.tres" id="2_lhqwy"]
 [ext_resource type="Material" uid="uid://bmoqd82be6h4l" path="res://Materials/pbr_tri_proto_dark.tres" id="2_ti2ui"]
-[ext_resource type="PackedScene" uid="uid://suinvyn3ii48" path="res://Prefabs/Vehicle_Standard.tscn" id="2_y7r2w"]
+[ext_resource type="PackedScene" uid="uid://suinvyn3ii48" path="res://Prefabs/Vehicles/Vehicle_Standard.tscn" id="2_y7r2w"]
 [ext_resource type="Environment" uid="uid://bbn65qd1khvqw" path="res://Data/Environment_Default.tres" id="3_dajeh"]
-[ext_resource type="PackedScene" uid="uid://cmguesj6pr45u" path="res://Prefabs/Vehicle_RollerDome.tscn" id="3_r1pcc"]
+[ext_resource type="PackedScene" uid="uid://cmguesj6pr45u" path="res://Prefabs/Vehicles/Vehicle_RollerDome.tscn" id="3_r1pcc"]
 [ext_resource type="Script" path="res://Scripts/Camera/CameraController.cs" id="4_5rxjd"]
-[ext_resource type="PackedScene" uid="uid://cq4a6lilby0bp" path="res://Prefabs/Vehicle_Truck.tscn" id="4_gp7dh"]
+[ext_resource type="PackedScene" uid="uid://cq4a6lilby0bp" path="res://Prefabs/Vehicles/Vehicle_Truck.tscn" id="4_gp7dh"]
 [ext_resource type="LabelSettings" uid="uid://b22ae57tkkrw4" path="res://Data/UI/label_title.tres" id="5_1muke"]
+[ext_resource type="PackedScene" uid="uid://b10be8b37v3su" path="res://Prefabs/Vehicles/Vehicle_MobileApache.tscn" id="5_ulkt8"]
 [ext_resource type="Material" uid="uid://pmhdpge6h15x" path="res://Materials/pbr_tri_proto_red.tres" id="7_82pgc"]
 [ext_resource type="Material" uid="uid://bi2ispdqnc7m2" path="res://Materials/pbr_tri_proto_light_emissive.tres" id="7_258vw"]
 [ext_resource type="Material" uid="uid://ccw2tuc2fex2k" path="res://Materials/pbr_tri_proto_green.tres" id="8_sgd0w"]
@@ -242,7 +243,7 @@ _data = {
 
 [node name="LevelDemo" type="Node3D" node_paths=PackedStringArray("spawnNode")]
 script = ExtResource("1_jyxmy")
-playerObjectList = [ExtResource("2_y7r2w"), ExtResource("3_r1pcc"), ExtResource("4_gp7dh")]
+playerObjectList = [ExtResource("2_y7r2w"), ExtResource("3_r1pcc"), ExtResource("4_gp7dh"), ExtResource("5_ulkt8")]
 spawnNode = NodePath("Spawn Location")
 
 [node name="Sun" type="DirectionalLight3D" parent="."]
@@ -250,9 +251,9 @@ transform = Transform3D(0.707107, 0.612372, 0.353553, 0, -0.5, 0.866025, 0.70710
 shadow_enabled = true
 
 [node name="Ground" type="CSGBox3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, -20)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -5, -20)
 use_collision = true
-size = Vector3(150, 2, 140)
+size = Vector3(150, 10, 140)
 material = ExtResource("2_lhqwy")
 
 [node name="Camera3D" type="Camera3D" parent="."]
@@ -529,7 +530,54 @@ spot_range = 13.66
 spot_angle = 58.2
 spot_angle_attenuation = 0.435276
 
-[node name="Center Area (Circle)" type="CSGCylinder3D" parent="."]
+[node name="Center Area" type="Node3D" parent="."]
+
+[node name="Sign" type="CSGBox3D" parent="Center Area"]
+transform = Transform3D(0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, -16.6789, 8, -41.2641)
+use_collision = true
+size = Vector3(6, 2, 0.1)
+material = ExtResource("2_ti2ui")
+
+[node name="Label3D" type="Label3D" parent="Center Area/Sign"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.107)
+text = "Hillclimbing"
+font_size = 167
+
+[node name="Sign4" type="CSGBox3D" parent="Center Area"]
+transform = Transform3D(-0.707107, 0, -0.707107, 0, 1, 0, 0.707107, 0, -0.707107, 16.7533, 8, -7.83193)
+use_collision = true
+size = Vector3(6, 2, 0.1)
+material = ExtResource("2_ti2ui")
+
+[node name="Label3D" type="Label3D" parent="Center Area/Sign4"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.107)
+text = "Terrain Blender"
+font_size = 142
+
+[node name="Sign3" type="CSGBox3D" parent="Center Area"]
+transform = Transform3D(0.707107, 0, -0.707107, 0, 1, 0, 0.707107, 0, 0.707107, 16.7524, 8, -41.2313)
+use_collision = true
+size = Vector3(6, 2, 0.1)
+material = ExtResource("2_ti2ui")
+
+[node name="Label3D" type="Label3D" parent="Center Area/Sign3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.107)
+text = "External Forces"
+font_size = 147
+
+[node name="Sign2" type="CSGBox3D" parent="Center Area"]
+transform = Transform3D(-0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, -0.707107, -16.7722, 8, -7.81513)
+use_collision = true
+size = Vector3(6, 2, 0.1)
+material = ExtResource("2_ti2ui")
+
+[node name="Label3D" type="Label3D" parent="Center Area/Sign2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.107)
+text = "Suspension
+and Camber"
+font_size = 142
+
+[node name="Center Area (Circle)" type="CSGCylinder3D" parent="Center Area"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, -24.5)
 use_collision = true
 radius = 25.0
@@ -537,41 +585,41 @@ height = 12.0
 sides = 32
 material = ExtResource("8_yrtx2")
 
-[node name="CSGCylinder3D2" type="CSGCylinder3D" parent="Center Area (Circle)"]
+[node name="CSGCylinder3D2" type="CSGCylinder3D" parent="Center Area/Center Area (Circle)"]
 operation = 2
 radius = 24.0
 height = 18.0
 sides = 32
 material = ExtResource("8_yrtx2")
 
-[node name="CSGBox3D" type="CSGBox3D" parent="Center Area (Circle)"]
+[node name="CSGBox3D" type="CSGBox3D" parent="Center Area/Center Area (Circle)"]
 transform = Transform3D(0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, -17, 0, -17)
 operation = 2
-size = Vector3(6, 10, 4)
+size = Vector3(7, 10, 4)
 material = ExtResource("2_lhqwy")
 
-[node name="CSGBox3D3" type="CSGBox3D" parent="Center Area (Circle)"]
+[node name="CSGBox3D3" type="CSGBox3D" parent="Center Area/Center Area (Circle)"]
 transform = Transform3D(0.707107, 0, -0.707107, 0, 1, 0, 0.707107, 0, 0.707107, 17, 0, -17)
 operation = 2
-size = Vector3(6, 10, 4)
+size = Vector3(7, 10, 4)
 material = ExtResource("2_lhqwy")
 
-[node name="CSGBox3D4" type="CSGBox3D" parent="Center Area (Circle)"]
+[node name="CSGBox3D4" type="CSGBox3D" parent="Center Area/Center Area (Circle)"]
 transform = Transform3D(0.707107, 0, -0.707107, 0, 1, 0, 0.707107, 0, 0.707107, -17, 0, 17)
 operation = 2
-size = Vector3(6, 10, 4)
+size = Vector3(7, 10, 4)
 material = ExtResource("2_lhqwy")
 
-[node name="CSGBox3D5" type="CSGBox3D" parent="Center Area (Circle)"]
+[node name="CSGBox3D5" type="CSGBox3D" parent="Center Area/Center Area (Circle)"]
 transform = Transform3D(0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, 17, 0, 17)
 operation = 2
-size = Vector3(6, 10, 4)
+size = Vector3(7, 10, 4)
 material = ExtResource("2_lhqwy")
 
-[node name="CSGBox3D2" type="CSGBox3D" parent="Center Area (Circle)"]
+[node name="CSGBox3D2" type="CSGBox3D" parent="Center Area/Center Area (Circle)"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 24)
 operation = 2
-size = Vector3(10, 10, 4)
+size = Vector3(7, 10, 4)
 material = ExtResource("2_lhqwy")
 
 [node name="Spawn Location" type="Node3D" parent="."]
@@ -1105,8 +1153,9 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 40, 0, 12.5)
 use_collision = true
 
 [node name="CSGBox3D" type="CSGBox3D" parent="Terrain Blender Area/Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.235107, 0, 0)
 use_collision = true
-size = Vector3(70, 1, 75)
+size = Vector3(69.5298, 1, 75)
 material = ExtResource("22_40u5h")
 
 [node name="Center Subtraction" type="CSGCylinder3D" parent="Terrain Blender Area/Terrain"]
@@ -1209,3 +1258,10 @@ box_projection = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 40.7703, 4.49401, 16.8756)
 size = Vector3(68.4526, 16.2454, 68.4325)
 box_projection = true
+
+[node name="Easter Egg Label" type="Label3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -17.8897, -24.5)
+billboard = 2
+text = "HALLO! ^^
+PLEASE DON'T LOOK DOWN HERE!"
+font_size = 632

@@ -1,6 +1,7 @@
 using Godot;
 using System;
 
+[Obsolete]
 public partial class MotorJoint : RigidBody3D
 {
 	protected enum JointAxis

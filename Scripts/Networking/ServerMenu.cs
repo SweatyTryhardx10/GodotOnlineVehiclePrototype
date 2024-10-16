@@ -36,11 +36,11 @@ public partial class ServerMenu : Control
 		var clientID = GetTree().GetMultiplayer().GetUniqueId();
 		
 		var entry = playerListEntryPrefab.Instantiate<Control>();
-
-		entry.GetNode<Label>("Name").Text = info["Name"].As<string>();
-		entry.GetNode<Label>("ID").Text = playerID == 1 ? "Host" : $"#{playerID}";
-		entry.GetNode<Label>("Connection").Text = "connected";
-		entry.GetNode<Label>("Connection").AddThemeColorOverride("font_color", Colors.Green);
+		
+		entry.GetNode<Label>("MarginContainer/HBoxContainer/Name").Text = info["Name"].As<string>();
+		entry.GetNode<Label>("MarginContainer/HBoxContainer/ID").Text = playerID == 1 ? "Host" : $"#{playerID}";
+		entry.GetNode<Label>("MarginContainer/HBoxContainer/Connection").Text = "connected";
+		entry.GetNode<Label>("MarginContainer/HBoxContainer/Connection").AddThemeColorOverride("font_color", Colors.Green);
 
 		playerListContainer.AddChild(entry);
 		playerInfoElements.Add(playerID, entry);

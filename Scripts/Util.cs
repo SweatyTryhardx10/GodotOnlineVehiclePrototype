@@ -308,7 +308,7 @@ public static class Util
 
 	public static string[] GetVehicleTypes()
 	{
-		string[] targetFilePaths = DirAccess.GetFilesAt("res://Prefabs").Where(s => s.Contains("Vehicle")).ToArray();
+		string[] targetFilePaths = DirAccess.GetFilesAt("res://Prefabs/Vehicles").Where(s => s.Contains("Vehicle")).ToArray();
 
 		string[] types = new string[targetFilePaths.Length];
 		for (int i = 0; i < targetFilePaths.Length; i++)

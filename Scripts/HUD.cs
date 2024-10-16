@@ -104,8 +104,16 @@ public partial class HUD : Node
 
 	private void OnPauseButtonDisconnectPressed()
 	{
-		this.TreeMP().MultiplayerPeer.Close();	// I suppose this is how to close the connection.
-		
+		bool isOfflineServer = this.TreeMP().MultiplayerPeer is OfflineMultiplayerPeer;
+		// NOTE: Godot initializes the root with an Offline variant of the MultiplayerPeer class; it is not null by default so it cannot be
+		//		used as a condition for checking whether a 'server' exists. Similarly, IsServer() cannot be used becaused it is true by default.
+		//		Therefore, type checking is used to determine whether the client is connected to the online (i.e. online).
+
+		if (isOfflineServer)
+			GetTree().ChangeSceneToFile("res://Scenes/menu.tscn");
+		else
+			this.TreeMP().MultiplayerPeer.Close();  // I suppose this is how to close the connection.
+
 		ShowScreen(HUDMode.None);
 	}
 
@@ -119,7 +127,7 @@ public partial class HUD : Node
 
 	private void OnEndButtonShutDownPressed()
 	{
-		this.TreeMP().MultiplayerPeer.Close();	// I suppose this is how to close the server as well.
+		this.TreeMP().MultiplayerPeer.Close();  // I suppose this is how to close the server as well.
 
 		ShowScreen(HUDMode.None);
 	}

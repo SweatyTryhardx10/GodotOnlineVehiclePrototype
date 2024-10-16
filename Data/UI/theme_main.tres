@@ -1,9 +1,20 @@
-[gd_resource type="Theme" load_steps=5 format=3 uid="uid://dwj4prd2tyq2w"]
+[gd_resource type="Theme" load_steps=6 format=3 uid="uid://dwj4prd2tyq2w"]
 
 [ext_resource type="FontFile" uid="uid://c6hbhqwc6bd0e" path="res://Fonts/CONSOLA.TTF" id="1_15a0j"]
 [ext_resource type="FontFile" uid="uid://d0bf4qtn31eq" path="res://Fonts/CONSOLAZ.TTF" id="2_4lg7x"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fak6x"]
+bg_color = Color(0.699056, 0.747932, 0.669034, 1)
+border_color = Color(0, 0.426626, 0.249263, 1)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 15
+corner_radius_bottom_left = 15
+shadow_color = Color(0, 0, 0, 0.105882)
+shadow_size = 12
+shadow_offset = Vector2(4, 7)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_nlund"]
 bg_color = Color(0.699056, 0.747932, 0.669034, 1)
 border_color = Color(0, 0.426626, 0.249263, 1)
 corner_radius_top_left = 5
@@ -29,11 +40,13 @@ shadow_offset = Vector2(3, 8)
 
 [resource]
 Button/colors/font_outline_color = Color(0.371303, 0.54153, 0.584472, 1)
+Button/colors/icon_normal_color = Color(1, 1, 1, 1)
 Button/constants/outline_size = 1
-Button/font_sizes/font_size = 18
+Button/font_sizes/font_size = 32
 Button/fonts/font = ExtResource("1_15a0j")
 Label/colors/font_shadow_color = Color(0, 0, 0, 0.156863)
-Label/font_sizes/font_size = 18
+Label/font_sizes/font_size = 26
 Label/fonts/font = ExtResource("2_4lg7x")
 Panel/styles/panel = SubResource("StyleBoxFlat_fak6x")
+PanelContainer/styles/panel = SubResource("StyleBoxFlat_nlund")
 PopupPanel/styles/panel = SubResource("StyleBoxFlat_uoeaf")

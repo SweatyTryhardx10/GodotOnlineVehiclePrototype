@@ -32,16 +32,13 @@ public partial class HydraulicJoint : Node3D
 
 	public override void _PhysicsProcess(double delta)
 	{
-		if (!bodyA.IsValid() || !bodyB.IsValid())   // Anchor behaviour
+		Node3D body = bodyA.IsValid() ? bodyA : bodyB;
+		if (body.IsValid())                         // Anchor behaviour
 		{
-			Node3D body = bodyA.IsValid() ? bodyA : bodyB;
-			if (body.IsValid())
-			{
-				currentLength = Mathf.MoveToward(currentLength, Length, displacementSpeed * (float)delta);
-				Vector3 bodyPosition = GlobalPosition - GlobalBasis.Y * currentLength;
+			currentLength = Mathf.MoveToward(currentLength, Length, displacementSpeed * (float)delta);
+			Vector3 bodyPosition = GlobalPosition - GlobalBasis.Y * currentLength;
 
-				body.GlobalPosition = bodyPosition;
-			}
+			body.GlobalPosition = bodyPosition;
 		}
 		else                                        // Rod behaviour
 		{
@@ -69,7 +66,7 @@ public partial class HydraulicJoint : Node3D
 		float yMod = Mathf.Max(0f, inputY * (invertY ? -1f : 1f));
 		float inputMod = Mathf.Max(xMod, yMod);
 		float newLength = inputMod * maxLength;
-		
+
 		GD.Print($"Length: {newLength}");
 
 		if (newLength != Length)

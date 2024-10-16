@@ -36,6 +36,12 @@ public partial class Menu : Control
 
 	#endregion
 
+	public void OnPlayDemoButtonPressed()
+	{
+		string demoScenePath = "res://Scenes/Level_Demo.tscn";
+		GetTree().ChangeSceneToFile(demoScenePath);
+	}
+
 	public void OnCreateGameButtonPressed()
 	{
 		GetNode<NetLobby>("/root/Lobby").CreateGame();
@@ -48,7 +54,7 @@ public partial class Menu : Control
 		GetNode<Control>("Button Panel").Hide();
 	}
 
-	public void OnJoinGameButtonPressed()
+	public async void OnJoinGameButtonPressed()
 	{
 		// Show ip address menu
 		GetNode<Control>("Address Panel").Show();
@@ -64,6 +70,12 @@ public partial class Menu : Control
 		{
 			// Show server overview (in client mode)
 			GetNode<ServerMenu>("Server Panel").Show();
+			GetNode<Control>("Address Panel").Hide();
+		}
+		else
+		{
+			GD.PushError($"Connection error: {error}");
+			GetNode<Control>("Button Panel").Show();
 			GetNode<Control>("Address Panel").Hide();
 		}
 	}

@@ -152,7 +152,6 @@ script = ExtResource("1_s4ax3")
 spawns = [NodePath("Spawns/Spawn"), NodePath("Spawns/Spawn2")]
 cinematicAnimation = NodePath("Cinematic/AnimationPlayer")
 animationString = "level_intro_generic3D"
-skipCinematic = true
 
 [node name="Cinematic" type="Node3D" parent="."]
 

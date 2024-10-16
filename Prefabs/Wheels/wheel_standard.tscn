@@ -34,6 +34,7 @@ longitudinalInfluenceOnLateral = 5.0
 camberInfluence = -1.0
 SteeringInterval = Vector2(0, 0)
 PoweredByEngine = false
+interpolateSpringState = false
 wheelMesh = NodePath("Mesh Container")
 
 [node name="Mesh Container" type="Node3D" parent="."]

@@ -1,19 +1,24 @@
-[gd_scene load_steps=10 format=3 uid="uid://6flg7doofiwp"]
+[gd_scene load_steps=11 format=3 uid="uid://6flg7doofiwp"]
 
 [ext_resource type="Script" path="res://Scripts/Menu.cs" id="1_dysrv"]
 [ext_resource type="Theme" uid="uid://dwj4prd2tyq2w" path="res://Data/UI/theme_main.tres" id="1_ym37a"]
 [ext_resource type="Script" path="res://Scripts/Networking/ServerMenu.cs" id="2_osnpk"]
 [ext_resource type="PackedScene" uid="uid://dfjmkssxy2p2l" path="res://Prefabs/UI/Player_List_Entry.tscn" id="3_cpx60"]
-[ext_resource type="LabelSettings" uid="uid://d0xcws23hq63m" path="res://Data/UI/label_settings_small.tres" id="4_2y35h"]
+[ext_resource type="Texture2D" uid="uid://d0aqcwbb7gviq" path="res://addons/bootstrap_icons/globe.png" id="3_g3vxw"]
+[ext_resource type="Texture2D" uid="uid://c8y4ybcbft44v" path="res://addons/bootstrap_icons/box.png" id="3_yt3b1"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_pgtn5"]
-font_size = 36
+font_size = 48
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_e8dyc"]
 bg_color = Color(0.253785, 0.278581, 0.253507, 1)
 
-[sub_resource type="LabelSettings" id="LabelSettings_cwhfe"]
-font_size = 18
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_m1djq"]
+bg_color = Color(0.2863, 0.35, 0.252, 1)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 15
+corner_radius_bottom_left = 15
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_newc2"]
 bg_color = Color(0.099, 0.1078, 0.11, 1)
@@ -38,10 +43,10 @@ quitPopup = NodePath("PopupPanel")
 layout_mode = 1
 anchors_preset = 10
 anchor_right = 1.0
-offset_bottom = 103.0
+offset_bottom = 195.0
 grow_horizontal = 2
 text = "Networked Vehicle Game
-(Hobby Project)"
+(Tech Demo)"
 label_settings = SubResource("LabelSettings_pgtn5")
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -54,35 +59,131 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Btn (Create game)" type="Button" parent="Button Panel"]
+[node name="VBoxContainer" type="VBoxContainer" parent="Button Panel"]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -97.0
-offset_top = -36.0
-offset_right = 97.0
-offset_bottom = 36.0
+offset_left = -171.0
+offset_top = -65.5
+offset_right = 171.0
+offset_bottom = 133.56
 grow_horizontal = 2
 grow_vertical = 2
+theme_override_constants/separation = 16
+alignment = 1
+
+[node name="Btn (Play Demo)" type="Button" parent="Button Panel/VBoxContainer"]
+custom_minimum_size = Vector2(420, 80)
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Button Panel/VBoxContainer/Btn (Play Demo)"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.025
+anchor_top = 0.11
+anchor_right = 0.975
+anchor_bottom = 0.89
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 10
+alignment = 1
+
+[node name="Margin Icon" type="MarginContainer" parent="Button Panel/VBoxContainer/Btn (Play Demo)/HBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 8
+
+[node name="Icon" type="TextureRect" parent="Button Panel/VBoxContainer/Btn (Play Demo)/HBoxContainer/Margin Icon"]
+modulate = Color(0.12, 0.8, 0.392, 1)
+layout_mode = 2
+texture = ExtResource("3_yt3b1")
+expand_mode = 3
+
+[node name="Shadow" type="TextureRect" parent="Button Panel/VBoxContainer/Btn (Play Demo)/HBoxContainer/Margin Icon/Icon"]
+modulate = Color(0, 0, 0, 0.505882)
+show_behind_parent = true
+layout_mode = 2
+offset_left = 1.465
+offset_top = 0.58
+offset_right = 47.465
+offset_bottom = 46.58
+texture = ExtResource("3_yt3b1")
+expand_mode = 3
+
+[node name="Label" type="Label" parent="Button Panel/VBoxContainer/Btn (Play Demo)/HBoxContainer"]
+layout_mode = 2
+text = "Play demo (local)"
+
+[node name="Btn (Create game)" type="Button" parent="Button Panel/VBoxContainer"]
+custom_minimum_size = Vector2(420, 80)
+layout_mode = 2
+theme_override_constants/icon_max_width = 40
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Button Panel/VBoxContainer/Btn (Create game)"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.025
+anchor_top = 0.11
+anchor_right = 0.975
+anchor_bottom = 0.89
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 10
+alignment = 1
+
+[node name="Margin Icon" type="MarginContainer" parent="Button Panel/VBoxContainer/Btn (Create game)/HBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 8
+
+[node name="Icon" type="TextureRect" parent="Button Panel/VBoxContainer/Btn (Create game)/HBoxContainer/Margin Icon"]
+modulate = Color(0.75, 0.75, 0.75, 1)
+layout_mode = 2
+texture = ExtResource("3_g3vxw")
+expand_mode = 3
+
+[node name="Label" type="Label" parent="Button Panel/VBoxContainer/Btn (Create game)/HBoxContainer"]
+layout_mode = 2
 text = "Create network game"
 
-[node name="Btn (Join game)" type="Button" parent="Button Panel"]
+[node name="Btn (Join game)" type="Button" parent="Button Panel/VBoxContainer"]
+custom_minimum_size = Vector2(420, 80)
+layout_mode = 2
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="Button Panel/VBoxContainer/Btn (Join game)"]
 layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -97.0
-offset_top = 51.25
-offset_right = 97.0
-offset_bottom = 123.25
+anchors_preset = -1
+anchor_left = 0.025
+anchor_top = 0.11
+anchor_right = 0.975
+anchor_bottom = 0.89
 grow_horizontal = 2
 grow_vertical = 2
-pivot_offset = Vector2(96.13, 36.01)
+theme_override_constants/separation = 10
+alignment = 1
+
+[node name="Margin Icon" type="MarginContainer" parent="Button Panel/VBoxContainer/Btn (Join game)/HBoxContainer2"]
+layout_mode = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 8
+
+[node name="Icon" type="TextureRect" parent="Button Panel/VBoxContainer/Btn (Join game)/HBoxContainer2/Margin Icon"]
+modulate = Color(0.75, 0.75, 0.75, 1)
+layout_mode = 2
+texture = ExtResource("3_g3vxw")
+expand_mode = 3
+
+[node name="Label" type="Label" parent="Button Panel/VBoxContainer/Btn (Join game)/HBoxContainer2"]
+layout_mode = 2
 text = "Join network game"
 
 [node name="Server Panel" type="Panel" parent="." node_paths=PackedStringArray("playerListContainer", "vehicleTypeLabel")]
@@ -95,95 +196,104 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_e8dyc")
 script = ExtResource("2_osnpk")
-playerListContainer = NodePath("Inner Container/Left Container (Vertical Flow)/Player List")
-vehicleTypeLabel = NodePath("Inner Container/Settings Panel/Panel/Vehicle Type")
+playerListContainer = NodePath("Inner Container/Left Container/MarginContainer/Left Container (Vertical Flow)/Player List")
+vehicleTypeLabel = NodePath("Inner Container/Right Container/MarginContainer/Vertical Flow/Panel/MarginContainer/Vehicle Selection/Vehicle Type")
 playerListEntryPrefab = ExtResource("3_cpx60")
 
-[node name="Inner Container" type="Control" parent="Server Panel"]
+[node name="Inner Container" type="HBoxContainer" parent="Server Panel"]
 layout_mode = 1
+anchors_preset = -1
 anchor_left = 0.5
 anchor_top = 0.575
 anchor_right = 0.5
 anchor_bottom = 0.575
-offset_left = -253.0
-offset_top = -86.3
-offset_right = 247.0
-offset_bottom = 131.7
+offset_left = -370.0
+offset_top = -243.6
+offset_right = 364.0
+offset_bottom = 195.4
 grow_horizontal = 2
 pivot_offset = Vector2(7.315, 0)
+theme_override_constants/separation = 32
 
-[node name="Left Container (Vertical Flow)" type="VBoxContainer" parent="Server Panel/Inner Container"]
-layout_mode = 1
-anchors_preset = -1
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_right = -150.0
-grow_horizontal = 2
-grow_vertical = 2
+[node name="Left Container" type="PanelContainer" parent="Server Panel/Inner Container"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_m1djq")
 
-[node name="Label" type="Label" parent="Server Panel/Inner Container/Left Container (Vertical Flow)"]
+[node name="MarginContainer" type="MarginContainer" parent="Server Panel/Inner Container/Left Container"]
+layout_mode = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 8
+
+[node name="Left Container (Vertical Flow)" type="VBoxContainer" parent="Server Panel/Inner Container/Left Container/MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Label" type="Label" parent="Server Panel/Inner Container/Left Container/MarginContainer/Left Container (Vertical Flow)"]
 layout_mode = 2
 text = "Players"
-label_settings = SubResource("LabelSettings_cwhfe")
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Player List" type="VBoxContainer" parent="Server Panel/Inner Container/Left Container (Vertical Flow)"]
+[node name="Player List" type="VBoxContainer" parent="Server Panel/Inner Container/Left Container/MarginContainer/Left Container (Vertical Flow)"]
 layout_mode = 2
 size_flags_vertical = 2
 theme_override_constants/separation = 2
 
-[node name="Settings Panel" type="Panel" parent="Server Panel/Inner Container"]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 1.0
-anchor_right = 1.0
-offset_left = -112.0
-offset_bottom = 168.0
-grow_horizontal = 0
+[node name="Right Container" type="PanelContainer" parent="Server Panel/Inner Container"]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_m1djq")
 
-[node name="Panel" type="VBoxContainer" parent="Server Panel/Inner Container/Settings Panel"]
-layout_mode = 1
-anchors_preset = 10
-anchor_right = 1.0
-offset_right = 1.0
-offset_bottom = 53.0
-grow_horizontal = 2
+[node name="MarginContainer" type="MarginContainer" parent="Server Panel/Inner Container/Right Container"]
+layout_mode = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 8
+
+[node name="Vertical Flow" type="VBoxContainer" parent="Server Panel/Inner Container/Right Container/MarginContainer"]
+layout_mode = 2
+
+[node name="Panel" type="PanelContainer" parent="Server Panel/Inner Container/Right Container/MarginContainer/Vertical Flow"]
+layout_mode = 2
+size_flags_vertical = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="Server Panel/Inner Container/Right Container/MarginContainer/Vertical Flow/Panel"]
+layout_mode = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 8
+
+[node name="Vehicle Selection" type="VBoxContainer" parent="Server Panel/Inner Container/Right Container/MarginContainer/Vertical Flow/Panel/MarginContainer"]
+layout_mode = 2
 alignment = 1
 
-[node name="Vehicle Type" type="Label" parent="Server Panel/Inner Container/Settings Panel/Panel"]
+[node name="Vehicle Type" type="Label" parent="Server Panel/Inner Container/Right Container/MarginContainer/Vertical Flow/Panel/MarginContainer/Vehicle Selection"]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "Vehicle"
-label_settings = ExtResource("4_2y35h")
 horizontal_alignment = 1
 
-[node name="HBoxContainer" type="HBoxContainer" parent="Server Panel/Inner Container/Settings Panel/Panel"]
+[node name="HBoxContainer" type="HBoxContainer" parent="Server Panel/Inner Container/Right Container/MarginContainer/Vertical Flow/Panel/MarginContainer/Vehicle Selection"]
 layout_mode = 2
 size_flags_vertical = 0
 
-[node name="Btn (Prev)" type="Button" parent="Server Panel/Inner Container/Settings Panel/Panel/HBoxContainer"]
+[node name="Btn (Prev)" type="Button" parent="Server Panel/Inner Container/Right Container/MarginContainer/Vertical Flow/Panel/MarginContainer/Vehicle Selection/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 0
 text = "<"
 
-[node name="Btn (Next)" type="Button" parent="Server Panel/Inner Container/Settings Panel/Panel/HBoxContainer"]
+[node name="Btn (Next)" type="Button" parent="Server Panel/Inner Container/Right Container/MarginContainer/Vertical Flow/Panel/MarginContainer/Vehicle Selection/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 text = ">"
 
-[node name="Button" type="Button" parent="Server Panel/Inner Container"]
-layout_mode = 1
-anchors_preset = 3
-anchor_left = 1.0
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = -112.0
-offset_top = -41.0
-grow_horizontal = 0
-grow_vertical = 0
+[node name="Start Button" type="Button" parent="Server Panel/Inner Container/Right Container/MarginContainer/Vertical Flow"]
+layout_mode = 2
 text = "Start game"
 
 [node name="Address Panel" type="Panel" parent="."]
@@ -204,12 +314,13 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = -150.0
-offset_top = -20.0
+offset_top = -54.0
 offset_right = 150.0
-offset_bottom = 20.0
+offset_bottom = -7.0
 grow_horizontal = 2
 grow_vertical = 2
 pivot_offset = Vector2(150, 20)
+theme_override_font_sizes/font_size = 24
 placeholder_text = "IP Address"
 
 [node name="Button" type="Button" parent="Address Panel"]
@@ -219,10 +330,10 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -60.5
-offset_top = 29.605
-offset_right = 60.5
-offset_bottom = 64.605
+offset_left = -83.0
+offset_top = 13.0
+offset_right = 83.0
+offset_bottom = 66.0
 grow_horizontal = 2
 grow_vertical = 2
 text = "CONNECT"
@@ -281,11 +392,12 @@ size_flags_vertical = 0
 theme_override_styles/normal = SubResource("StyleBoxFlat_newc2")
 text = "Decline"
 
-[connection signal="pressed" from="Button Panel/Btn (Create game)" to="." method="OnCreateGameButtonPressed"]
-[connection signal="pressed" from="Button Panel/Btn (Join game)" to="." method="OnJoinGameButtonPressed"]
-[connection signal="pressed" from="Server Panel/Inner Container/Settings Panel/Panel/HBoxContainer/Btn (Prev)" to="Server Panel" method="OnChangeVehicleTypePreviousButtonPressed"]
-[connection signal="pressed" from="Server Panel/Inner Container/Settings Panel/Panel/HBoxContainer/Btn (Next)" to="Server Panel" method="OnChangeVehicleTypeNextButtonPressed"]
-[connection signal="pressed" from="Server Panel/Inner Container/Button" to="." method="OnStartGameButtonPressed"]
+[connection signal="pressed" from="Button Panel/VBoxContainer/Btn (Play Demo)" to="." method="OnPlayDemoButtonPressed"]
+[connection signal="pressed" from="Button Panel/VBoxContainer/Btn (Create game)" to="." method="OnCreateGameButtonPressed"]
+[connection signal="pressed" from="Button Panel/VBoxContainer/Btn (Join game)" to="." method="OnJoinGameButtonPressed"]
+[connection signal="pressed" from="Server Panel/Inner Container/Right Container/MarginContainer/Vertical Flow/Panel/MarginContainer/Vehicle Selection/HBoxContainer/Btn (Prev)" to="Server Panel" method="OnChangeVehicleTypePreviousButtonPressed"]
+[connection signal="pressed" from="Server Panel/Inner Container/Right Container/MarginContainer/Vertical Flow/Panel/MarginContainer/Vehicle Selection/HBoxContainer/Btn (Next)" to="Server Panel" method="OnChangeVehicleTypeNextButtonPressed"]
+[connection signal="pressed" from="Server Panel/Inner Container/Right Container/MarginContainer/Vertical Flow/Start Button" to="." method="OnStartGameButtonPressed"]
 [connection signal="pressed" from="Address Panel/Button" to="." method="OnConnectButtonPressed"]
 [connection signal="pressed" from="PopupPanel/VBoxContainer/HBoxContainer/btn_accept" to="." method="OnQuitAccepted"]
 [connection signal="pressed" from="PopupPanel/VBoxContainer/HBoxContainer/btn_decline" to="." method="OnQuitDeclined"]

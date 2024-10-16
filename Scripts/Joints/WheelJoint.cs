@@ -322,9 +322,6 @@ public partial class WheelJoint : Node3D
 				// GD.PushWarning("No terrain data is available!");
 				latestTerrainProfileIdx = 0;
 			}
-			
-			if (Engine.GetPhysicsFrames() % 60 == 0)
-				GD.Print($"{Name} -> Terrain ID: {latestTerrainProfileIdx}");
 		}
 	}
 

@@ -42,7 +42,6 @@ expand_mode = 1
 stretch_mode = 4
 
 [node name="Pause" type="Control" parent="."]
-visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -59,7 +58,7 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="Panel" type="Panel" parent="Pause/CenterContainer"]
-custom_minimum_size = Vector2(300, 200)
+custom_minimum_size = Vector2(300, 250)
 layout_mode = 2
 
 [node name="VBoxContainer2" type="VBoxContainer" parent="Pause/CenterContainer/Panel"]
@@ -111,7 +110,7 @@ text = "options"
 
 [node name="btn_disconnect" type="Button" parent="Pause/CenterContainer/Panel/VBoxContainer2/btn_container"]
 layout_mode = 2
-text = "disconnect"
+text = "leave"
 
 [node name="Scoreboard" type="Control" parent="."]
 visible = false
