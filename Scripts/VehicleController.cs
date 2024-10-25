@@ -104,6 +104,8 @@ public partial class VehicleController : RigidBody3D
 	/// <summary>Resets the physics configuration and positions the vehicle near the origin.</summary>
 	public void QueueReset()
 	{
+		this.Sleeping = false;	// If body is sleeping, _IntegrateForces() is not executed.
+		
 		queueReset = true;
 
 		engine.Reset();
@@ -117,10 +119,12 @@ public partial class VehicleController : RigidBody3D
 
 	public void QueuePhysicsState(Transform3D tx, Vector3 linearVelocity, Vector3 angularVelocity)
 	{
+		this.Sleeping = false;	// If body is sleeping, _IntegrateForces() is not executed.
+		
+		queuePhysicsState = true;
+		
 		queuedTransform = tx;
 		queuedVelocity = linearVelocity;
 		queuedAngularVelocity = angularVelocity;
-
-		queuePhysicsState = true;
 	}
 }

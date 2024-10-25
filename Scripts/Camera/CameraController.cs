@@ -34,7 +34,25 @@ public partial class CameraController : Camera3D
 	[ExportGroup("Free Cam Settings")]
 	[Export] private float freeCamSpeed = 10f;
 
-	public static bool FreeCamEnabled {get; private set; } = false;
+	private bool freeCamEnabled = false;
+	public static bool FreeCamEnabled
+	{
+		get
+		{
+			if (!Instance.IsValid())
+				return false;
+			
+			return Instance.freeCamEnabled;
+		}
+		set
+		{
+			if (!Instance.IsValid())
+				return;
+			
+			Instance.freeCamEnabled = value;
+		}
+	}
+	// NOTE: This static getter-setter is implemented to avoid null-checks in other scripts.
 
 	public override void _Ready()
 	{
@@ -56,8 +74,8 @@ public partial class CameraController : Camera3D
 			float t = (float)delta * stiffness;
 			float x = Mathf.LerpAngle(inputOffset.X, 0f, t);
 			float y = Mathf.LerpAngle(inputOffset.Y, Vector3.Forward.SignedAngleTo(TargetVelocity.XZ(), Vector3.Up), t);
-			y = TargetVelocity.XZ().Length() > 1f ? y : inputOffset.Y;	// Do not utilize the target's velocity if it is too low.
-				
+			y = TargetVelocity.XZ().Length() > 1f ? y : inputOffset.Y;  // Do not utilize the target's velocity if it is too low.
+
 			inputOffset = new Vector2(x, y);
 		}
 		else
@@ -92,8 +110,8 @@ public partial class CameraController : Camera3D
 		if (FreeCamEnabled)
 			ProcessFreeCam(delta, ref newPosition, ref newRotation);
 		else
-			ProcessCamera(delta, ref newPosition, ref newRotation);	// #1
-		ProcessShakeObjects(ref newPosition, ref newRotation);	// #2
+			ProcessCamera(delta, ref newPosition, ref newRotation); // #1
+		ProcessShakeObjects(ref newPosition, ref newRotation);  // #2
 
 		// Set position and rotation of camera
 		GlobalPosition = newPosition;
@@ -128,10 +146,10 @@ public partial class CameraController : Camera3D
 				excludes = new Rid[] { pb.GetRid() };
 			else
 				excludes = new Rid[0];
-			
+
 			// Perform the raycast
 			var result = this.Raycast(target.GlobalPosition, targetPosition, excludes, collisionMask);
-			
+
 			if (result.Count > 0) // If ray hit something
 			{
 				// Set the target position to the collision point (minus a specified margin)
@@ -154,10 +172,10 @@ public partial class CameraController : Camera3D
 			moveVertical,
 			-moveInput.Y
 		);
-		
+
 		Vector3 targetPosition = GlobalPosition + moveVector * freeCamSpeed * (Input.IsKeyPressed(Key.Shift) ? 2f : 1f) * (float)delta;
 		Vector3 targetRotation = GlobalRotation - new Vector3(inputLookSmoothed.Y, inputLookSmoothed.X, 0f) * (float)delta;
-		
+
 		position = targetPosition;
 		rotation = targetRotation;
 	}
@@ -172,14 +190,9 @@ public partial class CameraController : Camera3D
 			posOffsetSum += sh.GetShakeTranslation(target.IsValid() ? target : this);
 			rotOffsetSum *= sh.GetShakeRotation(target.IsValid() ? target : this);
 		}
-		
+
 		position += posOffsetSum;
 		rotation *= rotOffsetSum;
-	}
-
-	public static void SetFreeCam(bool enable)
-	{
-		FreeCamEnabled = enable;
 	}
 
 	public override void _Input(InputEvent @event)

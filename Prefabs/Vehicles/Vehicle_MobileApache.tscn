@@ -1,4 +1,4 @@
-[gd_scene load_steps=23 format=3 uid="uid://b10be8b37v3su"]
+[gd_scene load_steps=24 format=3 uid="uid://b10be8b37v3su"]
 
 [ext_resource type="Script" path="res://Scripts/VehicleController.cs" id="1_qkoxn"]
 [ext_resource type="Script" path="res://Scripts/EngineSimple.cs" id="2_trl0k"]
@@ -16,6 +16,7 @@
 [ext_resource type="Script" path="res://Scripts/Joints/HydraulicJoint.cs" id="12_y0boc"]
 [ext_resource type="Script" path="res://Scripts/Audio/VehicleEngineSound.cs" id="13_3uy18"]
 [ext_resource type="PackedScene" uid="uid://c7y5ygnwb7vkm" path="res://Prefabs/Wheels/wheel_standard.tscn" id="15_m0xmh"]
+[ext_resource type="PackedScene" uid="uid://cajc7a2dxxaf5" path="res://Prefabs/Audio_HealthChanged.tscn" id="18_q1315"]
 [ext_resource type="Script" path="res://Scripts/Health.cs" id="19_exrey"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_dqocv"]
@@ -42,6 +43,9 @@ gravity_scale = 2.0
 center_of_mass_mode = 1
 center_of_mass = Vector3(0, -0.3, 0)
 continuous_cd = true
+contact_monitor = true
+max_contacts_reported = 4
+angular_damp = 0.4
 script = ExtResource("1_qkoxn")
 engine = NodePath("Engine")
 
@@ -68,15 +72,15 @@ mesh = SubResource("BoxMesh_2115m")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.159424, 0)
 shape = SubResource("BoxShape3D_xd1hs")
 
-[node name="CTRL_PropellerJoint" type="HingeJoint3D" parent="." node_paths=PackedStringArray("fastSpeedShape")]
-transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 1.1, 0)
+[node name="CTRL_PropellerJoint" type="HingeJoint3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 1.21593, 5.06745e-09)
 node_a = NodePath("..")
 node_b = NodePath("../Propeller")
-motor/enable = true
+params/bias = 0.8
 motor/target_velocity = 0.0
+motor/max_impulse = 0.1
 script = ExtResource("5_0n5ov")
-fastSpeedShape = NodePath("../Fast Speed Shape (Propeller)")
-speedToThrustRatio = 250.0
+speedToThrustRatio = 190.0
 timeToMaxSpeed = 3.0
 
 [node name="Fast Speed Shape (Propeller)" type="CollisionShape3D" parent="."]
@@ -94,12 +98,14 @@ material = ExtResource("6_sdiva")
 [node name="Propeller" type="RigidBody3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.10462, 0)
 collision_layer = 16
-mass = 25.0
+mass = 10.0
 physics_material_override = ExtResource("6_tbbtg")
 gravity_scale = 2.0
 continuous_cd = true
 contact_monitor = true
 max_contacts_reported = 4
+linear_damp = 0.1
+angular_damp = 0.2
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Propeller"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -2.47031)
@@ -285,3 +291,7 @@ engine = NodePath("../Engine")
 
 [node name="Health" type="Node" parent="."]
 script = ExtResource("19_exrey")
+
+[node name="Audio - Health Changed" parent="." instance=ExtResource("18_q1315")]
+
+[connection signal="OnHealthChanged" from="Health" to="Audio - Health Changed" method="play" unbinds=1]

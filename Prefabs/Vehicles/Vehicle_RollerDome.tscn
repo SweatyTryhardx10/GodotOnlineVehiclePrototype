@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=3 uid="uid://cmguesj6pr45u"]
+[gd_scene load_steps=21 format=3 uid="uid://cmguesj6pr45u"]
 
 [ext_resource type="Script" path="res://Scripts/VehicleController.cs" id="1_hh0xv"]
 [ext_resource type="Script" path="res://Scripts/EngineSimple.cs" id="2_v5st2"]
@@ -12,6 +12,9 @@
 [ext_resource type="AudioStream" uid="uid://bnnbgfonr745x" path="res://Audio/Sampan, Boat Engine 04.mp3" id="10_60rih"]
 [ext_resource type="PackedScene" uid="uid://dkg7c3xkokyqy" path="res://Data/Terrain Profiles/terrain_profile_ice.tscn" id="10_pilvv"]
 [ext_resource type="Script" path="res://Scripts/Audio/VehicleEngineSound.cs" id="11_pkg0l"]
+[ext_resource type="PackedScene" uid="uid://cajc7a2dxxaf5" path="res://Prefabs/Audio_HealthChanged.tscn" id="13_pgc8x"]
+[ext_resource type="Script" path="res://Scripts/Health.cs" id="14_hnd2r"]
+[ext_resource type="Script" path="res://Scripts/DamageSource.cs" id="15_2ve4a"]
 
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_ceryx"]
 height = 0.575307
@@ -327,3 +330,15 @@ autoplay = true
 script = ExtResource("11_pkg0l")
 engine = NodePath("../Engine")
 pitchInterval = Vector2(1, 1.8)
+
+[node name="Audio - Health Changed" parent="." instance=ExtResource("13_pgc8x")]
+
+[node name="Health" type="Node" parent="."]
+script = ExtResource("14_hnd2r")
+startHealth = 1
+
+[node name="DamageSource" type="Node" parent="."]
+script = ExtResource("15_2ve4a")
+linearVelocityRange = Vector2(5, 25)
+
+[connection signal="OnHealthChanged" from="Health" to="Audio - Health Changed" method="play" unbinds=1]

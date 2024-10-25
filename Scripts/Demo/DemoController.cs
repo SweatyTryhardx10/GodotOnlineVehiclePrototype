@@ -56,7 +56,7 @@ public partial class DemoController : Node
 				// 	break;
 
 				case Key.M:
-					CameraController.SetFreeCam(!CameraController.FreeCamEnabled);
+					CameraController.FreeCamEnabled = !CameraController.FreeCamEnabled;
 					
 					if (currentPlayerObject.TryGetNode(out ClientInput ci))
 					{

@@ -1,4 +1,4 @@
-[gd_scene load_steps=30 format=3 uid="uid://cq4a6lilby0bp"]
+[gd_scene load_steps=33 format=3 uid="uid://cq4a6lilby0bp"]
 
 [ext_resource type="PhysicsMaterial" uid="uid://d0tyduv0wwgse" path="res://Data/physMat_Slippery.tres" id="1_su6v1"]
 [ext_resource type="Script" path="res://Scripts/VehicleController.cs" id="2_rmoyc"]
@@ -17,6 +17,9 @@
 [ext_resource type="PackedScene" uid="uid://dkg7c3xkokyqy" path="res://Data/Terrain Profiles/terrain_profile_ice.tscn" id="15_5sx3u"]
 [ext_resource type="AudioStream" uid="uid://bwqyhn635c2ky" path="res://Audio/Truck Engine, Airy, Medium RPM.mp3" id="15_i0r0q"]
 [ext_resource type="Script" path="res://Scripts/Audio/VehicleEngineSound.cs" id="15_lpww2"]
+[ext_resource type="Script" path="res://Scripts/Health.cs" id="18_4rx5v"]
+[ext_resource type="Script" path="res://Scripts/DamageSource.cs" id="19_b3r5m"]
+[ext_resource type="PackedScene" uid="uid://cajc7a2dxxaf5" path="res://Prefabs/Audio_HealthChanged.tscn" id="20_gf062"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_djj7r"]
 size = Vector3(4, 3.4673, 4)
@@ -587,3 +590,15 @@ unit_size = 18.0
 autoplay = true
 script = ExtResource("15_lpww2")
 engine = NodePath("../Engine")
+
+[node name="Health" type="Node" parent="."]
+script = ExtResource("18_4rx5v")
+startHealth = 1
+
+[node name="DamageSource" type="Node" parent="."]
+script = ExtResource("19_b3r5m")
+linearVelocityRange = Vector2(5, 25)
+
+[node name="Audio - Health Changed" parent="." instance=ExtResource("20_gf062")]
+
+[connection signal="OnHealthChanged" from="Health" to="Audio - Health Changed" method="play" unbinds=1]

@@ -1,0 +1,29 @@
+[gd_scene load_steps=11 format=3 uid="uid://cajc7a2dxxaf5"]
+
+[ext_resource type="AudioStream" uid="uid://b6wyk6t3rf3n2" path="res://Audio/ES_MetalDoor_Impact/ES_MetalDoor_Impact-01.wav" id="1_sqf2v"]
+[ext_resource type="AudioStream" uid="uid://dxj7i2poa3g4w" path="res://Audio/ES_MetalDoor_Impact/ES_MetalDoor_Impact-02.wav" id="2_qnniq"]
+[ext_resource type="AudioStream" uid="uid://6x3c3o71ek67" path="res://Audio/ES_MetalDoor_Impact/ES_MetalDoor_Impact-03.wav" id="3_4kfl6"]
+[ext_resource type="AudioStream" uid="uid://cobgo0gob5fna" path="res://Audio/ES_MetalDoor_Impact/ES_MetalDoor_Impact-04.wav" id="4_v33oj"]
+[ext_resource type="AudioStream" uid="uid://csvhc0p13tv8g" path="res://Audio/ES_MetalDoor_Impact/ES_MetalDoor_Impact-05.wav" id="5_1kuk3"]
+[ext_resource type="AudioStream" uid="uid://pgxb2sipx431" path="res://Audio/ES_MetalDoor_Impact/ES_MetalDoor_Impact-06.wav" id="6_hu6vr"]
+[ext_resource type="AudioStream" uid="uid://y0th501jneqo" path="res://Audio/ES_MetalDoor_Impact/ES_MetalDoor_Impact-07.wav" id="7_gypd2"]
+[ext_resource type="AudioStream" uid="uid://06mn4swbb0ad" path="res://Audio/ES_MetalDoor_Impact/ES_MetalDoor_Impact-08.wav" id="8_17dg6"]
+[ext_resource type="AudioStream" uid="uid://bm6tr88f7y012" path="res://Audio/ES_MetalDoor_Impact/ES_MetalDoor_Impact-09.wav" id="9_dk62l"]
+
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_hw2sb"]
+streams_count = 9
+stream_0/stream = ExtResource("1_sqf2v")
+stream_1/stream = ExtResource("2_qnniq")
+stream_2/stream = ExtResource("3_4kfl6")
+stream_3/stream = ExtResource("4_v33oj")
+stream_4/stream = ExtResource("5_1kuk3")
+stream_5/stream = ExtResource("6_hu6vr")
+stream_6/stream = ExtResource("7_gypd2")
+stream_7/stream = ExtResource("8_17dg6")
+stream_8/stream = ExtResource("9_dk62l")
+
+[node name="Audio - Health Changed" type="AudioStreamPlayer3D"]
+stream = SubResource("AudioStreamRandomizer_hw2sb")
+volume_db = -8.0
+max_db = -5.0
+max_polyphony = 3

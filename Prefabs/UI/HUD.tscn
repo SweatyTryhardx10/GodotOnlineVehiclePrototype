@@ -42,6 +42,7 @@ expand_mode = 1
 stretch_mode = 4
 
 [node name="Pause" type="Control" parent="."]
+visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -260,7 +261,7 @@ label_settings = ExtResource("3_h67ck")
 
 [node name="Label4" type="Label" parent="Demo/Left Control/MarginContainer/VBox/Vehicle Keybind Hints"]
 layout_mode = 2
-text = "[4] Apache"
+text = "[4] Apache (broken)"
 label_settings = ExtResource("3_h67ck")
 
 [node name="Demo Keybind Hints" type="VBoxContainer" parent="Demo/Left Control/MarginContainer/VBox"]

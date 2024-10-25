@@ -264,7 +264,8 @@ public partial class NetGame : Node3D
             // Spawn object
             string[] vehicleTypes = Util.GetVehicleTypes();
             int vehicleIdx = (int)lobby.players[id]["Vehicle"];
-            var vehicleScene = ResourceLoader.Load<PackedScene>($"res://Prefabs/Vehicle_{vehicleTypes[vehicleIdx]}.tscn");
+            var vehicleDir = "res://Prefabs/Vehicles";
+            var vehicleScene = ResourceLoader.Load<PackedScene>($"{vehicleDir}/Vehicle_{vehicleTypes[vehicleIdx]}.tscn"); // TODO: Find a more reliable way to get the scene files.
             pObj = vehicleScene.Instantiate<Node3D>();
             pObj.TreeEntered += () =>
             {
@@ -306,7 +307,7 @@ public partial class NetGame : Node3D
         var mp = GetTree().GetMultiplayer();
         if (mp.GetUniqueId() == id)
         {
-            Node3D camFollowNode = pObj.GetNode<Node3D>("MeshObject");  // TODO: Please don't get the mesh node like this!
+            Node3D camFollowNode = pObj;
 
             if (camFollowNode.IsValid())
                 CameraController.Instance.target = camFollowNode;

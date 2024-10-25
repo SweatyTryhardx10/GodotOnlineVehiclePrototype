@@ -1,4 +1,4 @@
-[gd_scene load_steps=29 format=3 uid="uid://suinvyn3ii48"]
+[gd_scene load_steps=20 format=3 uid="uid://suinvyn3ii48"]
 
 [ext_resource type="PhysicsMaterial" uid="uid://dndcfdqduc6qj" path="res://Data/physMat_elastic.tres" id="1_dentn"]
 [ext_resource type="Script" path="res://Scripts/VehicleController.cs" id="2_k3iwu"]
@@ -8,22 +8,14 @@
 [ext_resource type="AudioStream" uid="uid://ds1c3twbvm88j" path="res://Audio/Porsche Macan S, Take 08, Engine, 0k RPM Idle, Loop.mp3" id="11_h1ny4"]
 [ext_resource type="Script" path="res://Scripts/Audio/VehicleEngineSound.cs" id="12_x5el2"]
 [ext_resource type="PackedScene" uid="uid://c7y5ygnwb7vkm" path="res://Prefabs/Wheels/wheel_standard.tscn" id="15_pcuam"]
+[ext_resource type="PackedScene" uid="uid://cajc7a2dxxaf5" path="res://Prefabs/Audio_HealthChanged.tscn" id="16_cie1a"]
 [ext_resource type="Script" path="res://Scripts/Health.cs" id="16_tvrd3"]
-[ext_resource type="AudioStream" uid="uid://b6wyk6t3rf3n2" path="res://Audio/ES_MetalDoor_Impact/ES_MetalDoor_Impact-01.wav" id="17_impe7"]
 [ext_resource type="Script" path="res://Scripts/DamageSource.cs" id="17_vg0ti"]
-[ext_resource type="AudioStream" uid="uid://dxj7i2poa3g4w" path="res://Audio/ES_MetalDoor_Impact/ES_MetalDoor_Impact-02.wav" id="18_vi2uc"]
 [ext_resource type="AudioStream" uid="uid://hv5nynco1uxd" path="res://Audio/Gear Change/GearChange-01.wav" id="19_6qnuc"]
-[ext_resource type="AudioStream" uid="uid://6x3c3o71ek67" path="res://Audio/ES_MetalDoor_Impact/ES_MetalDoor_Impact-03.wav" id="19_avnf5"]
 [ext_resource type="AudioStream" uid="uid://cgukhyjo816na" path="res://Audio/Gear Change/GearChange-02.wav" id="20_4outn"]
-[ext_resource type="AudioStream" uid="uid://cobgo0gob5fna" path="res://Audio/ES_MetalDoor_Impact/ES_MetalDoor_Impact-04.wav" id="20_xyu0t"]
-[ext_resource type="AudioStream" uid="uid://csvhc0p13tv8g" path="res://Audio/ES_MetalDoor_Impact/ES_MetalDoor_Impact-05.wav" id="21_4sdi8"]
 [ext_resource type="AudioStream" uid="uid://ch3rs5yvutqw3" path="res://Audio/Gear Change/GearChange-03.wav" id="21_u7jrq"]
 [ext_resource type="AudioStream" uid="uid://dkqfejxitl86x" path="res://Audio/Gear Change/GearChange-04.wav" id="22_7hfv7"]
-[ext_resource type="AudioStream" uid="uid://pgxb2sipx431" path="res://Audio/ES_MetalDoor_Impact/ES_MetalDoor_Impact-06.wav" id="22_dinp2"]
 [ext_resource type="Script" path="res://Scripts/Audio/AudioExtra3D.cs" id="23_g8q42"]
-[ext_resource type="AudioStream" uid="uid://y0th501jneqo" path="res://Audio/ES_MetalDoor_Impact/ES_MetalDoor_Impact-07.wav" id="23_kuohq"]
-[ext_resource type="AudioStream" uid="uid://06mn4swbb0ad" path="res://Audio/ES_MetalDoor_Impact/ES_MetalDoor_Impact-08.wav" id="24_oxat2"]
-[ext_resource type="AudioStream" uid="uid://bm6tr88f7y012" path="res://Audio/ES_MetalDoor_Impact/ES_MetalDoor_Impact-09.wav" id="25_m6k8l"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_ikhbo"]
 size = Vector3(2, 0.7, 4)
@@ -38,18 +30,6 @@ stream_0/stream = ExtResource("19_6qnuc")
 stream_1/stream = ExtResource("20_4outn")
 stream_2/stream = ExtResource("21_u7jrq")
 stream_3/stream = ExtResource("22_7hfv7")
-
-[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_hw2sb"]
-streams_count = 9
-stream_0/stream = ExtResource("17_impe7")
-stream_1/stream = ExtResource("18_vi2uc")
-stream_2/stream = ExtResource("19_avnf5")
-stream_3/stream = ExtResource("20_xyu0t")
-stream_4/stream = ExtResource("21_4sdi8")
-stream_5/stream = ExtResource("22_dinp2")
-stream_6/stream = ExtResource("23_kuohq")
-stream_7/stream = ExtResource("24_oxat2")
-stream_8/stream = ExtResource("25_m6k8l")
 
 [node name="Vehicle (4-wheeled)" type="RigidBody3D" node_paths=PackedStringArray("engine")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.526509, 0)
@@ -88,24 +68,20 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.186, 0, 1.137)
 lateralSlipScaling = 0.8
 longitudinalSlipScaling = 0.8
 PoweredByEngine = true
-interpolateSpringState = false
 
 [node name="Wheel (BL)" parent="." instance=ExtResource("15_pcuam")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.186, 0, 1.137)
 lateralSlipScaling = 0.8
 longitudinalSlipScaling = 0.8
 PoweredByEngine = true
-interpolateSpringState = false
 
 [node name="Wheel (FL)" parent="." instance=ExtResource("15_pcuam")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.186, 0, -1.137)
 SteeringInterval = Vector2(-30, 30)
-interpolateSpringState = false
 
 [node name="Wheel (FR)" parent="." instance=ExtResource("15_pcuam")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.18608, 0, -1.137)
 SteeringInterval = Vector2(-30, 30)
-interpolateSpringState = false
 
 [node name="Engine Sound" type="AudioStreamPlayer3D" parent="." node_paths=PackedStringArray("engine")]
 stream = ExtResource("11_h1ny4")
@@ -131,11 +107,7 @@ max_db = 0.0
 max_polyphony = 2
 script = ExtResource("23_g8q42")
 
-[node name="Audio - Health Changed" type="AudioStreamPlayer3D" parent="."]
-stream = SubResource("AudioStreamRandomizer_hw2sb")
-volume_db = -8.0
-max_db = -5.0
-max_polyphony = 3
+[node name="Audio - Health Changed" parent="." instance=ExtResource("16_cie1a")]
 
 [connection signal="OnHealthChanged" from="Health" to="Engine Sound" method="OnHealthChanged"]
 [connection signal="OnHealthChanged" from="Health" to="Audio - Health Changed" method="play" unbinds=1]

@@ -18,6 +18,15 @@ public sealed partial class PropellerJoint : HingeJoint3D
 	private float TimeSinceUse => (Time.GetTicksMsec() - lastUseTime) / 1000f;
 	private float TimeBeforeCanUse => ((timeBetweenUses + maxRunningTime) - TimeSinceUse) / 1000f;
 	private bool turnedOn;
+	private bool TurnedOn
+	{
+		get => turnedOn;
+		set
+		{
+			turnedOn = value;
+			this.Set("motor/enable", value);
+		}
+	}
 
 	private float AngularSpeed
 	{
@@ -33,7 +42,7 @@ public sealed partial class PropellerJoint : HingeJoint3D
 	public override void _Ready()
 	{
 		AssessCollisionSettings();
-		
+
 		// Store references to connected physics bodies (to avoid constant type-casting)
 		bodyA = GetNode<RigidBody3D>(NodeA);
 		bodyB = GetNode<RigidBody3D>(NodeB);
@@ -46,10 +55,10 @@ public sealed partial class PropellerJoint : HingeJoint3D
 
 		if (TimeSinceUse > maxRunningTime)
 		{
-			turnedOn = false;
+			TurnedOn = false;
 		}
 
-		if (turnedOn)
+		if (TurnedOn)
 		{
 			// Accelerate to target speed
 			if (AngularSpeed != maxSpeed)
@@ -74,10 +83,10 @@ public sealed partial class PropellerJoint : HingeJoint3D
 		// float bodyInertiaRatioZ = (inertiaB / inertiaA)[2] / 2f;
 		// float angVelDiffZ = (GlobalBasis.Inverse() * bodyB.AngularVelocity)[2] - (GlobalBasis.Inverse() * bodyA.AngularVelocity)[2];
 		// bodyA.ApplyTorque(GlobalBasis.Z * -angVelDiffZ / (float)delta);
-		
+
 		// if (Engine.GetPhysicsFrames() % 30 == 0)
 		// 	GD.Print($"Inertia A: {inertiaA} | Inertia B: {inertiaB} | Ratio: {bodyInertiaRatioZ}");
-		
+
 		GD.Print($"Angular velocity param: {AngularSpeed}");
 
 		// Thrust effect (proportional to the angular speed of the selected axis)
@@ -118,26 +127,26 @@ public sealed partial class PropellerJoint : HingeJoint3D
 	// Called locally
 	public void UseA()
 	{
-		if (!turnedOn)
+		if (!TurnedOn)
 		{
 			if (TimeBeforeCanUse <= 0f)
 			{
 				// Set state for this object (for all peers on the network)
-				Rpc(MethodName.SetA, !turnedOn);
+				Rpc(MethodName.SetA, !TurnedOn);
 			}
 		}
 		else
 		{
-			Rpc(MethodName.SetA, !turnedOn);
+			Rpc(MethodName.SetA, !TurnedOn);
 		}
 	}
 
 	[Rpc(MultiplayerApi.RpcMode.AnyPeer, CallLocal = true, TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
 	private void SetA(bool state)
 	{
-		turnedOn = state;
+		TurnedOn = state;
 
-		if (turnedOn)
+		if (TurnedOn)
 			lastUseTime = Time.GetTicksMsec();
 	}
 
