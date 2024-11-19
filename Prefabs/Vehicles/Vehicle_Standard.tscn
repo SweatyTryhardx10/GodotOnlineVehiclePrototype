@@ -94,11 +94,10 @@ normalizedHealthCutoff = 0.8
 
 [node name="Health" type="Node" parent="."]
 script = ExtResource("16_tvrd3")
-startHealth = 1
 
 [node name="DamageSource" type="Node" parent="."]
 script = ExtResource("17_vg0ti")
-linearVelocityRange = Vector2(5, 25)
+linearVelocityRange = Vector2(2, 15)
 
 [node name="Audio - Gear Change" type="AudioStreamPlayer3D" parent="."]
 stream = SubResource("AudioStreamRandomizer_g81fa")

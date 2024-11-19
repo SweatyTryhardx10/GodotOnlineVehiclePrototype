@@ -20,6 +20,14 @@ public partial class DamageSource : Node
 	private bool isArea;
 	private bool isRigidbody;
 
+	// State history (of physics object)
+	// TODO: Find a way to isolate this physics-related code away from this class - probably just a new class that can be composed onto this script.
+	private const int HISTORY_LENGTH = 3;
+	private Transform3D[] transformHistory = new Transform3D[HISTORY_LENGTH];
+	private Vector3[] velocityHistory = new Vector3[HISTORY_LENGTH];
+	private Vector3[] angularVelocityHistory = new Vector3[HISTORY_LENGTH];
+	private bool hasBeenUpdatedThisFrame = false;   // Used to prevent a double-update when updating the history in a collision event
+
 	public override void _EnterTree()
 	{
 		co = GetParent<CollisionObject3D>();
@@ -69,6 +77,47 @@ public partial class DamageSource : Node
 		}
 	}
 
+	public override void _PhysicsProcess(double delta)
+	{
+		// Maintain a state history if the collision object is a rigidbody
+		if (isRigidbody && !((RigidBody3D)co).Sleeping)
+		{
+			// NOTE: The method call is deferred to ensure that the physics body has been updated.
+			CallDeferred(MethodName.UpdatePhysicsHistory);
+		}
+	}
+
+	private void UpdatePhysicsHistory()
+	{
+		// Prevent updating the history if it was already updated in this frame
+		if (hasBeenUpdatedThisFrame)
+		{
+			// Reset control variable.
+			hasBeenUpdatedThisFrame = false;
+			return;
+		}
+
+		var rb = (RigidBody3D)co;
+
+		for (int i = HISTORY_LENGTH - 1; i >= 0; i--)
+		{
+			if (i == 0)
+			{
+				// Add new entry to history
+				transformHistory[i] = rb.GlobalTransform;
+				velocityHistory[i] = rb.LinearVelocity;
+				angularVelocityHistory[i] = rb.AngularVelocity;
+			}
+			else
+			{
+				// Offset old entries by one index thus deleting the oldest entry
+				transformHistory[i] = transformHistory[i - 1];
+				velocityHistory[i] = velocityHistory[i - 1];
+				angularVelocityHistory[i] = angularVelocityHistory[i - 1];
+			}
+		}
+	}
+
 	private void OnBodyEntered(Node n)
 	{
 		float damage = baseDamage;
@@ -84,28 +133,29 @@ public partial class DamageSource : Node
 		float linVelMod = 1f;
 		float angVelMod = 0f;
 
-		// ==============================================================================
-		// TODO: Velocity is post contact. Make the code below get the previous velocity.
-		// NOTE: Use a state history (similar to link below).
-		// https://forum.godotengine.org/t/determining-the-exact-global-position-of-a-collision-with-rigidbody2d-body-shape-entered/77007/2?u=sweatix
-		// ==============================================================================
-
 		if (isRigidbody)
 		{
+			// Update state history to get it up-to-date (history is updated at idle time).
+			UpdatePhysicsHistory();
+			hasBeenUpdatedThisFrame = true;
+
 			RigidBody3D rb = (RigidBody3D)co;
 			PhysicsDirectBodyState3D rbState = PhysicsServer3D.BodyGetDirectState(rb.GetRid());
 			int contactIdx = rbState.GetContactIndexFromNode(n.GetInstanceId());
-			Vector3 contactPosition = contactIdx != -1 ? rbState.GetContactColliderPosition(contactIdx) : Vector3.Zero;
+			
+			Vector3 contactPoint = contactIdx != -1 ? rbState.GetContactColliderPosition(contactIdx) : Vector3.Zero;
 			Vector3 contactNormal = contactIdx != -1 ? rbState.GetContactLocalNormal(contactIdx) : Vector3.Zero;
+			Vector3 localContactPoint = transformHistory[0].Basis.Inverse() * (contactPoint - transformHistory[0].Origin);
+			Vector3 contactVelocity = ComputeVelocityAtPoint(localContactPoint);
+			Vector3 ComToContactPoint = contactPoint - rb.ToGlobal(rb.CenterOfMass);
 
 			if (linearVelocityInfluence > 0f)
 			{
 				// Modulate the damage based on this source's motion direction relative to the direction towards the impact point, and the speed of the damage receiver.
 				// TODO: Reformulate.
-				Vector3 toContactPoint = contactPosition - rbState.Transform.Origin;
-				Vector3 linVelocityDifference = rbState.LinearVelocity - DetermineVelocity(n).Project(rbState.LinearVelocity);
+				Vector3 linVelocityDifference = velocityHistory[1] - DetermineVelocity(n).Project(velocityHistory[1]);
 
-				float toPointDotVelocity = toContactPoint.Normalized().Dot(linVelocityDifference); // NOTE: Is intentionally not normalized.
+				float toPointDotVelocity = ComToContactPoint.Normalized().Dot(linVelocityDifference); // NOTE: Is intentionally not normalized.
 				toPointDotVelocity = Mathf.Max(0f, toPointDotVelocity);     // Clamp off negative values (no negative damage allowed!)
 
 				linVelMod = (toPointDotVelocity - linearVelocityRange[0]) / (linearVelocityRange[1] - linearVelocityRange[0]);
@@ -113,13 +163,12 @@ public partial class DamageSource : Node
 
 				// DEBUGGING
 				if (linVelocityDifference.LengthSquared() > 0.01f)
-					this.ShowLine(3f, contactPosition, contactPosition + linVelocityDifference * (toPointDotVelocity / linVelocityDifference.Length()), 0.05f, Colors.OrangeRed);
+					this.ShowLine(3f, contactPoint, contactPoint + linVelocityDifference * (toPointDotVelocity / linVelocityDifference.Length()), 0.05f, Colors.OrangeRed);
 			}
 			if (angularVelocityInfluence > 0f)
 			{
 				// TODO: Implement angular velocity influence.
 				//   ...You may need to base it on tangent-velocity.
-				Vector3 contactVelocity = rbState.GetContactLocalVelocityAtPosition(contactIdx);
 				Vector3 contactVelocityDiff = contactVelocity - DetermineVelocity(n).Project(contactVelocity);
 
 				angVelMod = (contactVelocityDiff.Length() - angularVelocityRange[0]) / (angularVelocityRange[1] - angularVelocityRange[0]);
@@ -127,7 +176,7 @@ public partial class DamageSource : Node
 
 				// DEBUGGING
 				if (contactVelocityDiff.LengthSquared() > 0.01f)
-					this.ShowLine(3f, contactPosition, contactPosition + contactVelocityDiff, 0.05f, Colors.GreenYellow);
+					this.ShowLine(3f, contactPoint, contactPoint + contactVelocityDiff, 0.05f, Colors.GreenYellow);
 			}
 
 			// Apply physics modifier to damage amount
@@ -139,22 +188,51 @@ public partial class DamageSource : Node
 			bool isLocal = this.TreeMP().GetUniqueId() == PeerID;
 			bool isServerSideNonPlayer = this.TreeMP().GetUniqueId() == 1 && PeerID == -1;
 			if (isLocal || isServerSideNonPlayer)
-			{
+			{	
 				n.Dmg(new Health.DamageData(
 					PeerID,
 					damage,
-					contactPosition,
+					contactPoint,
 					contactNormal
 				));
-
+				
 				// Add shake to the scene
-				ShakeObject.Create(this, 0.8f, 12f, 0.05f * maxMod, contactPosition, 10f);
+				// TODO: Move this to the health node.
+				ShakeObject.Create(this, 0.8f, 12f, 0.05f * maxMod, contactPoint, 10f);
 			}
 		}
 	}
 
+	// Adapted from my post on the Godot Forum:
+	// https://forum.godotengine.org/t/determining-the-exact-global-position-of-a-collision-with-rigidbody2d-body-shape-entered/77007/2?u=sweatix
+	/// <summary>
+	/// Extrapolates the state (using the state history) from the previous frame to the current frame to produce a usable collision velocity.
+	/// </summary>
+	/// <param name="localPoint">A point in the local space of the physics body.</param>
+	/// <returns>A velocity vector in global space.</returns>
+	private Vector3 ComputeVelocityAtPoint(Vector3 localPoint)
+	{
+		//====================================================================================
+		// Compute point velocity based on the previous state (velocity, and angular velocity)
+		// NOTE: The immediate state of the object is not useful for this use-case; the collision
+		//		forces have already been applied to the rigidbody.
+		//====================================================================================
+
+		// Compute the velocity resulting purely from the angular velocity
+		// .. The difference in rotation between the two states (current and old state)
+		Basis basisDiff = transformHistory[0].Basis * transformHistory[1].Basis.Inverse();
+		// .. The vector that is "tangent" to the position (from the local point provided).
+		var tangent = (transformHistory[1].Basis.Rotated(transformHistory[1].Basis.GetRotationQuaternion().GetAxis(), Mathf.Pi / 2.0f) * localPoint).Normalized();
+		// .. The velocity at the point modulated by the angular_velocity and distance from the center.
+		Vector3 velocityRot = basisDiff * tangent * angularVelocityHistory[1].Length() * localPoint.Length();
+
+		return velocityHistory[1] + velocityRot;
+	}
+
 	private Vector3 DetermineVelocity(Node n)
 	{
+		// TODO: Implement globally accessible state history to allow lookup of another object's previous state(s).
+		
 		if (n is RigidBody3D rb)
 		{
 			return rb.LinearVelocity;
