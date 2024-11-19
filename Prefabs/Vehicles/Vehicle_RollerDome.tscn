@@ -41,6 +41,9 @@ mass = 250.0
 gravity_scale = 2.0
 center_of_mass_mode = 1
 center_of_mass = Vector3(0, -0.2, 0)
+continuous_cd = true
+contact_monitor = true
+max_contacts_reported = 4
 script = ExtResource("1_hh0xv")
 engine = NodePath("Engine")
 
@@ -339,6 +342,7 @@ startHealth = 1
 
 [node name="DamageSource" type="Node" parent="."]
 script = ExtResource("15_2ve4a")
-linearVelocityRange = Vector2(5, 25)
+linearVelocityRange = Vector2(1, 15)
+percentageAddedCollisionForce = 2.0
 
 [connection signal="OnHealthChanged" from="Health" to="Audio - Health Changed" method="play" unbinds=1]

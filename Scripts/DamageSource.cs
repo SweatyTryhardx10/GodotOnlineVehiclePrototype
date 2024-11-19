@@ -14,6 +14,9 @@ public partial class DamageSource : Node
 	[Export] private Vector2 linearVelocityRange = new Vector2(5f, 10f);
 	[Export(PropertyHint.Range, "0,1")] private float angularVelocityInfluence = 0f;
 	[Export] private Vector2 angularVelocityRange = Vector2.Down;
+	
+	[ExportGroup("Force Settings")]
+	[Export(PropertyHint.Range, "0,3")] private float percentageAddedCollisionForce = 0f;
 
 	private CollisionObject3D co;
 
@@ -135,7 +138,7 @@ public partial class DamageSource : Node
 
 		if (isRigidbody)
 		{
-			// Update state history to get it up-to-date (history is updated at idle time).
+			// Update state history to get it up-to-date (since history is updated at idle time by default).
 			UpdatePhysicsHistory();
 			hasBeenUpdatedThisFrame = true;
 
@@ -193,7 +196,8 @@ public partial class DamageSource : Node
 					PeerID,
 					damage,
 					contactPoint,
-					contactNormal
+					contactNormal,
+					new Health.KnockbackModifier(contactVelocity * rb.Mass * percentageAddedCollisionForce, contactPoint)
 				));
 				
 				// Add shake to the scene
@@ -203,14 +207,14 @@ public partial class DamageSource : Node
 		}
 	}
 
-	// Adapted from my post on the Godot Forum:
-	// https://forum.godotengine.org/t/determining-the-exact-global-position-of-a-collision-with-rigidbody2d-body-shape-entered/77007/2?u=sweatix
-	/// <summary>
-	/// Extrapolates the state (using the state history) from the previous frame to the current frame to produce a usable collision velocity.
-	/// </summary>
-	/// <param name="localPoint">A point in the local space of the physics body.</param>
-	/// <returns>A velocity vector in global space.</returns>
-	private Vector3 ComputeVelocityAtPoint(Vector3 localPoint)
+    // Adapted from my post on the Godot Forum:
+    // https://forum.godotengine.org/t/determining-the-exact-global-position-of-a-collision-with-rigidbody2d-body-shape-entered/77007/2?u=sweatix
+    /// <summary>
+    /// Extrapolates the state (using the state history) from the previous frame to the current frame to produce a usable collision velocity.
+    /// </summary>
+    /// <param name="localPoint">A point in the local space of the physics body.</param>
+    /// <returns>A velocity vector in global space.</returns>
+    private Vector3 ComputeVelocityAtPoint(Vector3 localPoint)
 	{
 		//====================================================================================
 		// Compute point velocity based on the previous state (velocity, and angular velocity)

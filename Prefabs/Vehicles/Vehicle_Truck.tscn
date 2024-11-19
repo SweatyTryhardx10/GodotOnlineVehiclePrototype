@@ -87,6 +87,9 @@ collision_use_scale = true
 mass = 1000.0
 physics_material_override = ExtResource("1_su6v1")
 gravity_scale = 2.0
+continuous_cd = true
+contact_monitor = true
+max_contacts_reported = 4
 script = ExtResource("2_rmoyc")
 engine = NodePath("Engine")
 
@@ -597,7 +600,8 @@ startHealth = 1
 
 [node name="DamageSource" type="Node" parent="."]
 script = ExtResource("19_b3r5m")
-linearVelocityRange = Vector2(5, 25)
+linearVelocityRange = Vector2(1, 15)
+percentageAddedCollisionForce = 1.0
 
 [node name="Audio - Health Changed" parent="." instance=ExtResource("20_gf062")]
 
