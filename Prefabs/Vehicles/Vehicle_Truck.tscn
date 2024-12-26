@@ -84,6 +84,7 @@ collision_bounce = 0.47
 collision_use_scale = true
 
 [node name="Truck" type="RigidBody3D" node_paths=PackedStringArray("engine")]
+collision_layer = 257
 mass = 1000.0
 physics_material_override = ExtResource("1_su6v1")
 gravity_scale = 2.0

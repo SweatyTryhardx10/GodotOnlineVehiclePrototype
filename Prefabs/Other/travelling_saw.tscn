@@ -1,0 +1,206 @@
+[gd_scene load_steps=13 format=3 uid="uid://w3jx4ao5ugc3"]
+
+[ext_resource type="Script" path="res://Scripts/AutoMover.cs" id="1_1aigk"]
+[ext_resource type="Script" path="res://Scripts/DamageSource.cs" id="2_ags8j"]
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_cw3g1"]
+height = 0.2
+radius = 4.05
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_j8qfg"]
+animation = &"Lvl02_Saw_Loop"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_46dvy"]
+animation = &"Lvl02_Saw_Show"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_wvfn4"]
+switch_mode = 2
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_dko01"]
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_lospo"]
+states/Lvl02_Saw_Loop/node = SubResource("AnimationNodeAnimation_j8qfg")
+states/Lvl02_Saw_Loop/position = Vector2(573, 100)
+states/Lvl02_Saw_Show/node = SubResource("AnimationNodeAnimation_46dvy")
+states/Lvl02_Saw_Show/position = Vector2(377, 100)
+transitions = ["Lvl02_Saw_Show", "Lvl02_Saw_Loop", SubResource("AnimationNodeStateMachineTransition_wvfn4"), "Start", "Lvl02_Saw_Show", SubResource("AnimationNodeStateMachineTransition_dko01")]
+
+[sub_resource type="Animation" id="Animation_n8hy8"]
+resource_name = "Lvl02_Saw_Loop"
+length = 10.0
+loop_mode = 1
+tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Saw Anchor:position:x")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"handle_modes": PackedInt32Array(0, 0, 0),
+"points": PackedFloat32Array(0, -0.25, 0, 0.25, 0, 46, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0, 5, 10)
+}
+tracks/1/type = "bezier"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Saw Anchor:position:y")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"handle_modes": PackedInt32Array(0, 0, 0),
+"points": PackedFloat32Array(2, -0.25, 0, 0.25, 0, 2, -0.25, 0, 0.25, 0, 2, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0, 5, 10)
+}
+tracks/2/type = "bezier"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Saw Anchor:position:z")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"handle_modes": PackedInt32Array(0, 0, 0),
+"points": PackedFloat32Array(0, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0, 5, 10)
+}
+
+[sub_resource type="Animation" id="Animation_k1ukb"]
+resource_name = "Lvl02_Saw_Show"
+tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Saw Anchor:position:x")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"handle_modes": PackedInt32Array(0, 0),
+"points": PackedFloat32Array(0, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0, 1)
+}
+tracks/1/type = "bezier"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Saw Anchor:position:y")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"handle_modes": PackedInt32Array(0, 0),
+"points": PackedFloat32Array(2, -0.25, 0, 0.25, 0, 2, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0, 1)
+}
+tracks/2/type = "bezier"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Saw Anchor:position:z")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"handle_modes": PackedInt32Array(0, 0),
+"points": PackedFloat32Array(3.5, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0, 1)
+}
+
+[sub_resource type="Animation" id="Animation_papfe"]
+length = 0.001
+tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Saw Anchor:position:x")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(0, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+tracks/1/type = "bezier"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Saw Anchor:position:y")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(2, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+tracks/2/type = "bezier"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Saw Anchor:position:z")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(3.5, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_r7nva"]
+_data = {
+"Lvl02_Saw_Loop": SubResource("Animation_n8hy8"),
+"Lvl02_Saw_Show": SubResource("Animation_k1ukb"),
+"RESET": SubResource("Animation_papfe")
+}
+
+[node name="Travelling Saw" type="Node3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -15, -0.372956, 32.5)
+
+[node name="Saw Anchor" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 3.5)
+
+[node name="Saw Body" type="AnimatableBody3D" parent="Saw Anchor"]
+collision_mask = 256
+sync_to_physics = false
+
+[node name="Mesh" type="Node3D" parent="Saw Anchor/Saw Body"]
+transform = Transform3D(3, 0, 0, 0, 1, 0, 0, 0, 3, 0, 0, 0)
+
+[node name="CSGBox3D" type="CSGBox3D" parent="Saw Anchor/Saw Body/Mesh"]
+size = Vector3(2, 0.2, 2)
+
+[node name="CSGBox3D2" type="CSGBox3D" parent="Saw Anchor/Saw Body/Mesh"]
+transform = Transform3D(0.965926, 0, -0.258819, 0, 1, 0, 0.258819, 0, 0.965926, 0, 0, 0)
+size = Vector3(2, 0.2, 2)
+
+[node name="CSGBox3D3" type="CSGBox3D" parent="Saw Anchor/Saw Body/Mesh"]
+transform = Transform3D(0.866025, 0, -0.5, 0, 1, 0, 0.5, 0, 0.866025, 0, 0, 0)
+size = Vector3(2, 0.2, 2)
+
+[node name="CSGBox3D4" type="CSGBox3D" parent="Saw Anchor/Saw Body/Mesh"]
+transform = Transform3D(0.707107, 0, -0.707107, 0, 1, 0, 0.707107, 0, 0.707107, 0, 0, 0)
+size = Vector3(2, 0.2, 2)
+
+[node name="CSGBox3D5" type="CSGBox3D" parent="Saw Anchor/Saw Body/Mesh"]
+transform = Transform3D(0.5, 0, -0.866025, 0, 1, 0, 0.866025, 0, 0.5, 0, 0, 0)
+size = Vector3(2, 0.2, 2)
+
+[node name="CSGBox3D6" type="CSGBox3D" parent="Saw Anchor/Saw Body/Mesh"]
+transform = Transform3D(0.258819, 0, -0.965926, 0, 1, 0, 0.965926, 0, 0.258819, 0, 0, 0)
+size = Vector3(2, 0.2, 2)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Saw Anchor/Saw Body"]
+shape = SubResource("CylinderShape3D_cw3g1")
+
+[node name="Mover" type="Node" parent="Saw Anchor/Saw Body"]
+script = ExtResource("1_1aigk")
+angularVelocity = Vector3(0, 1440, 0)
+usePhysicsRate = true
+
+[node name="DamageSource" type="Node" parent="Saw Anchor/Saw Body"]
+script = ExtResource("2_ags8j")
+angularVelocityInfluence = 1.0
+percentageAddedCollisionForce = 0.2
+nonRigidBodyCollisionMass = 20.0
+
+[node name="AnimationTree" type="AnimationTree" parent="."]
+callback_mode_process = 0
+tree_root = SubResource("AnimationNodeStateMachine_lospo")
+anim_player = NodePath("../NetAnimator")
+
+[node name="NetAnimator" type="AnimationPlayer" parent="."]
+callback_mode_process = 0
+libraries = {
+"": SubResource("AnimationLibrary_r7nva")
+}

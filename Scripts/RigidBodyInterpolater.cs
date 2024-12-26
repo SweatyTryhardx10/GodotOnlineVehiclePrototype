@@ -16,6 +16,10 @@ public partial class RigidBodyInterpolater : Node3D
 
 	private double timePerPhysicsTick;
 
+	// TODO: Shift from a localized timer approach to a method that makes use of the application's
+	//	time-since-start to compute the new position of the node.
+	//
+	// The current approach uses a tick-bound timer which produces jitter. This is unacceptable!
 	private double timer;
 
 	// Called when the node enters the scene tree for the first time.

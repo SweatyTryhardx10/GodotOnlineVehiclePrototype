@@ -22,6 +22,11 @@ public partial class WheelJoint : Node3D
 	[Export] private float longitudinalSlipScaling = 1f;
 	[Export] private float longitudinalInfluenceOnLateral = 1f;
 	[Export] private float camberInfluence = 1f;
+	
+	[ExportSubgroup("Friction")]
+	[Export] private float normalizedFrictionMaxLat = 10f;	// The maximum multiple of the wheel load exerted as a friction force.
+	[Export] private float normalizedFrictionMaxLong = 10f;	// The maximum multiple of the wheel load exerted as a friction force.
+	
 	/// <summary>The signed slip ratio (lateral).</summary>
 	public float LatSlipRatio { get; private set; }
 	/// <summary>The signed slip ratio (longitudinal).</summary>
@@ -276,45 +281,57 @@ public partial class WheelJoint : Node3D
 			var terrain = recentRayResults["collider"].As<Node3D>();
 			if (terrain is GeometryInstance3D geom && terrain.TryGetNode(out TerrainData tData))
 			{
-				Vector2? uv = geom.UVCoordsFromPoint(springState.EndPoint);
-
-				// if (Engine.GetPhysicsFrames() % 60 == 0)
-				// 	GD.Print($"({Name}) UV: {uv}");
-
-				Color terrainPixel;
-				if (uv.HasValue && tData.IdImage.IsValid())
+				int terrainIdx = -1;
+				if (tData.useTexture)	// Get the terrain profile from the associated terrain texture
 				{
-					var idWidth = tData.IdImage.GetWidth();
-					var idHeight = tData.IdImage.GetHeight();
+					Vector2? uv = geom.UVCoordsFromPoint(springState.EndPoint);
 
-					Vector2I pixelCoord = new Vector2I(
-						Mathf.Clamp(Mathf.FloorToInt(uv.Value.X * idWidth), 0, idWidth - 1),
-						Mathf.Clamp(Mathf.FloorToInt(uv.Value.Y * idHeight), 0, idHeight - 1)
-					);
-					terrainPixel = tData.IdImage.GetPixelv(pixelCoord);
+					// if (Engine.GetPhysicsFrames() % 60 == 0)
+					// 	GD.Print($"({Name}) UV: {uv}");
 
-					// if (Engine.GetPhysicsFrames() % 10 == 0)
-					// 	GD.Print($"Terrain ID Color: {terrainPixel}");
-				}
-				else
-				{
-					GD.PushWarning("No valid UV was computed, or no terrain texture is set.");
-					terrainPixel = Colors.Black;
-				}
-
-				// Use terrain data to select a terrain profile
-				// TODO: Blend terrain profiles in case of partial color channel saturation (e.g. (0, 0.5, 0, 0) would be 50% default, and 50% 3rd profile)
-				int highestProfileIdx = 0;
-				float highestProfileValue = 0.5f;
-				for (int i = 0; i < Mathf.Min(terrainProfiles.Length - 1, 4); i++)
-				{
-					if (terrainPixel[i] >= highestProfileValue)
+					Color terrainPixel;
+					if (uv.HasValue && tData.IdImage.IsValid())
 					{
-						highestProfileValue = terrainPixel[i];
-						highestProfileIdx = i + 1;
+						var idWidth = tData.IdImage.GetWidth();
+						var idHeight = tData.IdImage.GetHeight();
+
+						Vector2I pixelCoord = new Vector2I(
+							Mathf.Clamp(Mathf.FloorToInt(uv.Value.X * idWidth), 0, idWidth - 1),
+							Mathf.Clamp(Mathf.FloorToInt(uv.Value.Y * idHeight), 0, idHeight - 1)
+						);
+						terrainPixel = tData.IdImage.GetPixelv(pixelCoord);
+
+						// if (Engine.GetPhysicsFrames() % 10 == 0)
+						// 	GD.Print($"Terrain ID Color: {terrainPixel}");
 					}
+					else
+					{
+						GD.PushWarning("No valid UV was computed, or no terrain texture is set.");
+						terrainPixel = Colors.Black;
+					}
+
+					// Use terrain data to select a terrain profile
+					// TODO: Blend terrain profiles in case of partial color channel saturation.
+					int highestProfileIdx = 0;
+					float highestProfileValue = 0.5f;
+					for (int i = 0; i < Mathf.Min(terrainProfiles.Length - 1, 4); i++)
+					{
+						// If the color channel (associated with the profile) is higher than the previous, select this profile.
+						if (terrainPixel[i] >= highestProfileValue)
+						{
+							highestProfileValue = terrainPixel[i];
+							highestProfileIdx = i + 1;
+						}
+					}
+					
+					terrainIdx = highestProfileIdx;
 				}
-				latestTerrainProfileIdx = highestProfileIdx;
+				else 	// Get the terrain profile that is directly configured on the terrain data node.
+				{
+					terrainIdx = (int)tData.terrainType;
+				}
+
+				latestTerrainProfileIdx = terrainIdx;
 			}
 			else
 			{
@@ -425,7 +442,8 @@ public partial class WheelJoint : Node3D
 
 		// == Lateral ==
 		// NOTE: The lateral force computed here is for steady-state, static friction.
-		float lateralForce = -localVelocity.X * latSlip * tireLoad;
+		float lateralMultiplier = Mathf.Clamp(-localVelocity.X, -normalizedFrictionMaxLat, normalizedFrictionMaxLat);	// Scales the lateral force based on local velocity. Clamped to emulate friction force limits.
+		float lateralForce = lateralMultiplier * latSlip * tireLoad;
 		lateralForce = lateralForce / (1f + Mathf.Abs(longSlipRatio) * longitudinalInfluenceOnLateral); // Enforce dropping lateral force as a result of longitudinal slip
 		lateralForce += camberAngle * camberInfluence * tireLoad;   // Camber influence
 		rb.ApplyForce(GlobalBasis.X * lateralForce, springState.EndPoint - rb.GlobalPosition);

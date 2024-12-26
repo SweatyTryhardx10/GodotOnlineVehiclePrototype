@@ -32,6 +32,7 @@ stiffness = 3500.0
 damping = 350.0
 longitudinalInfluenceOnLateral = 5.0
 camberInfluence = -1.0
+normalizedFrictionMaxLat = 3.0
 SteeringInterval = Vector2(0, 0)
 PoweredByEngine = false
 interpolateSpringState = false

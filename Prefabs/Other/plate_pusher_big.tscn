@@ -1,0 +1,145 @@
+[gd_scene load_steps=10 format=3 uid="uid://tcpf40ydm2yu"]
+
+[ext_resource type="Material" uid="uid://ccw2tuc2fex2k" path="res://Materials/pbr_tri_proto_green.tres" id="1_hx42m"]
+[ext_resource type="Material" uid="uid://ce1thvhy54x5e" path="res://Materials/pbr_tri_reflective.tres" id="2_1mfxd"]
+[ext_resource type="Script" path="res://Scripts/Networking/NetAnimator.cs" id="3_etu3h"]
+[ext_resource type="Script" path="res://Scripts/Networking/NetArea3D.cs" id="4_14qvi"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_0u3y2"]
+size = Vector3(1, 5, 8)
+
+[sub_resource type="Animation" id="Animation_fki35"]
+resource_name = "Lvl02_PlatePusher_Push"
+length = 2.0
+tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AnimatableBody3D:position:x")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"handle_modes": PackedInt32Array(2, 0, 0, 0, 0),
+"points": PackedFloat32Array(0, -0.105795, -2.90671, 0.0666667, 1.83166, 4, -0.0666667, -0.765854, 0.0666667, 0.173565, 4, -0.052, 0, 0.0705195, 0, 3.5, -0.052, 0, 0.0238205, -0.883282, 0, -0.242846, 0.579099, 0.095, 1.955),
+"times": PackedFloat32Array(0, 0.133333, 0.333333, 1, 2)
+}
+tracks/1/type = "bezier"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("AnimatableBody3D:position:y")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"handle_modes": PackedInt32Array(0, 0),
+"points": PackedFloat32Array(0, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0, 0.133333)
+}
+tracks/2/type = "bezier"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("AnimatableBody3D:position:z")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"handle_modes": PackedInt32Array(0, 0),
+"points": PackedFloat32Array(0, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0, 0.133333)
+}
+
+[sub_resource type="Animation" id="Animation_8jewx"]
+length = 0.001
+tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AnimatableBody3D:position:x")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(0, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+tracks/1/type = "bezier"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("AnimatableBody3D:position:y")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(0, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+tracks/2/type = "bezier"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("AnimatableBody3D:position:z")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(0, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_0mwus"]
+_data = {
+"Lvl02_PlatePusher_Push": SubResource("Animation_fki35"),
+"RESET": SubResource("Animation_8jewx")
+}
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_3wi4u"]
+size = Vector3(7, 5, 7)
+
+[node name="Plate Pusher (Big)" type="Node3D"]
+transform = Transform3D(1, 0, 1.74846e-07, 0, 1, 0, -1.74846e-07, 0, 1, 0, 0, 0)
+
+[node name="AnimatableBody3D" type="AnimatableBody3D" parent="."]
+sync_to_physics = false
+
+[node name="CSGBox3D" type="CSGBox3D" parent="AnimatableBody3D"]
+size = Vector3(1, 5, 8)
+material = ExtResource("1_hx42m")
+
+[node name="CSGBox3D" type="CSGBox3D" parent="AnimatableBody3D/CSGBox3D"]
+transform = Transform3D(1, 0, 0, 0, 0.707107, -0.707107, 0, 0.707107, 0.707107, -1.74846e-07, 3, 4)
+operation = 2
+size = Vector3(2, 2, 2)
+material = ExtResource("2_1mfxd")
+
+[node name="CSGBox3D2" type="CSGBox3D" parent="AnimatableBody3D/CSGBox3D"]
+transform = Transform3D(1, 0, 0, 0, 0.707107, -0.707107, 0, 0.707107, 0.707107, 1.74846e-07, 3, -4)
+operation = 2
+size = Vector3(2, 2, 2)
+material = ExtResource("2_1mfxd")
+
+[node name="CSGBox3D3" type="CSGBox3D" parent="AnimatableBody3D/CSGBox3D"]
+transform = Transform3D(1, 0, 0, 0, 0.707107, -0.707107, 0, 0.707107, 0.707107, -1.74846e-07, -3, 4)
+operation = 2
+size = Vector3(2, 2, 2)
+material = ExtResource("2_1mfxd")
+
+[node name="CSGBox3D4" type="CSGBox3D" parent="AnimatableBody3D/CSGBox3D"]
+transform = Transform3D(1, 0, 0, 0, 0.707107, -0.707107, 0, 0.707107, 0.707107, 1.74846e-07, -3, -4)
+operation = 2
+size = Vector3(2, 2, 2)
+material = ExtResource("2_1mfxd")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="AnimatableBody3D"]
+shape = SubResource("BoxShape3D_0u3y2")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_0mwus")
+}
+script = ExtResource("3_etu3h")
+animationToPlay = "Lvl02_PlatePusher_Push"
+
+[node name="Area3D" type="Area3D" parent="."]
+collision_mask = 256
+script = ExtResource("4_14qvi")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.25, 0, 5.68434e-14)
+shape = SubResource("BoxShape3D_3wi4u")
+
+[connection signal="NetBodyEntered" from="Area3D" to="AnimationPlayer" method="RemotePlay" unbinds=1]

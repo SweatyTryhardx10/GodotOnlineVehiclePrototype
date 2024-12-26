@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 
 public partial class NetGame : Node3D
 {
+    [Signal] public delegate void RoundStartedEventHandler(float rtt);   // TODO: Return the Round Trip Time (RTT) so connected systems can synchronize with the server state.
+    
     private Dictionary<long, Node> playerObjects = new();
 
     [Export] private Node3D[] spawns = new Node3D[0];
@@ -124,6 +126,9 @@ public partial class NetGame : Node3D
 
         // Enable all client input
         SetPlayerInputAll(true);
+
+        // Emit "Round Started" signal
+        EmitSignal(SignalName.RoundStarted, 0f);    // TODO: Change 0f to the correct RTT.
 
         GD.Print($"{Engine.GetPhysicsFrames()} " + "Waiting for winner to emerge!");
 

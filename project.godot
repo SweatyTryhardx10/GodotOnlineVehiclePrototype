@@ -88,6 +88,11 @@ Reset={
 ]
 }
 
+[layer_names]
+
+3d_physics/layer_1="Default"
+3d_physics/layer_9="Player"
+
 [physics]
 
 common/physics_jitter_fix=0.0

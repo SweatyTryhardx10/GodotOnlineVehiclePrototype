@@ -89,7 +89,7 @@ default_value = Vector2(1, 1)
 input_name = "uv"
 
 [sub_resource type="VisualShaderNodeFrame" id="VisualShaderNodeFrame_25c5c"]
-size = Vector2(624, 176)
+size = Vector2(624, 178)
 title = "ID Mask"
 attached_nodes = PackedInt32Array(3, 4)
 

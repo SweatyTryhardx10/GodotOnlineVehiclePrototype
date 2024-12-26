@@ -6,6 +6,8 @@ public partial class Menu : Control
 	[Export] private MenuButton quitButton;
 	[Export] private PopupPanel quitPopup;
 
+	private const string MULTIPLAYER_GAME_SCENE_PATH = "res://Scenes/Level_02.tscn";
+
 	public override void _Ready()
 	{
 		// Make the mouse visible (in case it was hidden after leaving a game)
@@ -85,7 +87,7 @@ public partial class Menu : Control
 		if (GetTree().GetMultiplayer().IsServer())
 		{
 			// Load all players into the game scene
-			GetNode<NetLobby>("/root/Lobby").Rpc(NetLobby.MethodName.LoadGame, "res://Scenes/generic_3D.tscn");
+			GetNode<NetLobby>("/root/Lobby").Rpc(NetLobby.MethodName.LoadGame, MULTIPLAYER_GAME_SCENE_PATH);
 		}
 	}
 }

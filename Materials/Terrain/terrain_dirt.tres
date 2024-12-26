@@ -1,0 +1,21 @@
+[gd_resource type="StandardMaterial3D" load_steps=6 format=3 uid="uid://gcq5dqr5gx57"]
+
+[ext_resource type="Texture2D" uid="uid://b0lrtkpwd4l05" path="res://Textures/Rocky_Trail_02_2k/rocky_trail_02_diff_2k.jpg" id="1_kuwhm"]
+[ext_resource type="Texture2D" uid="uid://bxlnuo1l450f" path="res://Textures/Rocky_Trail_02_2k/rocky_trail_02_disp_2k.png" id="2_irsqb"]
+[ext_resource type="Texture2D" uid="uid://d0l8tua28emyx" path="res://Textures/Rocky_Trail_02_2k/rocky_trail_02_ao_2k.jpg" id="2_ocufa"]
+[ext_resource type="Texture2D" uid="uid://mcafyplq283c" path="res://Textures/Rocky_Trail_02_2k/rocky_trail_02_nor_gl_2k.jpg" id="3_bpfk5"]
+[ext_resource type="Texture2D" uid="uid://caqvxjshv4inb" path="res://Textures/Rocky_Trail_02_2k/rocky_trail_02_rough_2k.jpg" id="4_u7u0h"]
+
+[resource]
+albedo_texture = ExtResource("1_kuwhm")
+roughness_texture = ExtResource("4_u7u0h")
+normal_enabled = true
+normal_texture = ExtResource("3_bpfk5")
+ao_enabled = true
+ao_texture = ExtResource("2_ocufa")
+heightmap_enabled = true
+heightmap_scale = 0.4
+heightmap_texture = ExtResource("2_irsqb")
+uv1_scale = Vector3(1.5, 1.5, 1.5)
+uv1_world_triplanar = true
+texture_filter = 5

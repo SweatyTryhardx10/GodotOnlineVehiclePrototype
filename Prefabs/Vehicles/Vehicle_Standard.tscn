@@ -33,6 +33,7 @@ stream_3/stream = ExtResource("22_7hfv7")
 
 [node name="Vehicle (4-wheeled)" type="RigidBody3D" node_paths=PackedStringArray("engine")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.526509, 0)
+collision_layer = 257
 mass = 100.0
 physics_material_override = ExtResource("1_dentn")
 gravity_scale = 2.0

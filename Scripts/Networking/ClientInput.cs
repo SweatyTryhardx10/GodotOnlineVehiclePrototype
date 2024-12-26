@@ -125,7 +125,8 @@ public partial class ClientInput : Node
 
 	// [Rpc(MultiplayerApi.RpcMode.AnyPeer, CallLocal = true, TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
 	// Remote Procedure Calls are to be performed by the controls themselves (I think).
-	//  + This allows controls to handle the local/remote peer distinction themselves
+	//  + This allows Controls to handle the local/remote peer distinction themselves.
+	//  + State synchronization is achievable.
 	//  % Netcode is introduced into each and every node that should be controlled by the player.
 	public void PerformControlInputA()
 	{

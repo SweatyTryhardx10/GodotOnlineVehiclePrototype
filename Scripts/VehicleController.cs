@@ -1,6 +1,7 @@
 using Godot;
 using System;
 using System.Linq;
+using System.Threading.Tasks;
 
 public partial class VehicleController : RigidBody3D
 {
@@ -22,6 +23,8 @@ public partial class VehicleController : RigidBody3D
 	public float steering;
 	private float actualSteeringAngle;
 
+	// TODO: Naming of this member might be ambiguous as it might suggest that an upside-down vehicle is considered to be on the floor.
+	// 	Consider if this name should be changed.
 	public bool OnFloor
 	{
 		get

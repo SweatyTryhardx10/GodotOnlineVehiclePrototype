@@ -1,0 +1,133 @@
+[gd_scene load_steps=9 format=3 uid="uid://c2it61y6kepoo"]
+
+[ext_resource type="Script" path="res://Scripts/Networking/NetAnimator.cs" id="1_vsoba"]
+[ext_resource type="Material" uid="uid://ccw2tuc2fex2k" path="res://Materials/pbr_tri_proto_green.tres" id="2_ac5oc"]
+[ext_resource type="Script" path="res://Scripts/Networking/NetArea3D.cs" id="3_spfp4"]
+
+[sub_resource type="Animation" id="Animation_rmopx"]
+resource_name = "Lvl02_SmallPlatform_RaiseAndLower"
+length = 4.0
+tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Animatable Platform:position:x")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"handle_modes": PackedInt32Array(0, 0),
+"points": PackedFloat32Array(0, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0, 4)
+}
+tracks/1/type = "bezier"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Animatable Platform:position:y")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"handle_modes": PackedInt32Array(0, 0, 0, 0, 2, 2, 0),
+"points": PackedFloat32Array(0, -0.25, 0, 0.0666667, 1.23323, 2, -0.0666667, -0.479539, 0.25, 0, 2, -0.067, 0, 0.215285, -0.479539, -0.1, -0.229435, 0.194767, 0.0457253, 0.000849947, 0, -0.0326462, -0.0614315, 0.0296175, 0.0557324, 0, -0.026, 0, 0.0260707, 0, 0, -0.026, 0, 0.0260707, 0),
+"times": PackedFloat32Array(0, 0.2, 2, 3.6, 3.73333, 3.83333, 4)
+}
+tracks/2/type = "bezier"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Animatable Platform:position:z")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"handle_modes": PackedInt32Array(0, 0),
+"points": PackedFloat32Array(0, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0, 4)
+}
+
+[sub_resource type="Animation" id="Animation_nntco"]
+length = 0.001
+tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Animatable Platform:position:x")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(0, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+tracks/1/type = "bezier"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Animatable Platform:position:y")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(0, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+tracks/2/type = "bezier"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Animatable Platform:position:z")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(0, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_nex44"]
+_data = {
+"Lvl02_SmallPlatform_RaiseAndLower": SubResource("Animation_rmopx"),
+"RESET": SubResource("Animation_nntco")
+}
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_m4e1c"]
+size = Vector3(9.235, 2, 3.833)
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_hrtrv"]
+radius = 3.8
+
+[node name="Octagon Pusher" type="Node3D"]
+transform = Transform3D(0.92388, 0, 0.382683, 0, 1, 0, -0.382683, 0, 0.92388, 0, 0, 0)
+
+[node name="NetAnimator" type="AnimationPlayer" parent="."]
+callback_mode_process = 0
+libraries = {
+"": SubResource("AnimationLibrary_nex44")
+}
+script = ExtResource("1_vsoba")
+animationToPlay = "Lvl02_SmallPlatform_RaiseAndLower"
+
+[node name="Animatable Platform" type="AnimatableBody3D" parent="."]
+sync_to_physics = false
+
+[node name="Octagon Mesh" type="CSGCylinder3D" parent="Animatable Platform"]
+radius = 5.0
+material = ExtResource("2_ac5oc")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Animatable Platform"]
+transform = Transform3D(0.923879, 0, -0.382683, 0, 1, 0, 0.382683, 0, 0.923879, 0, 0, 0)
+shape = SubResource("BoxShape3D_m4e1c")
+
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="Animatable Platform"]
+transform = Transform3D(0.923879, 0, 0.382683, 0, 1, 0, -0.382683, 0, 0.923879, 0, 0, 0)
+shape = SubResource("BoxShape3D_m4e1c")
+
+[node name="CollisionShape3D3" type="CollisionShape3D" parent="Animatable Platform"]
+transform = Transform3D(0.382683, 0, 0.923879, 0, 1, 0, -0.923879, 0, 0.382683, 0, 0, 0)
+shape = SubResource("BoxShape3D_m4e1c")
+
+[node name="CollisionShape3D4" type="CollisionShape3D" parent="Animatable Platform"]
+transform = Transform3D(-0.382683, 0, 0.923879, 0, 1, 0, -0.923879, 0, -0.382683, 0, 0, 0)
+shape = SubResource("BoxShape3D_m4e1c")
+
+[node name="Area3D" type="Area3D" parent="."]
+collision_mask = 256
+script = ExtResource("3_spfp4")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
+shape = SubResource("SphereShape3D_hrtrv")
+
+[connection signal="NetBodyEntered" from="Area3D" to="NetAnimator" method="RemotePlay" unbinds=1]

@@ -104,13 +104,14 @@ public partial class DemoController : Node
 			var inputNode = new ClientInput(-1);
 			newPlayerObject.AddChild(inputNode);
 
-			// Replicate the transform of the previous object (upon entering the tree)
-			newPlayerObject.TreeEntered += () => { newPlayerObject.GlobalTransform = currentPlayerTransform; GD.Print($"new position: {currentPlayerTransform.Origin}"); };
+			// Use the transform of the previous object (upon entering the tree)
+			newPlayerObject.GlobalTransform = currentPlayerTransform;
 
 			// Add the new player object to the tree
 			AddChild(newPlayerObject);
 
 			// Set the new player object as the camera target
+			// TODO: Convert 'target' to a static member to avoid using null-checks in classes that use it.
 			CameraController.Instance.target = newPlayerObject;
 
 			currentPlayerObject = newPlayerObject;
