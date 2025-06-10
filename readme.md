@@ -18,7 +18,7 @@ A simple game loop is implemented to allow the local and remote peers to play to
 ***insert UML here!***
 
 ### Tire dynamics
-The forces produced by a tire are unlike those exhibited by other joint types. In the real world, because the rubber of the tire gets displaced and is attached to a two-DoF axle (yaw and pitch), the forces take on non-linear properties that are highly dependent on the characteristics of the contact patch between the tire and the surface. As such, a specialized joint ([WheelJoint.cs](Scripts\Joints\WheelJoint.cs)) is implemented which models this behaviour.
+The forces produced by a tire are unlike those exhibited by other joint types. In the real world, because the rubber of the tire gets displaced and is attached to a two-DoF axle (yaw and pitch), the forces take on non-linear properties that are highly dependent on the characteristics of the contact patch between the tire and the surface. As such, a specialized joint ([WheelJoint.cs](Scripts/Joints/WheelJoint.cs)) is implemented which models this behaviour.
 
 It is common for tire simulations to distinguish between the local axes, XYZ, of the tire and the forces they produce. The vertical axis, Y in this case, generally doesn't produce any meaningful forces. The other two which, for most cases, align with the contact surface are referred to as: lateral (X), and longitudinal (Z). The lateral force is what corrects the trajectory of the vehicle (i.e. steers the vehicle) while the longitudinal force affects its speed.
 
@@ -36,7 +36,7 @@ Slip is differentiated for both the lateral (s_x) and longitudinal (s_z) axes wh
 </details>
 
 ### Spring dynamics
-Apart from the tire and its forces, the [WheelJoint.cs](Scripts\Joints\WheelJoint.cs) class also implements the simulation for the spring between the tire and the vehicle body.
+Apart from the tire and its forces, the [WheelJoint.cs](Scripts/Joints/WheelJoint.cs) class also implements the simulation for the spring between the tire and the vehicle body.
 
 The force of the spring is computed using Hooke's Law.
 
